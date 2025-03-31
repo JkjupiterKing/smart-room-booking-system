@@ -1,0 +1,50 @@
+<div class="payment-container">
+    <h2>Payment for {{ roomTitle }}</h2>
+    <p>Total Amount: ₹{{ totalAmount }}</p>
+  
+    <form [formGroup]="paymentForm" (ngSubmit)="onPaymentSubmit()">
+      <label for="paymentMethod">Choose Payment Method:</label>
+      <select formControlName="paymentMethod" id="paymentMethod">
+        <option value="" disabled selected>Select Payment Method</option>
+        <option *ngFor="let method of paymentMethods" [value]="method">{{ method }}</option>
+      </select>
+  
+      <!-- UPI Payment -->
+      <div *ngIf="selectedPaymentMethod === 'UPI'">
+        <label for="upiId">Enter UPI ID:</label>
+        <input type="text" formControlName="upiId" id="upiId" placeholder="example@upi" required />
+      </div>
+  
+      <!-- Credit/Debit Card Payment -->
+      <div *ngIf="selectedPaymentMethod === 'Credit Card' || selectedPaymentMethod === 'Debit Card'">
+        <label for="cardNumber">Card Number:</label>
+        <input type="text" formControlName="cardNumber" id="cardNumber" placeholder="1234 5678 9012 3456" required />
+  
+        <label for="cardExpiry">Expiry Date:</label>
+        <input type="text" formControlName="cardExpiry" id="cardExpiry" placeholder="MM/YY" required />
+  
+        <label for="cardCVV">CVV:</label>
+        <input type="text" formControlName="cardCVV" id="cardCVV" placeholder="123" required />
+      </div>
+  
+      <!-- Net Banking -->
+      <div *ngIf="selectedPaymentMethod === 'Net Banking'">
+        <label for="netBankingBank">Select Your Bank:</label>
+        <select formControlName="netBankingBank" id="netBankingBank">
+          <option value="SBI">State Bank of India</option>
+          <option value="HDFC">HDFC Bank</option>
+          <option value="ICICI">ICICI Bank</option>
+          <option value="Axis">Axis Bank</option>
+        </select>
+      </div>
+  
+      <!-- Cash Payment (No Additional Fields) -->
+      <div *ngIf="selectedPaymentMethod === 'Cash'">
+        <p>Please pay in cash at the hotel reception.</p>
+      </div>
+  
+      <button type="submit" [disabled]="paymentForm.invalid || isProcessing">
+        {{ isProcessing ? 'Processing...' : 'Pay Now' }}
+      </button>
+    </form>
+  </div>

@@ -1,0 +1,60 @@
+/* Dashboard container to center everything */
+.dashboard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSIrDRQqqaF2Cy0B8nOJo6tROcNd1LSOBdUw&s') no-repeat center center/cover; /* Background image */
+  font-family: 'Arial', sans-serif;
+}
+  
+  /* Search Container Styling */
+  .search-container {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.9); /* Slight transparency */
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Title Styling */
+  .search-title {
+    font-size: 3.5rem;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+  
+  /* Location Search */
+  .location-search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  /* Dropdown Styling */
+  .location-search select {
+    padding: 15px;
+    font-size: 1.2rem;
+    border-radius: 25px;
+    border: 2px solid #ccc;
+    width: 300px;
+    transition: border-color 0.3s ease;
+  }
+  
+  /* Search Button Styling */
+  .location-search button {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    color: white;
+    background-color: #ff5722; /* Accent color */
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .location-search button:hover {
+    background-color: #e64a19; /* Darker shade of accent color */
+  }

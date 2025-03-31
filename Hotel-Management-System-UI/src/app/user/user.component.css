@@ -1,0 +1,215 @@
+body {
+  margin: 20;
+  padding: 50;
+  font-family: 'Arial', sans-serif;
+  background: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAsR-fpxUOyiNfBtq94cQtUZO3xPP5c-bgbA&s");
+  overflow: hidden;
+}
+
+
+
+.hero-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: 3rem;
+  font-weight: bold;
+  color: #723636;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+  animation: fadeIn 3s ease-in-out, slideIn 3s ease-in-out;
+}
+
+.hero-text span {
+  color: #2b14df; 
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translate(-50%, -50%); /* Start from center but hidden */
+  }
+  to {
+    transform: translate(-50%, -50%); /* Stay at center */
+  }
+}
+
+
+.user-buttons {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #03a9f4;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 5px 15px rgba(3, 169, 244, 0.3);
+}
+
+button:hover {
+  transform: scale(1.1);
+  background-color: #0288d1;
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.9);
+  width: 400px;
+  max-width: 90%;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  animation: modalFadeIn 0.5s ease-in-out;
+}
+
+.modal-content h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modal-content form label {
+  font-size: 14px;
+  color: #555;
+}
+
+.modal-content form input {
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.modal-content form input:focus {
+  border-color: #03a9f4;
+  outline: none;
+}
+
+.modal-content form button {
+  background-color: #03a9f4;
+  color: white;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.modal-content form button:hover {
+  background-color: #0288d1;
+}
+
+.modal-content button {
+  margin-top: 10px;
+  background: transparent;
+  color: #555;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  padding: 5px;
+}
+
+.modal-content button:hover {
+  color: #000;
+  text-decoration: underline;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-text {
+    font-size: 2rem;
+  }
+
+  .modal {
+    width: 90%;
+    padding: 15px;
+  }
+}
+
+.google-btn {
+  background-color: #4285f4;
+  color: white;
+  padding: 10px;
+  width: 100%;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.google-btn:hover {
+  background-color: #357ae8;
+}
+
+.google-btn:focus {
+  outline: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
