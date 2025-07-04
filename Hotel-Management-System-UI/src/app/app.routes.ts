@@ -8,9 +8,7 @@ import { PaymentComponent } from './payment/payment.component';
 
 
 export const routes: Routes = [
-    
-  
-  
+  {path: '', component: UserComponent},
   { path: 'user', component: UserComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'roombooking', component: RoomBookingComponent },
