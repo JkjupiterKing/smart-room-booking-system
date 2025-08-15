@@ -1,0 +1,45 @@
+<div class="sidebar">
+  <h3 class="sidebar-title">Smart-room-booking</h3>
+  <ul>
+    <li>
+      <a
+        routerLink="/dashboard"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+      </a>
+    </li>
+    <li>
+      <a routerLink="/location" routerLinkActive="active">
+        <i class="fas fa-map-marker-alt"></i>
+        <span>Locations</span>
+      </a>
+    </li>
+    <li>
+      <a routerLink="/dashboard" routerLinkActive="active">
+        <i class="fas fa-hotel"></i>
+        <span>Hotel Management</span>
+      </a>
+    </li>
+    <li>
+      <a routerLink="/roombooking" routerLinkActive="active">
+        <i class="fas fa-bed"></i>
+        <span>Room Booking</span>
+      </a>
+    </li>
+    <li>
+      <a routerLink="/payment" routerLinkActive="active">
+        <i class="fas fa-credit-card"></i>
+        <span>Payment</span>
+      </a>
+    </li>
+    <li>
+      <a routerLink="/user" routerLinkActive="active">
+        <i class="fas fa-user"></i>
+        <span>Logout</span>
+      </a>
+    </li>
+  </ul>
+</div>

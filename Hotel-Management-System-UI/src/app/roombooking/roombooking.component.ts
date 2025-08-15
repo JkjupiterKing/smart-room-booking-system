@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
+import { SidebarComponent } from '../sidebar/sidebar.component';
 
 
 interface Room {
@@ -27,6 +28,7 @@ interface Room {
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
+    SidebarComponent
   ],
   templateUrl: './roombooking.component.html',
   styleUrls: ['./roombooking.component.css']

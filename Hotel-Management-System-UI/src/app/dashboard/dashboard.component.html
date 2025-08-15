@@ -1,16 +1,26 @@
-<div class="dashboard">
-  <!-- Search Container -->
-  <div class="search-container">
-    <h2 class="search-title">Search for Your Stay in India</h2>
+<div class="dashboard-container">
+  <!-- Sidebar -->
+  <app-sidebar></app-sidebar>
 
-    <!-- Dropdown for selecting city -->
-    <div class="location-search">
-      <label for="location" class="location-label">Choose a City:</label>
-      <select id="location" [(ngModel)]="selectedLocation">
-        <option value="" disabled selected>Select a Location</option>
-        <option *ngFor="let location of locations" [value]="location">{{ location }}</option>
-      </select>
-      <button (click)="searchLocation()" [disabled]="!selectedLocation">Search</button>
+  <!-- Main dashboard content -->
+  <div class="dashboard">
+    <!-- Search Container -->
+    <div class="search-container">
+      <h2 class="search-title">Search for Your Stay in India</h2>
+
+      <!-- Dropdown for selecting city -->
+      <div class="location-search">
+        <label for="location" class="location-label">Choose a City:</label>
+        <select id="location" [(ngModel)]="selectedLocation">
+          <option value="" disabled>Select a Location</option>
+          <option *ngFor="let location of locations" [value]="location">
+            {{ location }}
+          </option>
+        </select>
+        <button (click)="searchLocation()" [disabled]="!selectedLocation">
+          Search
+        </button>
+      </div>
     </div>
   </div>
 </div>

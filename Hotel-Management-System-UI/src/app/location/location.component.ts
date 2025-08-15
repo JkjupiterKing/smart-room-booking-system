@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
+import { SidebarComponent } from '../sidebar/sidebar.component';  // adjust path as needed
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-location',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule, SidebarComponent],
   templateUrl: './location.component.html',
-  styleUrl: './location.component.css'
+  styleUrls: ['./location.component.css']  // fix typo here
 })
-export class LocationComponent {
-
-}
+export class LocationComponent {}

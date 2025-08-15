@@ -1,18 +1,18 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { SidebarComponent } from '../sidebar/sidebar.component';  // <-- import your SidebarComponent
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule,FormsModule],
+  standalone: true,                   // <-- make sure this is standalone
+  imports: [CommonModule, FormsModule, SidebarComponent],  // <-- add SidebarComponent here
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent {
-
   selectedLocation: string = '';
-  searchQuery: string = '';
   locations: string[] = [
     'Bengaluru',
     'Mysuru',
@@ -27,9 +27,6 @@ export class DashboardComponent {
 
   searchLocation() {
     if (this.selectedLocation) {
-      console.log('Searching for locations in:', this.selectedLocation);
-
-      // Navigate to the home page with the selected location
       this.router.navigate(['/roombooking'], {
         queryParams: { location: this.selectedLocation },
       });
@@ -37,5 +34,4 @@ export class DashboardComponent {
       alert('Please select a location first!');
     }
   }
-
 }

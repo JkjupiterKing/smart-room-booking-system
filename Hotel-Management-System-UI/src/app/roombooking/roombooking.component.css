@@ -1,4 +1,7 @@
-/* General Styles */
+.content {
+  margin-left: 270px; /* space for sidebar */
+  padding: 20px;
+}
 .roombooking-container {
   font-family: Arial, sans-serif;
   padding: 20px;
@@ -106,7 +109,8 @@ label {
   margin-bottom: 5px;
 }
 
-input, select {
+input,
+select {
   width: 100%;
   padding: 8px;
   border: 1px solid #ccc;
