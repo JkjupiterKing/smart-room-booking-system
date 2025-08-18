@@ -16,11 +16,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class UserComponent implements OnInit {
   isLoginModalOpen: boolean = false;
   isRegisterModalOpen: boolean = false;
-  successMessage: string = ''; // Success message for successful registration
-  errorMessage: string = ''; // Error message for failed registration
+  successMessage: string = '';
+  errorMessage: string = '';
+  registrationSuccess: boolean = false;
 
   user = { name: '', email: '', password: '' };
-  
+
   constructor(private userService: UserService, private router: Router) {}
 
   ngOnInit() {}
@@ -50,16 +51,18 @@ export class UserComponent implements OnInit {
       this.userService.loginUser(username, password).subscribe({
         next: (response) => {
           console.log('Login successful', response);
+          // Store username in localStorage for dashboard sidebar
+          localStorage.setItem('user', JSON.stringify({ username }));
           this.successMessage = 'Login successful!';
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/dashboard']).then(() => {
+            window.location.reload();
+          });
           this.closeLoginModal();
           loginForm.reset();
         },
         error: (error: HttpErrorResponse) => {
           console.error('Login failed', error);
-          
           if (error.error) {
-            // Show the error message from the backend
             this.errorMessage = error.error;
             alert(this.errorMessage);
           } else {
@@ -70,49 +73,43 @@ export class UserComponent implements OnInit {
       });
     }
   }
-  // Submit logic for registration form
-//   onRegisterSubmit(registerForm: NgForm) {
-//     if (registerForm.valid) {
-//       this.userService.registerUser(registerForm.value).subscribe(
-//         (response) => {
-//           console.log('Registration successful', response);
-//           this.closeRegisterModal(); // Close register modal upon success
-//           this.openLoginModal(); // Open login modal after successful registration
-//           registerForm.reset(); // Reset the form and clear the fields
-//         },
-//         (error) => {
-//           console.error('Registration failed', error);
-//           alert('Error registering user');
-//         }
-//       );
-//     }
-//   }
 
-
-onRegisterSubmit(registerForm: NgForm) {
-  if (registerForm.valid) {
-    this.userService.registerUser(registerForm.value).subscribe({
-      next: (response) => {
-        console.log('Registration successful', response);
-        this.successMessage = response; // Store the success message
-        this.closeRegisterModal();
-        this.openLoginModal();
-        registerForm.reset();
-      },
-      error: (error) => {
-        console.error('Registration failed', error);
-        
-        if (error instanceof HttpErrorResponse) {
-          // If the error response contains a message
-          const errorMessage = error.error || 'Error registering user';
-          this.errorMessage = errorMessage;
-          alert(errorMessage);
-        } else {
-          this.errorMessage = 'An unexpected error occurred';
-          alert(this.errorMessage);
-        }
+  onRegisterSubmit(registerForm: NgForm) {
+    if (registerForm.valid) {
+      const password = registerForm.value.password;
+      // Check if password is only numbers or only letters
+      if (/^\d+$/.test(password) || /^[a-zA-Z]+$/.test(password)) {
+        alert('Use a strong password: include both letters and numbers.');
+        return;
       }
-    });
+      this.userService.registerUser(registerForm.value).subscribe({
+        next: (response) => {
+          console.log('Registration successful', response);
+          // Store username in localStorage for dashboard sidebar
+          const { username } = registerForm.value;
+          localStorage.setItem('user', JSON.stringify({ username }));
+          this.successMessage = response;
+          this.registrationSuccess = true;
+          this.closeRegisterModal();
+          registerForm.reset();
+          setTimeout(() => {
+            this.registrationSuccess = false;
+            this.openLoginModal();
+            window.location.reload();
+          }, 2000);
+        },
+        error: (error) => {
+          console.error('Registration failed', error);
+          if (error instanceof HttpErrorResponse) {
+            const errorMessage = error.error || 'Error registering user';
+            this.errorMessage = errorMessage;
+            alert(errorMessage);
+          } else {
+            this.errorMessage = 'An unexpected error occurred';
+            alert(this.errorMessage);
+          }
+        }
+      });
+    }
   }
-}
 }

@@ -4,8 +4,7 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSIrDRQqqaF2Cy0B8nOJo6tROcNd1LSOBdUw&s")
-    no-repeat center center/cover; /* Background image */
+  background: url("../../assets/resort.jpg") no-repeat center center/cover;
   font-family: "Arial", sans-serif;
 }
 
@@ -20,7 +19,7 @@
 
 /* Title Styling */
 .search-title {
-  font-size: 3.5rem;
+  font-size: 0.7rem;
   color: #333;
   margin-bottom: 20px;
   font-weight: 600;

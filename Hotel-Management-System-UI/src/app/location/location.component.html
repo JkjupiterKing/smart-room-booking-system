@@ -1,6 +1,57 @@
 <app-sidebar></app-sidebar>
 
 <div class="content">
-  <h1>Location</h1>
-  <p>location works!</p>
+  <h1>Locations</h1>
+
+  <button (click)="openAddModal()">Add Location</button>
+
+  <table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Address</th>
+        <th>City</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let location of locations">
+        <td>{{ location.name }}</td>
+        <td>{{ location.address }}</td>
+        <td>{{ location.city }}</td>
+        <td>
+          <button (click)="openEditModal(location)">Update</button>
+          <button (click)="deleteLocation(location.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Modal -->
+  <div *ngIf="modalOpen" class="modal-backdrop">
+    <div class="modal">
+      <h2>{{ isEditing ? "Update Location" : "Add Location" }}</h2>
+
+      <label>
+        Name:
+        <input type="text" [(ngModel)]="currentLocation.name" />
+      </label>
+      <br />
+      <label>
+        Address:
+        <input type="text" [(ngModel)]="currentLocation.address" />
+      </label>
+      <br />
+      <label>
+        City:
+        <input type="text" [(ngModel)]="currentLocation.city" />
+      </label>
+      <br /><br />
+
+      <button (click)="saveLocation()">
+        {{ isEditing ? "Update" : "Add" }}
+      </button>
+      <button (click)="closeModal()">Cancel</button>
+    </div>
+  </div>
 </div>
