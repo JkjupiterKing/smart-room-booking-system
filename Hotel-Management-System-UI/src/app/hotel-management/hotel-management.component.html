@@ -8,7 +8,7 @@
 
   <div class="hotel-grid">
     <mat-card *ngFor="let hotel of hotels" class="hotel-card">
-      <img mat-card-image [src]="'data:image/jpeg;base64,' + hotel.image" alt="{{ hotel.name }}">
+      <img mat-card-image [src]="'data:image/jpeg;base64,' + hotel.imageBase64" alt="{{ hotel.name }}">
       <mat-card-header>
         <mat-card-title>{{ hotel.name }}</mat-card-title>
         <mat-card-subtitle>{{ hotel.location?.name }}</mat-card-subtitle>
