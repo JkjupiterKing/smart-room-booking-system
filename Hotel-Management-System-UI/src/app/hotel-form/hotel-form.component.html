@@ -1,0 +1,33 @@
+<h2 mat-dialog-title>{{ isEditMode ? 'Edit Hotel' : 'Add Hotel' }}</h2>
+<mat-dialog-content>
+  <form [formGroup]="hotelForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Location</mat-label>
+      <input matInput formControlName="location">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Price per Night</mat-label>
+      <input matInput formControlName="price" type="number">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Rating</mat-label>
+      <input matInput formControlName="rating" type="number" min="1" max="5">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description"></textarea>
+    </mat-form-field>
+    <div class="file-input">
+      <label for="file">Image</label>
+      <input type="file" (change)="onFileSelected($event)">
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="dialogRef.close()">Cancel</button>
+  <button mat-button color="primary" (click)="onSubmit()" [disabled]="!hotelForm.valid">{{ isEditMode ? 'Update' : 'Save' }}</button>
+</mat-dialog-actions>

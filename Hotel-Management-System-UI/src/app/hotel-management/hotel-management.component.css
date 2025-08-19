@@ -1,0 +1,34 @@
+.hotel-management-container {
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.add-hotel-btn {
+  background-color: #FF5722 !important;
+}
+
+.hotel-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.hotel-card {
+  max-width: 400px;
+}
+
+.hotel-card img {
+  height: 200px;
+  object-fit: cover;
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: flex-end;
+}

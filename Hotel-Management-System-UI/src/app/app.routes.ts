@@ -4,7 +4,8 @@ import { UserComponent } from './user/user.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RoomBookingComponent } from './roombooking/roombooking.component';
 import { PaymentComponent } from './payment/payment.component';
-import { LocationComponent } from './location/location.component'; 
+import { LocationComponent } from './location/location.component';
+import { HotelManagementComponent } from './hotel-management/hotel-management.component';
 
 export const routes: Routes = [
   { path: '', component: UserComponent },
@@ -12,5 +13,6 @@ export const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'roombooking', component: RoomBookingComponent },
   { path: 'payment', component: PaymentComponent },
-  { path: 'location', component: LocationComponent }, 
+  { path: 'location', component: LocationComponent },
+  { path: 'hotel-management', component: HotelManagementComponent },
 ];
