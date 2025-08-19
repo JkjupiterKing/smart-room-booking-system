@@ -10,16 +10,13 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    private String address;
+    private String country;
     private String city;
 
     // Constructors
     public Location() {}
 
     public Location(String name, String address, String city) {
-        this.name = name;
-        this.address = address;
         this.city = city;
     }
 
@@ -33,20 +30,12 @@ public class Location {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getCountry() {
+        return country;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
+    public void setCountry(String city) {
+        this.country = country;
     }
 
     public String getCity() {

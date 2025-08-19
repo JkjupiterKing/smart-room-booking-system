@@ -17,14 +17,6 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Title Styling */
-.search-title {
-  font-size: 0.7rem;
-  color: #333;
-  margin-bottom: 20px;
-  font-weight: 600;
-}
-
 /* Location Search */
 .location-search {
   display: flex;
@@ -97,7 +89,7 @@ app-sidebar {
 
 /* Title Styling */
 .search-title {
-  font-size: 3.5rem;
+  font-size: 2rem;
   color: #333;
   margin-bottom: 20px;
   font-weight: 600;

@@ -6,9 +6,8 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
 
 interface Location {
   id?: number;
-  name: string;
-  address: string;
   city: string;
+  country: string;
 }
 
 @Component({
@@ -22,8 +21,8 @@ export class LocationComponent implements OnInit {
   locations: Location[] = [];
   modalOpen = false;
   isEditing = false;
-  currentLocation: Location = { name: '', address: '', city: '' };
-  apiUrl = 'http://localhost:8080/api/locations';  // Change this to your API base URL
+  currentLocation: Location = { city: '', country: '' };
+  apiUrl = 'http://localhost:8066/api/locations';  // Change to your API base URL
 
   constructor(private http: HttpClient) {}
 
@@ -40,7 +39,7 @@ export class LocationComponent implements OnInit {
 
   openAddModal() {
     this.isEditing = false;
-    this.currentLocation = { name: '', address: '', city: '' };
+    this.currentLocation = { city: '', country: '' };
     this.modalOpen = true;
   }
 

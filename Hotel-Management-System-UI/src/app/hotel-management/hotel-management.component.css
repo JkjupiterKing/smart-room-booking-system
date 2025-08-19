@@ -1,5 +1,6 @@
 .hotel-management-container {
   padding: 20px;
+  margin-left: 290px;
 }
 
 .header {
@@ -10,7 +11,7 @@
 }
 
 .add-hotel-btn {
-  background-color: #FF5722 !important;
+  background-color: #ff5722 !important;
 }
 
 .hotel-grid {

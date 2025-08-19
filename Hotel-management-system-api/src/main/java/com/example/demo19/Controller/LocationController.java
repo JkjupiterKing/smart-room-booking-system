@@ -33,9 +33,8 @@ public class LocationController {
     @PutMapping("/update/{id}")
     public Location updateLocation(@PathVariable Long id, @RequestBody Location updatedLocation) {
         Location location = locationRepository.findById(id).orElseThrow(() -> new RuntimeException("Location not found"));
-        location.setName(updatedLocation.getName());
-        location.setAddress(updatedLocation.getAddress());
         location.setCity(updatedLocation.getCity());
+        location.setCountry(updatedLocation.getCountry());
         return locationRepository.save(location);
     }
 

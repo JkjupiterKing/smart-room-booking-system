@@ -18,9 +18,8 @@ public class Hotel {
     @Column(name ="image")
     private byte[] image;
 
-    // ✅ Location relationship
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "location_id") // Foreign key in Hotel table
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "location_id")
     private Location location;
 
     // Constructors

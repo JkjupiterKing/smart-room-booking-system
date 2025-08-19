@@ -2,26 +2,40 @@
 <div class="hotel-management-container">
   <div class="header">
     <h2>Hotel Management</h2>
-    <button mat-fab color="primary" class="add-hotel-btn" (click)="openAddHotelDialog()">
+    <button
+      mat-fab
+      color="primary"
+      class="add-hotel-btn"
+      (click)="openAddHotelDialog()"
+    >
       <mat-icon>add</mat-icon>
     </button>
   </div>
 
   <div class="hotel-grid">
     <mat-card *ngFor="let hotel of hotels" class="hotel-card">
-      <img mat-card-image [src]="'data:image/jpeg;base64,' + hotel.imageBase64" alt="{{ hotel.name }}">
+      <img
+        mat-card-image
+        [src]="'data:image/jpeg;base64,' + hotel.imageBase64"
+        alt="{{ hotel.name }}"
+      />
       <mat-card-header>
         <mat-card-title>{{ hotel.name }}</mat-card-title>
         <mat-card-subtitle>{{ hotel.location?.name }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
         <p>{{ hotel.description }}</p>
-        <p><strong>Price:</strong> {{ hotel.price | currency:'USD' }}</p>
+        <p><strong>Price:</strong> {{ hotel.price | currency : "Rs " }}</p>
         <p><strong>Rating:</strong> {{ hotel.rating }} / 5</p>
+        <p><strong>Location: </strong> {{ hotel.location?.city }}</p>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-button color="primary" (click)="openEditHotelDialog(hotel)">EDIT</button>
-        <button mat-button color="warn" (click)="deleteHotel(hotel.id)">DELETE</button>
+        <button mat-button color="primary" (click)="openEditHotelDialog(hotel)">
+          EDIT
+        </button>
+        <button mat-button color="warn" (click)="deleteHotel(hotel.id)">
+          DELETE
+        </button>
       </mat-card-actions>
     </mat-card>
   </div>

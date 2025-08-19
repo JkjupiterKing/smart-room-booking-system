@@ -7,11 +7,28 @@ import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
+import { HttpClient } from '@angular/common/http';
+
+interface Location {
+  id: number;
+  country: string;
+  state?: string;
+  city: string;
+}
 
 @Component({
   selector: 'app-hotel-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatDialogModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatDialogModule,
+    MatSelectModule
+  ],
   templateUrl: './hotel-form.component.html',
   styleUrls: ['./hotel-form.component.css']
 })
@@ -19,10 +36,13 @@ export class HotelFormComponent implements OnInit {
   hotelForm: FormGroup;
   isEditMode: boolean;
   selectedFile: File | null = null;
+  locations: Location[] = [];
+  private locationApiUrl = 'http://localhost:8066/api/locations/all'; 
 
   constructor(
     private fb: FormBuilder,
     private hotelService: HotelService,
+    private http: HttpClient,
     public dialogRef: MatDialogRef<HotelFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private snackBar: MatSnackBar
@@ -30,14 +50,23 @@ export class HotelFormComponent implements OnInit {
     this.isEditMode = !!data.hotel;
     this.hotelForm = this.fb.group({
       name: [data.hotel?.name || '', Validators.required],
-      location: [data.hotel?.location?.name || '', Validators.required],
+      location: [data.hotel?.location?.id || '', Validators.required], // store locationId
       price: [data.hotel?.price || '', Validators.required],
       rating: [data.hotel?.rating || '', Validators.required],
       description: [data.hotel?.description || '']
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadLocations();
+  }
+
+  loadLocations(): void {
+    this.http.get<Location[]>(this.locationApiUrl).subscribe({
+      next: (res) => (this.locations = res),
+      error: (err) => console.error('Error fetching locations', err)
+    });
+  }
 
   onFileSelected(event: any): void {
     this.selectedFile = event.target.files[0];
@@ -48,17 +77,15 @@ export class HotelFormComponent implements OnInit {
       const formData = new FormData();
       const hotelData = this.hotelForm.value;
 
-      // Create a simplified hotel object for the backend
+      // Find the selected location object
+      const selectedLocation = this.locations.find(loc => loc.id === hotelData.location);
+
       const hotelPayload = {
         name: hotelData.name,
         description: hotelData.description,
         price: hotelData.price,
         rating: hotelData.rating,
-        location: {
-          name: hotelData.location,
-          address: 'Default Address', // Add default or fetch from a form
-          city: 'Default City'
-        }
+        location: selectedLocation // ✅ send full object
       };
 
       formData.append('hotel', new Blob([JSON.stringify(hotelPayload)], { type: 'application/json' }));

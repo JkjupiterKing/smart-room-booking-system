@@ -5,11 +5,13 @@ import com.example.demo19.dto.LocationDTO;
 import com.example.demo19.Modal.Hotel;
 import com.example.demo19.Modal.Location;
 import com.example.demo19.Repository.HotelRepository;
+import com.example.demo19.Repository.LocationRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import jakarta.persistence.EntityNotFoundException;
 
 import java.io.IOException;
 import java.util.Base64;
@@ -25,6 +27,10 @@ public class HotelController {
     @Autowired
     private HotelRepository hotelRepository;
 
+    // 1. Inject LocationRepository
+    @Autowired
+    private LocationRepository locationRepository;
+
     // ✅ Create new hotel with image and location
     @PostMapping(value = "/create", consumes = {"multipart/form-data"})
     public ResponseEntity<Hotel> createHotel(
@@ -33,6 +39,14 @@ public class HotelController {
 
         if (image != null && !image.isEmpty()) {
             hotel.setImage(image.getBytes());
+        }
+
+        // 2. Handle the Location entity correctly before saving
+        if (hotel.getLocation() != null && hotel.getLocation().getId() != null) {
+            // It's a detached Location entity, find and re-attach it
+            Location managedLocation = locationRepository.findById(hotel.getLocation().getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Location not found"));
+            hotel.setLocation(managedLocation);
         }
 
         Hotel savedHotel = hotelRepository.save(hotel);
@@ -69,7 +83,20 @@ public class HotelController {
             hotel.setDescription(hotelDetails.getDescription());
             hotel.setPrice(hotelDetails.getPrice());
             hotel.setRating(hotelDetails.getRating());
-            hotel.setLocation(hotelDetails.getLocation());
+
+            // 3. Handle Location during an update
+            Location locationDetails = hotelDetails.getLocation();
+            if (locationDetails != null) {
+                if (locationDetails.getId() != null) {
+                    Location managedLocation = locationRepository.findById(locationDetails.getId())
+                            .orElseThrow(() -> new EntityNotFoundException("Location not found"));
+                    hotel.setLocation(managedLocation);
+                } else {
+                    // This case handles when you pass a new, unsaved location during an update
+                    hotel.setLocation(locationDetails);
+                }
+            }
+
 
             try {
                 if (image != null && !image.isEmpty()) {
@@ -106,9 +133,8 @@ public class HotelController {
         if (location != null) {
             locationDTO = new LocationDTO(
                     location.getId(),
-                    location.getName(),
-                    location.getAddress(),
-                    location.getCity()
+                    location.getCity(),
+                    location.getCountry()
             );
         }
 
