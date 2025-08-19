@@ -1,0 +1,22 @@
+mat-form-field {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.file-input {
+  margin-bottom: 15px;
+}
+
+mat-dialog-actions {
+  justify-content: flex-end;
+}
+
+button[mat-button] {
+    border-radius: 20px;
+    padding: 10px 20px;
+}
+
+button[color="primary"] {
+    background-color: #FF5722;
+    color: white;
+}

@@ -1,0 +1,89 @@
+import { Component, OnInit } from '@angular/core';
+import { HotelService } from '../hotel/hotel.service';
+import { MatDialog } from '@angular/material/dialog';
+import { HotelFormComponent } from '../hotel-form/hotel-form.component';
+import { CommonModule } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+
+@Component({
+  selector: 'app-hotel-management',
+  standalone: true,
+  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule],
+  templateUrl: './hotel-management.component.html',
+  styleUrls: ['./hotel-management.component.css']
+})
+export class HotelManagementComponent implements OnInit {
+  hotels: any[] = [];
+
+  constructor(
+    private hotelService: HotelService,
+    public dialog: MatDialog,
+    private snackBar: MatSnackBar
+  ) {}
+
+  ngOnInit(): void {
+    this.loadHotels();
+  }
+
+  loadHotels(): void {
+    this.hotelService.getHotels().subscribe(
+      (data) => {
+        this.hotels = data;
+      },
+      (error) => {
+        console.error('Error fetching hotels:', error);
+        this.snackBar.open('Error fetching hotels', 'Close', {
+          duration: 3000
+        });
+      }
+    );
+  }
+
+  openAddHotelDialog(): void {
+    const dialogRef = this.dialog.open(HotelFormComponent, {
+      width: '400px',
+      data: { hotel: null }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loadHotels();
+      }
+    });
+  }
+
+  openEditHotelDialog(hotel: any): void {
+    const dialogRef = this.dialog.open(HotelFormComponent, {
+      width: '400px',
+      data: { hotel: hotel }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loadHotels();
+      }
+    });
+  }
+
+  deleteHotel(id: number): void {
+    if (confirm('Are you sure you want to delete this hotel?')) {
+      this.hotelService.deleteHotel(id).subscribe(
+        () => {
+          this.loadHotels();
+          this.snackBar.open('Hotel deleted successfully', 'Close', {
+            duration: 3000
+          });
+        },
+        (error) => {
+          console.error('Error deleting hotel:', error);
+          this.snackBar.open('Error deleting hotel', 'Close', {
+            duration: 3000
+          });
+        }
+      );
+    }
+  }
+}
