@@ -9,6 +9,7 @@ import com.example.demo19.Repository.LocationRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import jakarta.persistence.EntityNotFoundException;
@@ -118,6 +119,17 @@ public class HotelController {
             hotelRepository.delete(hotel);
             return ResponseEntity.noContent().build();
         }).orElse(ResponseEntity.notFound().build());
+    }
+
+    // ✅ Get hotels by city name
+    @Transactional(readOnly = true)
+    @GetMapping("/city/{city}")
+    public ResponseEntity<List<HotelResponseDTO>> getHotelsByCity(@PathVariable String city) {
+        List<Hotel> hotels = hotelRepository.findByLocation_CityIgnoreCase(city);
+        List<HotelResponseDTO> response = hotels.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(response);
     }
 
     // ✅ Internal method to convert Hotel entity to HotelResponseDTO

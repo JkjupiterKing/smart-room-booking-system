@@ -4,10 +4,11 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, NgModel, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SidebarComponent } from '../sidebar/sidebar.component';
 
 @Component({
   selector: 'app-payment',
-  imports: [CommonModule,FormsModule,ReactiveFormsModule],
+  imports: [CommonModule,FormsModule,ReactiveFormsModule,SidebarComponent],
   templateUrl: './payment.component.html',
   styleUrl: './payment.component.css'
 })

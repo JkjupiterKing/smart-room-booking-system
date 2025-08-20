@@ -16,12 +16,12 @@ public class Location {
     // Constructors
     public Location() {}
 
-    public Location(String name, String address, String city) {
+    public Location(String country, String city) {
+        this.country = country;
         this.city = city;
     }
 
     // Getters and Setters
-
     public Long getId() {
         return id;
     }
@@ -34,7 +34,7 @@ public class Location {
         return country;
     }
 
-    public void setCountry(String city) {
+    public void setCountry(String country) {
         this.country = country;
     }
 
