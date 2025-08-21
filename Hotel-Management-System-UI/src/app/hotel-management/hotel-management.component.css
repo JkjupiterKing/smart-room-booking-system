@@ -33,3 +33,31 @@ mat-card-actions {
   display: flex;
   justify-content: flex-end;
 }
+
+/* New styles for filter pills */
+.filter-pills-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filter-pill {
+  background-color: #e0e0e0;
+  border-radius: 20px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.filter-pill:hover {
+  background-color: #d0d0d0;
+}
+
+.filter-pill.active {
+  background-color: #ff5722;
+  color: white;
+  font-weight: bold;
+}

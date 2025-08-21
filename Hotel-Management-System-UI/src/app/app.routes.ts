@@ -6,6 +6,7 @@ import { RoomBookingComponent } from './roombooking/roombooking.component';
 import { PaymentComponent } from './payment/payment.component';
 import { LocationComponent } from './location/location.component';
 import { HotelManagementComponent } from './hotel-management/hotel-management.component';
+import { RoomTypeManagementComponent } from './room-type-management/room-type-management.component';
 
 export const routes: Routes = [
   { path: '', component: UserComponent },
@@ -15,4 +16,5 @@ export const routes: Routes = [
   { path: 'payment', component: PaymentComponent },
   { path: 'location', component: LocationComponent },
   { path: 'hotel-management', component: HotelManagementComponent },
+  { path: 'room-types', component: RoomTypeManagementComponent },
 ];

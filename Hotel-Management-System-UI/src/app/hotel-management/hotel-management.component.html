@@ -11,9 +11,18 @@
       <mat-icon>add</mat-icon>
     </button>
   </div>
-
+  <div class="filter-pills-container">
+    <span
+      *ngFor="let city of cities"
+      class="filter-pill"
+      [class.active]="selectedCity === city"
+      (click)="filterByCity(city)"
+    >
+      {{ city }}
+    </span>
+  </div>
   <div class="hotel-grid">
-    <mat-card *ngFor="let hotel of hotels" class="hotel-card">
+    <mat-card *ngFor="let hotel of filteredHotels" class="hotel-card">
       <img
         mat-card-image
         [src]="'data:image/jpeg;base64,' + hotel.imageBase64"
@@ -21,7 +30,7 @@
       />
       <mat-card-header>
         <mat-card-title>{{ hotel.name }}</mat-card-title>
-        <mat-card-subtitle>{{ hotel.location?.name }}</mat-card-subtitle>
+        <mat-card-subtitle>{{ hotel.location?.city }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
         <p>{{ hotel.description }}</p>

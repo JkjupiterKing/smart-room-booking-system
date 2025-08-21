@@ -7,11 +7,11 @@
     <!-- Room Grid -->
     <div class="room-grid">
       <div *ngFor="let room of rooms" class="room-card">
-        <img [src]="room.image" [alt]="room.title" class="room-image" />
+        <img [src]="room.imageBase64" [alt]="room.name" class="room-image" />
         <div class="room-details">
-          <h2>{{ room.title }}</h2>
+          <h2>{{ room.name }}</h2>
           <p>{{ room.description }}</p>
-          <p><strong>Price:</strong> ${{ room.price }} per night</p>
+          <p><strong>Price:</strong> Rs {{ room.price }} per night</p>
           <p>
             <strong>Rating:</strong>
             <span *ngFor="let star of getStarArray(room.rating)">&#9733;</span>
@@ -27,7 +27,7 @@
     <!-- Booking Modal -->
     <div *ngIf="showModal" class="modal-overlay">
       <div class="modal-content">
-        <h2>Booking for {{ selectedRoom?.title }}</h2>
+        <h2>Booking for {{ selectedRoom?.name }}</h2>
 
         <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
           <div class="form-group">
@@ -62,8 +62,11 @@
           <div class="form-group">
             <label for="amenities">Amenities</label>
             <select id="amenities" formControlName="amenities">
-              <option *ngFor="let option of amenitiesOptions" [value]="option">
-                {{ option }}
+              <option
+                *ngFor="let option of amenitiesOptions"
+                [value]="option.name"
+              >
+                {{ option.name }}
               </option>
             </select>
           </div>

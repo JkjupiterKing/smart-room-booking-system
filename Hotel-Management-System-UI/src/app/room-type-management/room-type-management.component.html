@@ -1,0 +1,84 @@
+<app-sidebar></app-sidebar>
+
+<div class="room-type-container">
+  <h2>Manage Room Types</h2>
+
+  <div class="table-view" *ngIf="!showAddRoomTypeModal">
+    <div class="actions-container">
+      <button (click)="showAddForm()" class="add-button">
+        Add New Room Type
+      </button>
+    </div>
+
+    <div class="table-container">
+      <h3>Existing Room Types</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let roomType of roomTypes">
+            <td>{{ roomType.name }}</td>
+            <td>{{ roomType.description }}</td>
+            <td>
+              <button (click)="editRoomType(roomType)" class="edit-button">
+                Edit
+              </button>
+              <button
+                *ngIf="roomType.id"
+                (click)="deleteRoomType(roomType.id!)"
+                class="delete-button"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="form-view" *ngIf="showAddRoomTypeModal">
+    <div class="form-container">
+      <h3>
+        {{ selectedRoomType.id ? "Update Room Type" : "Add New Room Type" }}
+      </h3>
+      <form (ngSubmit)="saveRoomType()">
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input
+            id="name"
+            type="text"
+            [(ngModel)]="selectedRoomType.name"
+            name="name"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="description">Description:</label>
+          <textarea
+            id="description"
+            [(ngModel)]="selectedRoomType.description"
+            name="description"
+          ></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="submit-button">
+            {{ selectedRoomType.id ? "Update" : "Save" }}
+          </button>
+          <button
+            type="button"
+            (click)="resetFormAndHide()"
+            class="cancel-button"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
