@@ -32,7 +32,13 @@
         <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
           <div class="form-group">
             <label for="checkInDate">Check-In Date</label>
-            <input id="checkInDate" type="date" formControlName="checkInDate" />
+            <input
+              id="checkInDate"
+              type="date"
+              formControlName="checkInDate"
+              [min]="minCheckInDate"
+              (change)="onCheckInDateChange()"
+            />
           </div>
 
           <div class="form-group">
@@ -41,6 +47,7 @@
               id="checkOutDate"
               type="date"
               formControlName="checkOutDate"
+              [min]="minCheckOutDate"
             />
           </div>
 

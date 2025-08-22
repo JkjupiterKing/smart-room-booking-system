@@ -36,7 +36,7 @@
         <p>{{ hotel.description }}</p>
         <p><strong>Price:</strong> {{ hotel.price | currency : "Rs " }}</p>
         <p><strong>Rating:</strong> {{ hotel.rating }} / 5</p>
-        <p><strong>Location: </strong> {{ hotel.location?.city }}</p>
+        <p><strong>Location: </strong> {{ hotel.location.city }}</p>
       </mat-card-content>
       <mat-card-actions>
         <button mat-button color="primary" (click)="openEditHotelDialog(hotel)">

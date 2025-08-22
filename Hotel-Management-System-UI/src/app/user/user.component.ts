@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserService } from '../user.service'; // Ensure you have the correct import
+import { UserService } from '../user.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -9,7 +9,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-user',
-  imports: [FormsModule,CommonModule ],
+  imports: [FormsModule, CommonModule],
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css']
 })
@@ -51,8 +51,10 @@ export class UserComponent implements OnInit {
       this.userService.loginUser(username, password).subscribe({
         next: (response) => {
           console.log('Login successful', response);
-          // Store username in localStorage for dashboard sidebar
-          localStorage.setItem('user', JSON.stringify({ username }));
+          console.log('User data:', response.user);
+          if (response && response.user) {
+            localStorage.setItem('user', JSON.stringify(response.user));
+          }
           this.successMessage = 'Login successful!';
           this.router.navigate(['/dashboard']).then(() => {
             window.location.reload();
@@ -86,8 +88,9 @@ export class UserComponent implements OnInit {
         next: (response) => {
           console.log('Registration successful', response);
           // Store username in localStorage for dashboard sidebar
-          const { username } = registerForm.value;
-          localStorage.setItem('user', JSON.stringify({ username }));
+          if (response && response.user) {
+            localStorage.setItem('user', JSON.stringify(response.user));
+          }
           this.successMessage = response;
           this.registrationSuccess = true;
           this.closeRegisterModal();

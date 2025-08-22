@@ -1,16 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, NgModel, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 
 @Component({
   selector: 'app-payment',
-  imports: [CommonModule,FormsModule,ReactiveFormsModule,SidebarComponent],
+  standalone: true,
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, SidebarComponent],
   templateUrl: './payment.component.html',
-  styleUrl: './payment.component.css'
+  styleUrls: ['./payment.component.css']
 })
 export class PaymentComponent {
   paymentForm: FormGroup;
@@ -19,12 +20,14 @@ export class PaymentComponent {
   paymentMethods = ['UPI', 'Credit Card', 'Debit Card', 'Net Banking', 'Cash'];
   isProcessing: boolean = false;
   selectedPaymentMethod: string = '';
+  
+  bookingDetails: any = {};
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
-    private http: HttpClient   // ✅ Inject HttpClient for API calls
+    private http: HttpClient
   ) {
     this.paymentForm = this.fb.group({
       paymentMethod: ['', Validators.required],
@@ -34,15 +37,22 @@ export class PaymentComponent {
       cardCVV: [''],
       netBankingBank: ['']
     });
+
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation && navigation.extras.state) {
+      this.bookingDetails = navigation.extras.state['booking'];
+    }
   }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe((params: { [x: string]: string; }) => {
-      this.roomTitle = params['roomTitle'] || 'Selected Room';
-      this.totalAmount = params['price'] ? parseFloat(params['price']) : 0;
-    });
+    if (this.bookingDetails) {
+      this.roomTitle = this.bookingDetails.roomTitle || 'Selected Room';
+      this.totalAmount = this.bookingDetails.price || 0;
+    } else {
+      alert('Booking details not found. Please try again.');
+      this.router.navigate(['/dashboard']);
+    }
 
-    // Listen for changes in payment method
     this.paymentForm.get('paymentMethod')?.valueChanges.subscribe((method: string) => {
       this.selectedPaymentMethod = method;
       this.clearFields();
@@ -58,24 +68,52 @@ export class PaymentComponent {
       netBankingBank: ''
     });
   }
-  
-  onPaymentSubmit(){
-    console.log("HIiiiiiiiiiiii");
-    console.log(this.paymentForm.value);
-    this.http.post('http://localhost:8066/api/payment/upipayment', this.paymentForm.value, { responseType: 'text' }).subscribe({
-      next: (data) => {
-        console.log("Success");
-        alert(data);
-      },
-      error: (err) => {
-        alert("API Failure");
-      },
-    });
 
+  onPaymentSubmit() {
+    if (this.paymentForm.invalid) {
+      alert('Please select a valid payment method and fill required fields.');
+      return;
+    }
 
+    this.isProcessing = true;
 
-  } 
+    const paymentPayload = {
+      bookingDetails: this.bookingDetails,
+      paymentMethod: this.paymentForm.value.paymentMethod,
+      upiId: this.paymentForm.value.upiId,
+      cardNumber: this.paymentForm.value.cardNumber,
+      cardExpiry: this.paymentForm.value.cardExpiry,
+      cardCVV: this.paymentForm.value.cardCVV,
+      netBankingBank: this.paymentForm.value.netBankingBank,
+      totalAmount: this.totalAmount
+    };
 
-
-
+    // Call payment API
+    this.http.post('http://localhost:8066/api/payment/upipayment', paymentPayload, { responseType: 'text' })
+      .subscribe({
+        next: () => {
+          alert('Payment successful!');
+          
+          // Send the full bookingDetails object which already contains the nested user object
+          this.http.post('http://localhost:8066/api/bookings/reserve', this.bookingDetails)
+            .subscribe({
+              next: (response: any) => {
+                alert(response.message || 'Room booked successfully!');
+                this.isProcessing = false;
+                this.router.navigate(['/dashboard']);
+              },
+              error: (err) => {
+                alert('Booking failed. Please try again.');
+                console.error(err);
+                this.isProcessing = false;
+              }
+            });
+        },
+        error: (err) => {
+          alert('Payment failed. Please try again.');
+          console.error(err);
+          this.isProcessing = false;
+        }
+      });
+  }
 }

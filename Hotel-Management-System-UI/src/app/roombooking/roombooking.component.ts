@@ -52,9 +52,12 @@ export class RoomBookingComponent implements OnInit {
   showModal: boolean = false;
   bookingForm: FormGroup;
 
-  // Change this to hold the fetched data
-  amenitiesOptions: Amenity[] = []; 
+  amenitiesOptions: Amenity[] = [];
   mealOptions = ['Meals Included', 'No Meals'];
+
+  // Date constraints
+  minCheckInDate: string = '';
+  minCheckOutDate: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -75,9 +78,15 @@ export class RoomBookingComponent implements OnInit {
 
   ngOnInit(): void {
     this.city = this.route.snapshot.queryParamMap.get('location');
+
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    this.minCheckInDate = this.formatDate(tomorrow);
+
     if (this.city) {
       this.fetchHotelsByCity(this.city);
-      this.fetchAmenities(); // Call the new function to fetch amenities
+      this.fetchAmenities();
     } else {
       alert('Please select a city first');
       this.router.navigate(['/dashboard']);
@@ -102,21 +111,18 @@ export class RoomBookingComponent implements OnInit {
       });
   }
 
-  // New function to fetch amenities from the API
   fetchAmenities(): void {
-    const url = `http://localhost:8066/api/roomtypes/all`; // Assuming this is your API endpoint
+    const url = `http://localhost:8066/api/roomtypes/all`;
     this.http.get<Amenity[]>(url)
       .pipe(
         catchError(error => {
           console.error('Error fetching amenities:', error);
-          // Set a default value or handle the error gracefully
           this.amenitiesOptions = [];
           return of([]);
         })
       )
       .subscribe(data => {
         this.amenitiesOptions = data;
-        // Set a default value for the form control
         this.bookingForm.get('amenities')?.setValue(this.amenitiesOptions[0]?.name);
       });
   }
@@ -124,12 +130,18 @@ export class RoomBookingComponent implements OnInit {
   openBookingModal(room: Room): void {
     this.selectedRoom = room;
     this.showModal = true;
+
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    this.minCheckInDate = this.formatDate(tomorrow);
+    this.minCheckOutDate = ''; // reset checkout date
+
     this.bookingForm.reset({
       adults: 1,
       children: 0,
       meals: 'No Meals',
-      // Ensure amenities form control is reset with a valid value
-      amenities: this.amenitiesOptions[0]?.name 
+      amenities: this.amenitiesOptions[0]?.name
     });
   }
 
@@ -140,7 +152,25 @@ export class RoomBookingComponent implements OnInit {
 
   onSubmit(): void {
     if (this.bookingForm.valid && this.selectedRoom) {
+      const userString = localStorage.getItem('user');
+      let userId: number | null = null;
+      if (userString) {
+        try {
+          const user = JSON.parse(userString);
+          userId = user.id;
+        } catch (e) {
+          console.error('Failed to parse user data from local storage', e);
+        }
+      }
+
+      if (userId === null) {
+        alert('User is not logged in. Please log in to book a room.');
+        this.router.navigate(['/login']);
+        return;
+      }
+      
       const bookingData = {
+        user: { id: userId }, // Send the userId in a nested user object
         roomTitle: this.selectedRoom.name,
         checkInDate: this.bookingForm.value.checkInDate,
         checkOutDate: this.bookingForm.value.checkOutDate,
@@ -151,13 +181,32 @@ export class RoomBookingComponent implements OnInit {
         price: this.selectedRoom.price,
       };
 
-      this.router.navigate(['/payment'], { queryParams: bookingData });
+      this.router.navigate(['/payment'], { state: { booking: bookingData } });
     } else {
       alert('Please fill all required fields');
     }
   }
 
+  onCheckInDateChange(): void {
+    const checkInValue = this.bookingForm.get('checkInDate')?.value;
+    if (checkInValue) {
+      const checkInDate = new Date(checkInValue);
+      const nextDay = new Date(checkInDate);
+      nextDay.setDate(checkInDate.getDate() + 1);
+      this.minCheckOutDate = this.formatDate(nextDay);
+
+      const checkOutControl = this.bookingForm.get('checkOutDate');
+      if (checkOutControl?.value && new Date(checkOutControl.value) <= checkInDate) {
+        checkOutControl.setValue('');
+      }
+    }
+  }
+
   getStarArray(rating: number): number[] {
     return Array(Math.floor(rating)).fill(0);
+  }
+
+  formatDate(date: Date): string {
+    return date.toISOString().split('T')[0];
   }
 }

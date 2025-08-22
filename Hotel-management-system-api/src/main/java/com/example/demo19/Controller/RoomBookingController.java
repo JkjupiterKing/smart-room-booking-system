@@ -8,6 +8,7 @@ import com.example.demo19.Modal.Booking;
 import com.example.demo19.Repository.BookingRepository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -25,10 +26,21 @@ public class RoomBookingController {
             // Save the booking to the database
             bookingRepository.save(booking);
             response.put("message", "Booking Successful!");
-            return ResponseEntity.ok(response);  // Sending JSON response
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             response.put("message", "Booking Failed: " + e.getMessage());
-            return ResponseEntity.status(500).body(response);  // Sending error message as JSON
+            return ResponseEntity.status(500).body(response);
+        }
+    }
+    @GetMapping("/all")
+    public ResponseEntity<List<Booking>> getAllBookings() {
+        try {
+            List<Booking> bookings = bookingRepository.findAll();
+            return ResponseEntity.ok(bookings);
+        } catch (Exception e) {
+            // Log the exception for debugging
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(null);
         }
     }
 }

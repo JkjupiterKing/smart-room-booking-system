@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "rooms")
+@Table(name = "bookings") // Changed table name for clarity
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,10 +18,14 @@ public class Booking {
     private String amenities;
     private String meals;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     // Default constructor
     public Booking() {}
 
-    // Getters and setters
+    // Getters and setters for all fields
     public Long getId() {
         return id;
     }
@@ -84,5 +88,13 @@ public class Booking {
 
     public void setMeals(String meals) {
         this.meals = meals;
+    }
+
+    public User getUser() { // Getter for user
+        return user;
+    }
+
+    public void setUser(User user) { // Setter for user
+        this.user = user;
     }
 }

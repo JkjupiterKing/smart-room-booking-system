@@ -43,7 +43,7 @@ export class UserService {
     
     return this.http.post(`${this.apiUrl}/login`, loginData, {
       headers: { 'Content-Type': 'application/json' },
-      responseType: 'text'  // Since your backend returns a String
+      responseType: 'json' // Changed to 'json' to correctly parse the JSON response
     }).pipe(
       catchError((error) => {
         return throwError(() => error);

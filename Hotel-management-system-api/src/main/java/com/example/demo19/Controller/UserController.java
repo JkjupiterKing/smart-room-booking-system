@@ -1,24 +1,15 @@
 package com.example.demo19.Controller;
 
-
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.demo19.Modal.User;
 import com.example.demo19.Repository.UserRepository;
-
 
 
 @RestController
@@ -60,26 +51,57 @@ public class UserController {
 	    }
 	    
 	    // Login endpoint
-	    @PostMapping("/login")
-	    public ResponseEntity<?> loginUser(@RequestBody User user) {
-	        // Check if the user exists
-	        User existingUser = userRepository.findByUsername(user.getUsername());
-	        if (existingUser == null) {
-	            return ResponseEntity
-	                .status(HttpStatus.BAD_REQUEST)
-	                .body("User not found!");
-	        }
+		@PostMapping("/login")
+		public ResponseEntity<?> loginUser(@RequestBody User user) {
+			// Check if the user exists
+			User existingUser = userRepository.findByUsername(user.getUsername());
+			if (existingUser == null) {
+				return ResponseEntity
+						.status(HttpStatus.BAD_REQUEST)
+						.body("User not found!");
+			}
 
-	        // Check if the password matches
-	        if (user.getPassword().equals(existingUser.getPassword())) {
-	            return ResponseEntity
-	                .ok()
-	                .body("Login successful!");
-	        } else {
-	            return ResponseEntity
-	                .status(HttpStatus.BAD_REQUEST)
-	                .body("Invalid credentials!");
-	        }
-	    }
-	    
+			// Check if the password matches
+			if (user.getPassword().equals(existingUser.getPassword())) {
+				Map<String, Object> response = new HashMap<>();
+				response.put("message", "Login successful!");
+				response.put("user", existingUser);
+
+				return ResponseEntity
+						.ok()
+						.body(response);
+			} else {
+				return ResponseEntity
+						.status(HttpStatus.BAD_REQUEST)
+						.body("Invalid credentials!");
+			}
+		}
+
+	// Update endpoint
+	@PutMapping("/update/{id}")
+	public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
+		Optional<User> userOptional = userRepository.findById(id);
+		if (!userOptional.isPresent()) {
+			return ResponseEntity
+					.status(HttpStatus.NOT_FOUND)
+					.body("User not found!");
+		}
+		User user = userOptional.get();
+		user.setUsername(updatedUser.getUsername());
+		user.setPassword(updatedUser.getPassword());
+		userRepository.save(user);
+		return ResponseEntity.ok("User updated successfully!");
+	}
+
+	// Delete endpoint
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+		if (!userRepository.existsById(id)) {
+			return ResponseEntity
+					.status(HttpStatus.NOT_FOUND)
+					.body("User not found!");
+		}
+		userRepository.deleteById(id);
+		return ResponseEntity.ok("User deleted successfully!");
+	}
 }
