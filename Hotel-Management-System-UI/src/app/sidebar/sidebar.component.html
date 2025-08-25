@@ -1,7 +1,8 @@
 <div class="sidebar">
   <h3 class="sidebar-title">Smart-room-booking</h3>
   <ul>
-    <li>
+    <!-- Home link (for all users, but specifically used by 'user' for primary navigation) -->
+    <li *ngIf="isUser()">
       <a
         routerLink="/dashboard"
         routerLinkActive="active"
@@ -11,26 +12,52 @@
         <span>Home</span>
       </a>
     </li>
-    <li>
+
+    <!-- Admin Dashboard link (only for admin) -->
+    <li *ngIf="isAdmin()">
+      <a routerLink="/admin-dashboard" routerLinkActive="active">
+        <i class="fas fa-chart-line"></i>
+        <span>Dashboard</span>
+      </a>
+    </li>
+
+    <!-- Locations link (only for admin) -->
+    <li *ngIf="isAdmin()">
       <a routerLink="/location" routerLinkActive="active">
         <i class="fas fa-map-marker-alt"></i>
         <span>Locations</span>
       </a>
     </li>
-    <li>
+
+    <!-- Room-Types link (only for admin) -->
+    <li *ngIf="isAdmin()">
       <a routerLink="/room-types" routerLinkActive="active">
         <i class="fas fa-bed"></i>
         <span>Room-Types</span>
       </a>
     </li>
-    <li>
+
+    <!-- Booking Management link (for both user and admin, but separated by logic) -->
+    <li *ngIf="isUser() || isAdmin()">
+      <a routerLink="/booking-management" routerLinkActive="active">
+        <i class="fas fa-calendar-check"></i>
+        <span>Booking Management</span>
+      </a>
+    </li>
+
+    <!-- Hotel Management link (only for admin) -->
+    <li *ngIf="isAdmin()">
       <a routerLink="/hotel-management" routerLinkActive="active">
         <i class="fas fa-hotel"></i>
         <span>Hotel Management</span>
       </a>
     </li>
-    <li>
-      <a routerLink="/user" routerLinkActive="active">
+
+    <!-- Logout link (for all logged-in users) -->
+    <li *ngIf="userRole">
+      <!-- Show logout if any role is present -->
+      <a (click)="logout()">
+        <!-- Call logout method on click -->
         <i class="fas fa-user"></i>
         <span>Logout</span>
       </a>

@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../user.service';
+import { AdminService } from '../admin.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 
-
 @Component({
   selector: 'app-user',
+  standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css']
@@ -22,14 +23,19 @@ export class UserComponent implements OnInit {
 
   user = { name: '', email: '', password: '' };
 
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(
+    private userService: UserService,
+    private adminService: AdminService,
+    private router: Router
+  ) {}
 
   ngOnInit() {}
 
-  // Methods to handle modal visibility
   openLoginModal() {
     this.isLoginModalOpen = true;
     this.isRegisterModalOpen = false;
+    this.errorMessage = '';
+    this.successMessage = '';
   }
 
   closeLoginModal() {
@@ -39,6 +45,8 @@ export class UserComponent implements OnInit {
   openRegisterModal() {
     this.isRegisterModalOpen = true;
     this.isLoginModalOpen = false;
+    this.errorMessage = '';
+    this.successMessage = '';
   }
 
   closeRegisterModal() {
@@ -48,12 +56,14 @@ export class UserComponent implements OnInit {
   onLoginSubmit(loginForm: NgForm) {
     if (loginForm.valid) {
       const { username, password } = loginForm.value;
+
+      // Attempt customer login first
       this.userService.loginUser(username, password).subscribe({
         next: (response) => {
-          console.log('Login successful', response);
-          console.log('User data:', response.user);
+          console.log('Customer login successful', response);
           if (response && response.user) {
             localStorage.setItem('user', JSON.stringify(response.user));
+            localStorage.setItem('role', 'user');
           }
           this.successMessage = 'Login successful!';
           this.router.navigate(['/dashboard']).then(() => {
@@ -62,15 +72,29 @@ export class UserComponent implements OnInit {
           this.closeLoginModal();
           loginForm.reset();
         },
-        error: (error: HttpErrorResponse) => {
-          console.error('Login failed', error);
-          if (error.error) {
-            this.errorMessage = error.error;
-            alert(this.errorMessage);
-          } else {
-            this.errorMessage = 'Login failed. Please try again.';
-            alert(this.errorMessage);
-          }
+        error: (userError: HttpErrorResponse) => {
+          console.warn('Customer login failed, attempting admin login...', userError);
+          // If customer login fails, attempt admin login
+          this.adminService.loginAdmin(username, password).subscribe({
+            next: (adminResponse: string) => { // Expect adminResponse as a string
+              console.log('Admin login successful', adminResponse);
+              // Store admin info and role
+              // Since the backend returns a String, we'll just store the username and role.
+              localStorage.setItem('admin', JSON.stringify({ username: username })); 
+              localStorage.setItem('role', 'admin'); 
+              this.successMessage = 'Admin login successful!';
+              this.router.navigate(['/admin-dashboard']).then(() => {
+                window.location.reload();
+              });
+              this.closeLoginModal();
+              loginForm.reset();
+            },
+            error: (adminError: HttpErrorResponse) => {
+              console.error('Admin login failed', adminError);
+              this.errorMessage = 'Invalid Credentials for both Customer and Admin.';
+              alert(this.errorMessage);
+            }
+          });
         }
       });
     }
@@ -79,7 +103,6 @@ export class UserComponent implements OnInit {
   onRegisterSubmit(registerForm: NgForm) {
     if (registerForm.valid) {
       const password = registerForm.value.password;
-      // Check if password is only numbers or only letters
       if (/^\d+$/.test(password) || /^[a-zA-Z]+$/.test(password)) {
         alert('Use a strong password: include both letters and numbers.');
         return;
@@ -87,9 +110,9 @@ export class UserComponent implements OnInit {
       this.userService.registerUser(registerForm.value).subscribe({
         next: (response) => {
           console.log('Registration successful', response);
-          // Store username in localStorage for dashboard sidebar
           if (response && response.user) {
             localStorage.setItem('user', JSON.stringify(response.user));
+            localStorage.setItem('role', 'user');
           }
           this.successMessage = response;
           this.registrationSuccess = true;
@@ -116,3 +139,4 @@ export class UserComponent implements OnInit {
     }
   }
 }
+

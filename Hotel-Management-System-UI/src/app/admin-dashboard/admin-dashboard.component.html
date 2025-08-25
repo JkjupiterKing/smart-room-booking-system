@@ -1,0 +1,25 @@
+<app-sidebar></app-sidebar>
+<div class="main">
+  <h2>Dashboard</h2>
+
+  <div class="dashboard-stats">
+    <div class="stat-card">
+      <h3>Total Users</h3>
+      <p class="count">{{ userCount }}</p>
+      <i class="fas fa-users"></i>
+    </div>
+
+    <div class="stat-card">
+      <h3>Total Bookings</h3>
+      <p class="count">{{ bookingCount }}</p>
+      <i class="fas fa-calendar-alt"></i>
+    </div>
+  </div>
+
+  <div class="dashboard-analytics">
+    <h3>Booking Analytics</h3>
+    <div class="chart-container">
+      <canvas #bookingChartCanvas></canvas>
+    </div>
+  </div>
+</div>
