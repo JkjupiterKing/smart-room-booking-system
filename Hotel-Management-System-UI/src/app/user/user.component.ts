@@ -102,11 +102,6 @@ export class UserComponent implements OnInit {
 
   onRegisterSubmit(registerForm: NgForm) {
     if (registerForm.valid) {
-      const password = registerForm.value.password;
-      if (/^\d+$/.test(password) || /^[a-zA-Z]+$/.test(password)) {
-        alert('Use a strong password: include both letters and numbers.');
-        return;
-      }
       this.userService.registerUser(registerForm.value).subscribe({
         next: (response) => {
           console.log('Registration successful', response);

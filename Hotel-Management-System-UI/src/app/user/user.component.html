@@ -7,10 +7,10 @@
 <div class="hero-text">
   Discover Your Perfect <br />
   Gateway Destination <br />
-  <span class="hero-subtext"
-    >Unparalleled luxury and comfort waits of the most exclusive <br />
-    hotels and resorts. Start your journey today.</span
-  >
+  <span class="hero-subtext">
+    Unparalleled luxury and comfort waits of the most exclusive <br />
+    hotels and resorts. Start your journey today.
+  </span>
 </div>
 
 <!-- User Buttons in Top-Right Corner -->
@@ -26,25 +26,29 @@
     <form #loginForm="ngForm" (ngSubmit)="onLoginSubmit(loginForm)">
       <div>
         <label for="username">Username:</label>
-        <input type="text" id="username" name="username" ngModel required />
-        <div
-          *ngIf="
-            loginForm.form.controls['username']?.invalid &&
-            loginForm.form.controls['username']?.touched
-          "
-        >
+        <input
+          type="text"
+          id="username"
+          name="username"
+          ngModel
+          required
+          #username="ngModel"
+        />
+        <div *ngIf="username.invalid && username.touched">
           <small class="error">Username is required.</small>
         </div>
       </div>
       <div>
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" ngModel required />
-        <div
-          *ngIf="
-            loginForm.form.controls['password']?.invalid &&
-            loginForm.form.controls['password']?.touched
-          "
-        >
+        <input
+          type="password"
+          id="password"
+          name="password"
+          ngModel
+          required
+          #password="ngModel"
+        />
+        <div *ngIf="password.invalid && password.touched">
           <small class="error">Password is required.</small>
         </div>
       </div>
@@ -94,19 +98,31 @@
       </div>
       <div>
         <label for="password">Password:</label><br />
-        <input type="password" id="password" name="password" ngModel required />
+        <input
+          type="password"
+          id="password"
+          name="password"
+          ngModel
+          required
+          #passwordInput="ngModel"
+          pattern="^(?=.*[A-Za-z])(?=.*[0-9]).{6,}$"
+        />
         <div
           *ngIf="
-            registerForm.form.controls['password']?.invalid &&
-            registerForm.form.controls['password']?.touched
+            passwordInput.invalid &&
+            (passwordInput.dirty || passwordInput.touched)
           "
         >
-          <small class="error">Password is required.</small>
+          <small *ngIf="passwordInput.errors?.['required']" class="error"
+            >Password is required.</small
+          >
+          <small *ngIf="passwordInput.errors?.['pattern']" class="error"
+            >Password must contain both letters and numbers.</small
+          >
         </div>
       </div>
       <button type="submit" [disabled]="registerForm.invalid">Register</button>
     </form>
-
     <button (click)="closeRegisterModal()">Close</button>
   </div>
 </div>

@@ -1,4 +1,4 @@
-<div class="sidebar">
+<div class="sidebar" style="background-color: #fbf3d5">
   <h3 class="sidebar-title">Smart-room-booking</h3>
   <ul>
     <!-- Home link (for all users, but specifically used by 'user' for primary navigation) -->
@@ -10,6 +10,14 @@
       >
         <i class="fas fa-home"></i>
         <span>Home</span>
+      </a>
+    </li>
+
+    <li *ngIf="isUser()">
+      <a routerLink="/room-booking-ai-agent" routerLinkActive="active">
+        <i class="fas fa-robot"></i>
+        <!-- Added a robot icon -->
+        <span>Room-Booking-AI-Agent</span>
       </a>
     </li>
 

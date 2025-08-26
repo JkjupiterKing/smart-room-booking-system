@@ -14,15 +14,15 @@
     <table class="location-table">
       <thead>
         <tr>
-          <th>City</th>
           <th>Country</th>
+          <th>City</th>
           <th class="actions-header">Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let location of locations">
-          <td>{{ location.city }}</td>
           <td>{{ location.country }}</td>
+          <td>{{ location.city }}</td>
           <td class="actions">
             <button class="btn btn-edit" (click)="openEditModal(location)">
               ✏️ Update
@@ -44,30 +44,59 @@
     <div class="modal-content">
       <h2>{{ isEditing ? "Update Location" : "Add New Location" }}</h2>
 
-      <div class="form-group">
-        <label>City</label>
-        <input
-          type="text"
-          [(ngModel)]="currentLocation.city"
-          class="form-control"
-        />
-      </div>
+      <!-- Reactive Form for Location Management -->
+      <form [formGroup]="locationForm" (ngSubmit)="saveLocation()">
+        <div class="form-group">
+          <label for="city">City</label>
+          <input
+            type="text"
+            id="city"
+            formControlName="city"
+            class="form-control"
+          />
+          <span
+            *ngIf="
+              locationForm.get('city')?.invalid &&
+              locationForm.get('city')?.touched
+            "
+            class="error-message"
+          >
+            City is required.
+          </span>
+        </div>
 
-      <div class="form-group">
-        <label>Country</label>
-        <input
-          type="text"
-          [(ngModel)]="currentLocation.country"
-          class="form-control"
-        />
-      </div>
+        <div class="form-group">
+          <label for="country">Country</label>
+          <input
+            type="text"
+            id="country"
+            formControlName="country"
+            class="form-control"
+          />
+          <span
+            *ngIf="
+              locationForm.get('country')?.invalid &&
+              locationForm.get('country')?.touched
+            "
+            class="error-message"
+          >
+            Country is required.
+          </span>
+        </div>
 
-      <div class="modal-actions">
-        <button class="btn btn-save" (click)="saveLocation()">
-          {{ isEditing ? "Update" : "Add" }}
-        </button>
-        <button class="btn btn-cancel" (click)="closeModal()">Cancel</button>
-      </div>
+        <div class="modal-actions">
+          <button
+            type="submit"
+            class="btn btn-save"
+            [disabled]="locationForm.invalid"
+          >
+            {{ isEditing ? "Update" : "Add" }}
+          </button>
+          <button type="button" class="btn btn-cancel" (click)="closeModal()">
+            Cancel
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
