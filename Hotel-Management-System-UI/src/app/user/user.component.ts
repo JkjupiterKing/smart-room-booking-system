@@ -15,13 +15,31 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
+  // Modal states
   isLoginModalOpen: boolean = false;
   isRegisterModalOpen: boolean = false;
-  successMessage: string = '';
-  errorMessage: string = '';
   registrationSuccess: boolean = false;
 
-  user = { name: '', email: '', password: '' };
+  // Messages
+  successMessage: string = '';
+  errorMessage: string = '';
+
+  // User data
+  user = {
+    name: '',
+    email: '',
+    password: ''
+  };
+
+  // Search bar
+  locations: any[] = [];
+  selectedCity: string = '';
+  checkInDate: string = '';
+  checkOutDate: string = '';
+  guestCount: number = 1;
+
+  // Hotels
+  hotels: any[] = [];
 
   constructor(
     private userService: UserService,
@@ -29,8 +47,39 @@ export class UserComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.fetchLocations();
+  }
 
+  // Fetch cities for destination dropdown
+  fetchLocations(): void {
+    fetch('http://localhost:8066/api/locations/all')
+      .then((res) => res.json())
+      .then((data) => {
+        this.locations = data;
+      })
+      .catch((error) => {
+        console.error('Error fetching locations:', error);
+      });
+  }
+
+  // Fetch hotels for selected city
+  onSearchHotels(): void {
+    if (!this.selectedCity) return;
+
+    const url = `http://localhost:8066/hotels/city/${this.selectedCity}`;
+
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        this.hotels = data;
+      })
+      .catch((err) => {
+        console.error('Error fetching hotels:', err);
+      });
+  }
+
+  // Open modals
   openLoginModal() {
     this.isLoginModalOpen = true;
     this.isRegisterModalOpen = false;
@@ -53,44 +102,36 @@ export class UserComponent implements OnInit {
     this.isRegisterModalOpen = false;
   }
 
+  // Login
   onLoginSubmit(loginForm: NgForm) {
     if (loginForm.valid) {
       const { username, password } = loginForm.value;
 
-      // Attempt customer login first
       this.userService.loginUser(username, password).subscribe({
         next: (response) => {
-          console.log('Customer login successful', response);
           if (response && response.user) {
             localStorage.setItem('user', JSON.stringify(response.user));
             localStorage.setItem('role', 'user');
           }
+
           this.successMessage = 'Login successful!';
-          this.router.navigate(['/dashboard']).then(() => {
-            window.location.reload();
-          });
+          this.router.navigate(['/dashboard']).then(() => window.location.reload());
           this.closeLoginModal();
           loginForm.reset();
         },
         error: (userError: HttpErrorResponse) => {
-          console.warn('Customer login failed, attempting admin login...', userError);
-          // If customer login fails, attempt admin login
+          // Try admin login if user fails
           this.adminService.loginAdmin(username, password).subscribe({
-            next: (adminResponse: string) => { // Expect adminResponse as a string
-              console.log('Admin login successful', adminResponse);
-              // Store admin info and role
-              // Since the backend returns a String, we'll just store the username and role.
-              localStorage.setItem('admin', JSON.stringify({ username: username })); 
-              localStorage.setItem('role', 'admin'); 
+            next: () => {
+              localStorage.setItem('admin', JSON.stringify({ username }));
+              localStorage.setItem('role', 'admin');
+
               this.successMessage = 'Admin login successful!';
-              this.router.navigate(['/admin-dashboard']).then(() => {
-                window.location.reload();
-              });
+              this.router.navigate(['/admin-dashboard']).then(() => window.location.reload());
               this.closeLoginModal();
               loginForm.reset();
             },
-            error: (adminError: HttpErrorResponse) => {
-              console.error('Admin login failed', adminError);
+            error: () => {
               this.errorMessage = 'Invalid Credentials for both Customer and Admin.';
               alert(this.errorMessage);
             }
@@ -100,19 +141,21 @@ export class UserComponent implements OnInit {
     }
   }
 
+  // Register
   onRegisterSubmit(registerForm: NgForm) {
     if (registerForm.valid) {
       this.userService.registerUser(registerForm.value).subscribe({
         next: (response) => {
-          console.log('Registration successful', response);
           if (response && response.user) {
             localStorage.setItem('user', JSON.stringify(response.user));
             localStorage.setItem('role', 'user');
           }
-          this.successMessage = response;
+
+          this.successMessage = 'Registration successful!';
           this.registrationSuccess = true;
           this.closeRegisterModal();
           registerForm.reset();
+
           setTimeout(() => {
             this.registrationSuccess = false;
             this.openLoginModal();
@@ -120,18 +163,15 @@ export class UserComponent implements OnInit {
           }, 2000);
         },
         error: (error) => {
-          console.error('Registration failed', error);
           if (error instanceof HttpErrorResponse) {
-            const errorMessage = error.error || 'Error registering user';
-            this.errorMessage = errorMessage;
-            alert(errorMessage);
+            this.errorMessage = error.error || 'Error registering user';
           } else {
             this.errorMessage = 'An unexpected error occurred';
-            alert(this.errorMessage);
           }
+
+          alert(this.errorMessage);
         }
       });
     }
   }
 }
-

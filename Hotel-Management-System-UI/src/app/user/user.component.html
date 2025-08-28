@@ -1,22 +1,94 @@
+<!-- Navigation Bar -->
+<nav class="navbar">
+  <div class="navbar-logo">
+    <span class="logo-icon"><i class="fas fa-home"></i></span>
+    <span class="logo-text">QuickStay</span>
+  </div>
+  <div class="navbar-actions">
+    <button class="navbar-login" (click)="openLoginModal()">Login</button>
+    <button class="navbar-login" (click)="openRegisterModal()">Register</button>
+  </div>
+</nav>
+
 <!-- Registration Success Popup -->
 <div *ngIf="registrationSuccess" class="popup-success">
   Registration successful!
 </div>
 
 <!-- Animated Hero Text -->
-<div class="hero-text">
-  Discover Your Perfect <br />
-  Gateway Destination <br />
-  <span class="hero-subtext">
-    Unparalleled luxury and comfort waits of the most exclusive <br />
-    hotels and resorts. Start your journey today.
-  </span>
+<div class="hero-section">
+  <div class="hero-text">
+    Discover Your Perfect <br />
+    Gateway Destination <br />
+    <span class="hero-subtext">
+      Unparalleled luxury and comfort await at the world's most exclusive <br />
+      hotels and resorts. Start your journey today.
+    </span>
+  </div>
 </div>
 
-<!-- User Buttons in Top-Right Corner -->
-<div class="user-buttons">
-  <button (click)="openLoginModal()">Login</button>
-  <button (click)="openRegisterModal()">Register</button>
+<!-- Badge and Search Bar below Hero Text -->
+<div class="hero-badge">The Ultimate Hotel Experience</div>
+<div class="search-bar-container">
+  <form class="search-bar">
+    <div class="search-field">
+      <span class="search-icon"><i class="fa fa-map-marker-alt"></i></span>
+      <label>
+        Destination
+        <select
+          [(ngModel)]="selectedCity"
+          name="destination"
+          class="destination-select"
+        >
+          <option value="" disabled selected>Select a destination</option>
+          <option *ngFor="let loc of locations" [value]="loc.city">
+            {{ loc.city }}
+          </option>
+        </select>
+      </label>
+    </div>
+
+    <!-- Check-in Date -->
+    <div class="search-field">
+      <span class="search-icon"><i class="fa fa-calendar-check"></i></span>
+      <label>
+        Check-in
+        <input type="date" name="checkin" [(ngModel)]="checkInDate" />
+      </label>
+    </div>
+
+    <!-- Check-out Date -->
+    <div class="search-field">
+      <span class="search-icon"><i class="fa fa-calendar-times"></i></span>
+      <label>
+        Check-out
+        <input type="date" name="checkout" [(ngModel)]="checkOutDate" />
+      </label>
+    </div>
+    <div class="search-field">
+      <label>
+        Guests
+        <input type="number" min="0" placeholder="0" />
+      </label>
+    </div>
+    <button class="search-btn" type="submit">
+      <span class="search-btn-icon"><i class="fa fa-search"></i></span> Search
+    </button>
+  </form>
+</div>
+
+<div class="hotel-cards-container" *ngIf="hotels.length">
+  <div class="hotel-card" *ngFor="let hotel of hotels">
+    <img
+      *ngIf="hotel.imageBase64"
+      [src]="'data:image/jpeg;base64,' + hotel.imageBase64"
+      alt="{{ hotel.name }}"
+    />
+    <h3>{{ hotel.name }}</h3>
+    <p>{{ hotel.description }}</p>
+    <p><strong>Price:</strong> ₹{{ hotel.price }}</p>
+    <p><strong>Rating:</strong> {{ hotel.rating }} ★</p>
+  </div>
 </div>
 
 <!-- Login Modal -->
@@ -52,8 +124,10 @@
           <small class="error">Password is required.</small>
         </div>
       </div>
+      <br />
       <button type="submit" [disabled]="loginForm.invalid">Login</button>
     </form>
+    <br />
     <button (click)="closeLoginModal()">Close</button>
   </div>
 </div>
@@ -113,16 +187,18 @@
             (passwordInput.dirty || passwordInput.touched)
           "
         >
-          <small *ngIf="passwordInput.errors?.['required']" class="error"
-            >Password is required.</small
-          >
-          <small *ngIf="passwordInput.errors?.['pattern']" class="error"
-            >Password must contain both letters and numbers.</small
-          >
+          <small *ngIf="passwordInput.errors?.['required']" class="error">
+            Password is required.
+          </small>
+          <small *ngIf="passwordInput.errors?.['pattern']" class="error">
+            Password must contain both letters and numbers.
+          </small>
         </div>
       </div>
+      <br />
       <button type="submit" [disabled]="registerForm.invalid">Register</button>
     </form>
+    <br />
     <button (click)="closeRegisterModal()">Close</button>
   </div>
 </div>
