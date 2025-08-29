@@ -22,6 +22,26 @@ public class Booking {
     @JoinColumn(name = "user_id")
     private User user;
 
+    private String paymentMethod;
+    private double totalAmount;
+
+    // Getters and Setters
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
     // Default constructor
     public Booking() {}
 

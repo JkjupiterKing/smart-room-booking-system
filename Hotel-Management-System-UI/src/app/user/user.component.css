@@ -229,3 +229,16 @@
   border-radius: 5px;
   margin-bottom: 0.5rem;
 }
+.reserve-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.reserve-btn:hover {
+  background-color: #0056b3;
+}

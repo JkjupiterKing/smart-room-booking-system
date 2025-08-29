@@ -89,10 +89,10 @@ public class UserController {
 		User user = userOptional.get();
 		user.setUsername(updatedUser.getUsername());
 		user.setPassword(updatedUser.getPassword());
+		user.setEmail(updatedUser.getEmail()); // Added this line to update the email
 		userRepository.save(user);
 		return ResponseEntity.ok("User updated successfully!");
 	}
-
 	// Delete endpoint
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<?> deleteUser(@PathVariable Long id) {

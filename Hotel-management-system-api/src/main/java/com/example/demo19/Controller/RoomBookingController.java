@@ -1,5 +1,6 @@
 package com.example.demo19.Controller;
 
+import com.example.demo19.Service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,17 +17,27 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/bookings")
 public class RoomBookingController {
+
     @Autowired
     private BookingRepository bookingRepository;
 
+
+    @Autowired
+    private EmailService emailService;
 
     @PostMapping("/reserve")
     public ResponseEntity<Map<String, String>> reserveRoom(@RequestBody Booking booking) {
         Map<String, String> response = new HashMap<>();
         try {
-            // Save the booking to the database
-            bookingRepository.save(booking);
-            response.put("message", "Booking Successful!");
+            // Save booking
+            Booking savedBooking = bookingRepository.save(booking);
+
+            // Send confirmation email
+            if (booking.getUser() != null && booking.getUser().getEmail() != null) {
+                emailService.sendBookingConfirmation(booking.getUser().getEmail(), booking);
+            }
+
+            response.put("message", "Booking Successful! Confirmation email sent.");
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             response.put("message", "Booking Failed: " + e.getMessage());

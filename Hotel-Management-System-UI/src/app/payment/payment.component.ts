@@ -20,7 +20,6 @@ export class PaymentComponent {
   paymentMethods = ['UPI', 'Credit Card', 'Debit Card', 'Net Banking', 'Cash'];
   isProcessing: boolean = false;
   selectedPaymentMethod: string = '';
-  
   bookingDetails: any = {};
 
   constructor(
@@ -77,6 +76,32 @@ export class PaymentComponent {
 
     this.isProcessing = true;
 
+    const userString = localStorage.getItem('user');
+    let user: any = null;
+
+    if (userString) {
+      try {
+        user = JSON.parse(userString);
+      } catch (e) {
+        console.error('Error parsing user from localStorage:', e);
+      }
+    }
+
+    if (!user || !user.email || !user.id) {
+      alert('User info is missing. Please login again.');
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    // Attach user and payment info to bookingDetails for backend
+    this.bookingDetails.user = {
+      id: user.id,
+      email: user.email
+    };
+
+    this.bookingDetails.paymentMethod = this.paymentForm.value.paymentMethod;
+    this.bookingDetails.totalAmount = this.totalAmount;
+
     const paymentPayload = {
       bookingDetails: this.bookingDetails,
       paymentMethod: this.paymentForm.value.paymentMethod,
@@ -88,29 +113,29 @@ export class PaymentComponent {
       totalAmount: this.totalAmount
     };
 
-    // Call payment API
+    // Simulate payment API
     this.http.post('http://localhost:8066/api/payment/upipayment', paymentPayload, { responseType: 'text' })
       .subscribe({
         next: () => {
-          alert('Payment successful!');
-          
-          // Send the full bookingDetails object which already contains the nested user object
+          alert('Payment successful! Booking now...');
+
+          // Send booking (with email, paymentMethod, totalAmount) to reserve endpoint
           this.http.post('http://localhost:8066/api/bookings/reserve', this.bookingDetails)
             .subscribe({
               next: (response: any) => {
-                alert(response.message || 'Room booked successfully!');
+                alert(response.message || 'Room booked and email sent successfully!');
                 this.isProcessing = false;
                 this.router.navigate(['/dashboard']);
               },
               error: (err) => {
-                alert('Booking failed. Please try again.');
+                alert('Booking failed after payment. Please contact support.');
                 console.error(err);
                 this.isProcessing = false;
               }
             });
         },
         error: (err) => {
-          alert('Payment failed. Please try again.');
+          alert('Payment failed. Booking not attempted.');
           console.error(err);
           this.isProcessing = false;
         }

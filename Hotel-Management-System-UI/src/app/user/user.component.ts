@@ -38,6 +38,10 @@ export class UserComponent implements OnInit {
   checkOutDate: string = '';
   guestCount: number = 1;
 
+  // Min date values for validations
+  today: string = '';
+  minCheckoutDate: string = '';
+
   // Hotels
   hotels: any[] = [];
 
@@ -49,6 +53,29 @@ export class UserComponent implements OnInit {
 
   ngOnInit() {
     this.fetchLocations();
+    this.setTodayDate();
+  }
+
+  // Set today's date in yyyy-MM-dd format
+  setTodayDate(): void {
+    const todayDate = new Date();
+    this.today = todayDate.toISOString().split('T')[0];
+    this.minCheckoutDate = this.today;
+  }
+
+  // Update min checkout date based on selected check-in date
+  updateMinCheckoutDate(): void {
+    if (this.checkInDate) {
+      const checkIn = new Date(this.checkInDate);
+      const nextDay = new Date(checkIn);
+      nextDay.setDate(checkIn.getDate() + 1);
+      this.minCheckoutDate = nextDay.toISOString().split('T')[0];
+
+      // Reset invalid checkout date
+      if (this.checkOutDate && this.checkOutDate <= this.checkInDate) {
+        this.checkOutDate = '';
+      }
+    }
   }
 
   // Fetch cities for destination dropdown
@@ -63,9 +90,21 @@ export class UserComponent implements OnInit {
       });
   }
 
+  onReserve(hotel: any): void {
+    const user = localStorage.getItem('user');
+    if (!user) {
+      alert('Please register and login to reserve a hotel.');
+      this.openRegisterModal();
+      return;
+    }
+  }
+
   // Fetch hotels for selected city
   onSearchHotels(): void {
-    if (!this.selectedCity) return;
+    if (!this.selectedCity || !this.checkInDate || !this.checkOutDate) {
+      alert('Please select a destination, check-in and check-out dates.');
+      return;
+    }
 
     const url = `http://localhost:8066/hotels/city/${this.selectedCity}`;
 
@@ -79,7 +118,7 @@ export class UserComponent implements OnInit {
       });
   }
 
-  // Open modals
+  // Modal controls
   openLoginModal() {
     this.isLoginModalOpen = true;
     this.isRegisterModalOpen = false;
@@ -175,3 +214,4 @@ export class UserComponent implements OnInit {
     }
   }
 }
+
