@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
-import { SidebarComponent } from '../sidebar/sidebar.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -38,7 +37,6 @@ interface Amenity {
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
-    SidebarComponent,
     HttpClientModule
   ],
   templateUrl: './roombooking.component.html',

@@ -1,15 +1,15 @@
 import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
-import { RouterModule, Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 
 @Component({
-  selector: 'app-sidebar',
+  selector: 'app-user-navbar',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.css']
+  templateUrl: './user-navbar.component.html',
+  styleUrls: ['./user-navbar.component.css']
 })
-export class SidebarComponent implements OnInit {
+export class UserNavbarComponent implements OnInit {
   userRole: string | null = null;
 
   constructor(
@@ -20,7 +20,6 @@ export class SidebarComponent implements OnInit {
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.userRole = localStorage.getItem('role');
-      console.log('Current user role:', this.userRole);
     }
   }
 
@@ -28,19 +27,12 @@ export class SidebarComponent implements OnInit {
     return this.userRole === 'user';
   }
 
-  isAdmin(): boolean {
-    return this.userRole === 'admin';
-  }
-
   logout(): void {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem('user');
       localStorage.removeItem('role');
-      localStorage.removeItem('admin');
       this.userRole = null;
-      this.router.navigate(['/user']).then(() => {
-        window.location.reload();
-      });
+      this.router.navigate(['/landing-page']);
     }
   }
 }

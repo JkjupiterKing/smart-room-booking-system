@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-
 import { LandingPageComponent } from './user/landing-page.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RoomBookingComponent } from './roombooking/roombooking.component';
@@ -9,20 +8,37 @@ import { HotelManagementComponent } from './hotel-management/hotel-management.co
 import { RoomTypeManagementComponent } from './room-type-management/room-type-management.component';
 import { BookingManagementComponent } from './booking-management/booking-management.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
-import { RoomBookingAiAgentComponent } from './room-booking-ai-agent/room-booking-ai-agent.component'; // Import the new component
+import { RoomBookingAiAgentComponent } from './room-booking-ai-agent/room-booking-ai-agent.component';
 import { SearchResultsComponent } from './search-results/search-results.component';
+import { UserLayoutComponent } from './user-layout/user-layout.component';
+import { AdminLayoutComponent } from './admin-layout/admin-layout.component';
+import { AdminLoginComponent } from './admin-login/admin-login.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'landing-page', pathMatch: 'full' },
   { path: 'search-results', component: SearchResultsComponent },
   { path: 'landing-page', component: LandingPageComponent },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'roombooking', component: RoomBookingComponent },
-  { path: 'payment', component: PaymentComponent },
-  { path: 'location', component: LocationComponent },
-  { path: 'hotel-management', component: HotelManagementComponent },
-  { path: 'room-types', component: RoomTypeManagementComponent },
-  { path: 'booking-management', component: BookingManagementComponent },
-  { path: 'admin-dashboard', component: AdminDashboardComponent },
-  { path: 'room-booking-ai-agent', component: RoomBookingAiAgentComponent }, // Added route for AI Agent
+  {
+    path: 'user',
+    component: UserLayoutComponent,
+    children: [
+      { path: 'dashboard', component: DashboardComponent },
+      { path: 'room-booking-ai-agent', component: RoomBookingAiAgentComponent },
+      { path: 'booking-management', component: BookingManagementComponent },
+      { path: 'roombooking', component: RoomBookingComponent },
+      { path: 'payment', component: PaymentComponent },
+    ],
+  },
+  {
+    path: 'admin',
+    component: AdminLayoutComponent,
+    children: [
+      { path: 'dashboard', component: AdminDashboardComponent },
+      { path: 'locations', component: LocationComponent },
+      { path: 'room-types', component: RoomTypeManagementComponent },
+      { path: 'booking-management', component: BookingManagementComponent },
+      { path: 'hotel-management', component: HotelManagementComponent },
+    ],
+  },
+  { path: 'admin/login', component: AdminLoginComponent },
 ];
