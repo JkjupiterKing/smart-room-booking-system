@@ -46,9 +46,10 @@ export class DashboardComponent implements OnInit {
 
   searchLocation() {
     if (this.selectedLocation) {
-      this.searchResultsService.fetchHotelsByCity(this.selectedLocation).subscribe(() => {
-        this.router.navigate(['/search-results']);
-      });
+      // The subscription is still necessary to trigger the HTTP request (cold observable).
+      this.searchResultsService.fetchHotelsByCity(this.selectedLocation).subscribe();
+      // Navigate immediately. The SearchResultsComponent will handle the loading state.
+      this.router.navigate(['/search-results']);
     } else {
       alert('Please select a location first!');
     }
