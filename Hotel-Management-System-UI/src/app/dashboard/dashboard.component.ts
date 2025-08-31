@@ -16,6 +16,10 @@ import { SearchResultsService } from '../search-results.service';
 export class DashboardComponent implements OnInit {
   selectedLocation: string = '';
   locations: string[] = [];  // Will hold list of city names
+  checkInDate: string = '';
+  checkOutDate: string = '';
+  today: string = '';
+  minCheckoutDate: string = '';
 
   constructor(
     private router: Router,
@@ -25,6 +29,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchLocations();
+    this.setTodayDate();
   }
 
   fetchLocations(): void {
@@ -44,9 +49,34 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  setTodayDate(): void {
+    const todayDate = new Date();
+    this.today = todayDate.toISOString().split('T')[0];
+    this.minCheckoutDate = this.today;
+  }
+
+  updateMinCheckoutDate(): void {
+    if (this.checkInDate) {
+      const checkIn = new Date(this.checkInDate);
+      const nextDay = new Date(checkIn);
+      nextDay.setDate(checkIn.getDate() + 1);
+      this.minCheckoutDate = nextDay.toISOString().split('T')[0];
+
+      if (this.checkOutDate && this.checkOutDate <= this.checkInDate) {
+        this.checkOutDate = '';
+      }
+    }
+  }
+
   searchLocation() {
     if (this.selectedLocation) {
-      this.router.navigate(['/search-results'], { queryParams: { city: this.selectedLocation } });
+      this.router.navigate(['/search-results'], {
+        queryParams: {
+          city: this.selectedLocation,
+          checkIn: this.checkInDate,
+          checkOut: this.checkOutDate,
+        },
+      });
     } else {
       alert('Please select a location first!');
     }

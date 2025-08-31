@@ -8,15 +8,43 @@
     <div class="search-container">
       <p class="search-title">Search for Your Stay</p>
 
-      <!-- Dropdown for selecting city -->
+      <!-- Search Form -->
       <div class="location-search">
-        <label for="location" class="location-label">Choose a City:</label>
-        <select id="location" [(ngModel)]="selectedLocation">
-          <option value="" disabled>Select a Location</option>
-          <option *ngFor="let location of locations" [value]="location">
-            {{ location }}
-          </option>
-        </select>
+        <!-- Destination -->
+        <div class="search-field">
+          <label for="location" class="location-label">Choose a City:</label>
+          <select id="location" [(ngModel)]="selectedLocation">
+            <option value="" disabled>Select a Location</option>
+            <option *ngFor="let location of locations" [value]="location">
+              {{ location }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Check-in Date -->
+        <div class="search-field">
+          <label for="checkin" class="location-label">Check-in:</label>
+          <input
+            type="date"
+            id="checkin"
+            [(ngModel)]="checkInDate"
+            [min]="today"
+            (change)="updateMinCheckoutDate()"
+          />
+        </div>
+
+        <!-- Check-out Date -->
+        <div class="search-field">
+          <label for="checkout" class="location-label">Check-out:</label>
+          <input
+            type="date"
+            id="checkout"
+            [(ngModel)]="checkOutDate"
+            [min]="minCheckoutDate"
+          />
+        </div>
+
+        <!-- Search Button -->
         <button (click)="searchLocation()" [disabled]="!selectedLocation">
           Search
         </button>

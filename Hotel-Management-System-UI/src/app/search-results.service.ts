@@ -32,23 +32,37 @@ export class SearchResultsService {
 
   constructor(private http: HttpClient) { }
 
-  fetchHotelsByCity(city: string): Observable<Hotel[]> {
+  fetchHotelsByCity(
+    city: string,
+    checkIn?: string,
+    checkOut?: string
+  ): Observable<Hotel[]> {
     this.isLoadingSource.next(true);
-    const url = `http://localhost:8066/hotels/city/${city}`;
+
+    let url = `http://localhost:8066/hotels/city/${city}`;
+    const params: string[] = [];
+
+    if (checkIn) {
+      params.push(`checkIn=${checkIn}`);
+    }
+    if (checkOut) {
+      params.push(`checkOut=${checkOut}`);
+    }
+
+    if (params.length > 0) {
+      url += `?${params.join('&')}`;
+    }
+
     return this.http.get<Hotel[]>(url).pipe(
-      tap(hotels => {
-        const hotelsWithSanitizedImages = hotels.map(hotel => ({
-          ...hotel,
-          imageBase64: 'data:image/jpeg;base64,' + hotel.imageBase64
-        }));
-        this.hotelsSource.next(hotelsWithSanitizedImages);
+      tap((hotels) => {
+        this.hotelsSource.next(hotels);
         this.isLoadingSource.next(false);
       }),
-      catchError(error => {
+      catchError((error) => {
         console.error('Error fetching hotels:', error);
-        this.hotelsSource.next([]); // Clear previous results on error
+        this.hotelsSource.next([]);
         this.isLoadingSource.next(false);
-        return of([]); // Return an empty array to continue the stream
+        return of([]);
       })
     );
   }

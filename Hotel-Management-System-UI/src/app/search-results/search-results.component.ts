@@ -26,10 +26,15 @@ export class SearchResultsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       const city = params['city'];
+      const checkIn = params['checkIn'];
+      const checkOut = params['checkOut'];
+
       if (city) {
-        this.searchResultsService.fetchHotelsByCity(city).subscribe();
+        this.searchResultsService
+          .fetchHotelsByCity(city, checkIn, checkOut)
+          .subscribe();
       }
     });
   }

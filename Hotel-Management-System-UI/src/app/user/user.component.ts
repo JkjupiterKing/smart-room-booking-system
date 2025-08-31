@@ -42,9 +42,6 @@ export class UserComponent implements OnInit {
   today: string = '';
   minCheckoutDate: string = '';
 
-  // Hotels
-  hotels: any[] = [];
-
   constructor(
     private userService: UserService,
     private adminService: AdminService,
@@ -90,14 +87,6 @@ export class UserComponent implements OnInit {
       });
   }
 
-  onReserve(hotel: any): void {
-    const user = localStorage.getItem('user');
-    if (!user) {
-      alert('Please register and login to reserve a hotel.');
-      this.openRegisterModal();
-      return;
-    }
-  }
 
   // Fetch hotels for selected city
   onSearchHotels(): void {
@@ -106,16 +95,13 @@ export class UserComponent implements OnInit {
       return;
     }
 
-    const url = `http://localhost:8066/hotels/city/${this.selectedCity}`;
-
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => {
-        this.hotels = data;
-      })
-      .catch((err) => {
-        console.error('Error fetching hotels:', err);
-      });
+    this.router.navigate(['/search-results'], {
+      queryParams: {
+        city: this.selectedCity,
+        checkIn: this.checkInDate,
+        checkOut: this.checkOutDate,
+      },
+    });
   }
 
   // Modal controls

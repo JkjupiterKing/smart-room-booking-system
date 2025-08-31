@@ -89,20 +89,6 @@
   </form>
 </div>
 
-<div class="hotel-cards-container" *ngIf="hotels.length">
-  <div class="hotel-card" *ngFor="let hotel of hotels">
-    <img
-      *ngIf="hotel.imageBase64"
-      [src]="'data:image/jpeg;base64,' + hotel.imageBase64"
-      alt="{{ hotel.name }}"
-    />
-    <h3>{{ hotel.name }}</h3>
-    <p>{{ hotel.description }}</p>
-    <p><strong>Price:</strong> ₹{{ hotel.price }}</p>
-    <p><strong>Rating:</strong> {{ hotel.rating }} ★</p>
-    <button class="reserve-btn" (click)="onReserve(hotel)">Reserve Now</button>
-  </div>
-</div>
 <br />
 <br />
 <!-- Login Modal -->
