@@ -103,7 +103,7 @@
 /* Search Bar */
 .search-bar-container {
   position: absolute;
-  bottom: 200px; /* Moved up */
+  bottom: 120px; /* Reduced gap to hero section */
   left: 50%;
   transform: translateX(-50%);
   background: rgba(255, 255, 255, 0.95);
@@ -140,13 +140,12 @@
 
 .search-btn {
   background: #f1c40f;
-  padding: 20px 40px; /* Increased padding */
+  padding: 15px 40px; /* Matched vertical padding with inputs */
   border: none;
   border-radius: 10px;
   font-weight: 700;
   cursor: pointer;
   font-size: 1.2rem; /* Increased font size */
-  margin-left: auto;
 }
 
 .search-btn:hover {
