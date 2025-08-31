@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-import { UserComponent } from './user/user.component';
+import { LandingPageComponent } from './user/landing-page.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RoomBookingComponent } from './roombooking/roombooking.component';
 import { PaymentComponent } from './payment/payment.component';
@@ -13,9 +13,9 @@ import { RoomBookingAiAgentComponent } from './room-booking-ai-agent/room-bookin
 import { SearchResultsComponent } from './search-results/search-results.component';
 
 export const routes: Routes = [
-  { path: '', component: UserComponent },
+  { path: '', component: LandingPageComponent },
   { path: 'search-results', component: SearchResultsComponent },
-  { path: 'user', component: UserComponent },
+  { path: 'user', component: LandingPageComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'roombooking', component: RoomBookingComponent },
   { path: 'payment', component: PaymentComponent },

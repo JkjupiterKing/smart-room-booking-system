@@ -8,13 +8,13 @@ import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
-  selector: 'app-user',
+  selector: 'app-landing-page',
   standalone: true,
   imports: [FormsModule, CommonModule],
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css']
+  templateUrl: './landing-page.component.html',
+  styleUrls: ['./landing-page.component.css']
 })
-export class UserComponent implements OnInit {
+export class LandingPageComponent implements OnInit {
   // Modal states
   isLoginModalOpen: boolean = false;
   isRegisterModalOpen: boolean = false;
