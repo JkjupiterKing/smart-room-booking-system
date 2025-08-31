@@ -140,7 +140,7 @@ export class LandingPageComponent implements OnInit {
           }
 
           this.successMessage = 'Login successful!';
-          this.router.navigate(['/dashboard']).then(() => window.location.reload());
+          this.router.navigate(['/user/dashboard']).then(() => window.location.reload());
           this.closeLoginModal();
           loginForm.reset();
         },
@@ -152,7 +152,7 @@ export class LandingPageComponent implements OnInit {
               localStorage.setItem('role', 'admin');
 
               this.successMessage = 'Admin login successful!';
-              this.router.navigate(['/admin-dashboard']).then(() => window.location.reload());
+              this.router.navigate(['/admin/dashboard']).then(() => window.location.reload());
               this.closeLoginModal();
               loginForm.reset();
             },
