@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { SearchResultsService, Hotel } from '../search-results.service';
 import { SidebarComponent } from '../sidebar/sidebar.component';
@@ -18,13 +18,21 @@ export class SearchResultsComponent implements OnInit {
 
   constructor(
     private searchResultsService: SearchResultsService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.hotels$ = this.searchResultsService.hotels$;
     this.isLoading$ = this.searchResultsService.isLoading$;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      const city = params['city'];
+      if (city) {
+        this.searchResultsService.fetchHotelsByCity(city).subscribe();
+      }
+    });
+  }
 
   getStarArray(rating: number): number[] {
     const fullStars = Math.floor(rating);
