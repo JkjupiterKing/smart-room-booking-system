@@ -18,7 +18,6 @@ body {
 }
 
 .main-content-wrapper {
-  margin-left: 200px; /* Adjust based on sidebar width */
   display: flex;
   flex-direction: column;
   min-height: 100vh;

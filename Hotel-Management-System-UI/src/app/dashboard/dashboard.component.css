@@ -59,14 +59,6 @@
     no-repeat center center/cover;
 }
 
-/* Sidebar styles - you can adjust width as needed */
-app-sidebar {
-  width: 250px;
-  background-color: rgba(255, 255, 255, 0.95);
-  /* add shadow or border if you want */
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-}
 
 /* Main dashboard content takes remaining width */
 .dashboard {
