@@ -13,9 +13,9 @@ import { RoomBookingAiAgentComponent } from './room-booking-ai-agent/room-bookin
 import { SearchResultsComponent } from './search-results/search-results.component';
 
 export const routes: Routes = [
-  { path: '', component: LandingPageComponent },
+  { path: '', redirectTo: 'landing-page', pathMatch: 'full' },
   { path: 'search-results', component: SearchResultsComponent },
-  { path: 'user', component: LandingPageComponent },
+  { path: 'landing-page', component: LandingPageComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'roombooking', component: RoomBookingComponent },
   { path: 'payment', component: PaymentComponent },
