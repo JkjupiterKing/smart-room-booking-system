@@ -1,20 +1,19 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
 import { SidebarComponent } from '../sidebar/sidebar.component';
-import { HttpClient, HttpClientModule } from '@angular/common/http'; // Import HttpClient and HttpClientModule
-import { CommonModule } from '@angular/common'; // Import CommonModule
-import Chart from 'chart.js/auto'; // Import Chart.js
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import Chart from 'chart.js/auto';
 
 interface User {
   id: number;
   username: string;
   email: string;
-  // Add other user properties as needed
 }
 
 interface Booking {
   id: number;
   roomTitle: string;
-  checkInDate: string; // Assuming date as string from backend
+  checkInDate: string;
   checkOutDate: string;
   adults: number;
   children: number;
@@ -23,13 +22,12 @@ interface Booking {
   status: string;
   totalPrice: number;
   notes: string;
-  // user: User; // If you need user details within booking
 }
 
 @Component({
   selector: 'app-admin-dashboard',
-  standalone: true, // Marking the component as standalone
-  imports: [SidebarComponent, CommonModule, HttpClientModule], // Add CommonModule and HttpClientModule here
+  standalone: true,
+  imports: [SidebarComponent, CommonModule, HttpClientModule],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.css'
 })
@@ -37,11 +35,14 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
   @ViewChild('bookingChartCanvas') bookingChartCanvas!: ElementRef;
   userCount: number = 0;
   bookingCount: number = 0;
-  private apiUrl = 'http://localhost:8066/api'; // Base URL for your backend
+  private apiUrl = 'http://localhost:8066/api';
 
   public chart: any;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   ngOnInit(): void {
     this.fetchUserCount();
@@ -49,7 +50,9 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.createBookingChart();
+    if (isPlatformBrowser(this.platformId)) {
+      this.createBookingChart();
+    }
   }
 
   fetchUserCount(): void {
@@ -77,12 +80,11 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
   }
   
   createBookingChart(): void {
-    // Mock data for analytics - in a real app, this would come from an API
-    const monthlyBookingsData = [12, 19, 3, 5, 2, 3, 15, 20, 10, 8, 14, 17]; // Example data for 12 months
+    const monthlyBookingsData = [12, 19, 3, 5, 2, 3, 15, 20, 10, 8, 14, 17];
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
     this.chart = new Chart(this.bookingChartCanvas.nativeElement, {
-      type: 'bar', // Type of chart
+      type: 'bar',
       data: {
         labels: months,
         datasets: [{
@@ -121,7 +123,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
       },
       options: {
         responsive: true,
-        maintainAspectRatio: false, // Allows chart to fill its container
+        maintainAspectRatio: false,
         scales: {
           y: {
             beginAtZero: true,
