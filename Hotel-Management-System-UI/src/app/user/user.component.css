@@ -4,8 +4,8 @@
   height: 100vh;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  padding-left: 5%;
+  justify-content: center;
+  text-align: center;
   color: white;
   font-family: "Poppins", sans-serif;
 }
@@ -65,15 +65,21 @@
   color: #f1c40f;
 }
 
+.navbar-actions {
+  display: flex;
+  align-items: center;
+}
+
 .navbar-actions button {
   margin-left: 15px;
-  padding: 8px 15px;
+  padding: 10px 20px;
   border: none;
   border-radius: 5px;
   background: #f1c40f;
   color: black;
   cursor: pointer;
   transition: background 0.3s;
+  font-size: 1rem;
 }
 
 .navbar-actions button:hover {
@@ -96,12 +102,16 @@
 .search-bar-container {
   position: absolute;
   bottom: 50px;
-  left: 50px;
-  background: rgba(255, 255, 255, 0.9);
-  padding: 20px;
-  border-radius: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.95);
+  padding: 30px;
+  border-radius: 20px;
   display: flex;
   align-items: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 1000px;
 }
 
 .search-bar {
@@ -113,24 +123,28 @@
 .search-field label {
   display: flex;
   flex-direction: column;
-  font-weight: 500;
-  color: black;
+  font-weight: 600;
+  color: #333;
+  font-size: 1.1rem;
 }
 
 .search-field input {
-  margin-top: 5px;
-  padding: 8px;
+  margin-top: 8px;
+  padding: 12px;
   border: 1px solid #ccc;
-  border-radius: 8px;
+  border-radius: 10px;
+  font-size: 1rem;
 }
 
 .search-btn {
   background: #f1c40f;
-  padding: 10px 20px;
+  padding: 15px 30px;
   border: none;
-  border-radius: 8px;
-  font-weight: 600;
+  border-radius: 10px;
+  font-weight: 700;
   cursor: pointer;
+  font-size: 1.1rem;
+  margin-left: auto;
 }
 
 .search-btn:hover {
