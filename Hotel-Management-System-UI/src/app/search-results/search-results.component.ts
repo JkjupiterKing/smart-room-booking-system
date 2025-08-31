@@ -89,7 +89,7 @@ export class SearchResultsComponent implements OnInit {
   }
 
   navigateToHotel(hotelId: number): void {
-    this.router.navigate(['/hotel', hotelId]);
+    this.router.navigate(['/hotel-details', hotelId]);
   }
 
   // Modal controls

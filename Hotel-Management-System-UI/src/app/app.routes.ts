@@ -10,6 +10,7 @@ import { BookingManagementComponent } from './booking-management/booking-managem
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { RoomBookingAiAgentComponent } from './room-booking-ai-agent/room-booking-ai-agent.component';
 import { SearchResultsComponent } from './search-results/search-results.component';
+import { HotelDetailsComponent } from './hotel-details/hotel-details.component';
 import { UserLayoutComponent } from './user-layout/user-layout.component';
 import { AdminLayoutComponent } from './admin-layout/admin-layout.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
@@ -17,6 +18,7 @@ import { AdminLoginComponent } from './admin-login/admin-login.component';
 export const routes: Routes = [
   { path: '', redirectTo: 'landing-page', pathMatch: 'full' },
   { path: 'search-results', component: SearchResultsComponent },
+  { path: 'hotel-details/:id', component: HotelDetailsComponent },
   { path: 'landing-page', component: LandingPageComponent },
   {
     path: 'user',
