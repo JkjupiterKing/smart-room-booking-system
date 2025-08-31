@@ -32,9 +32,7 @@ export class UserNavbarComponent implements OnInit {
       localStorage.removeItem('user');
       localStorage.removeItem('role');
       this.userRole = null;
-      this.router.navigate(['/user']).then(() => {
-        window.location.reload();
-      });
+      this.router.navigate(['/landing-page']);
     }
   }
 }

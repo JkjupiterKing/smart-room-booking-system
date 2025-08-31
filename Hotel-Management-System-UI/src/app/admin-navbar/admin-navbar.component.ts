@@ -32,9 +32,7 @@ export class AdminNavbarComponent implements OnInit {
       localStorage.removeItem('admin');
       localStorage.removeItem('role');
       this.userRole = null;
-      this.router.navigate(['/admin/login']).then(() => {
-        window.location.reload();
-      });
+      this.router.navigate(['/landing-page']);
     }
   }
 }
