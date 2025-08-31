@@ -30,11 +30,11 @@
   width: 100%;
   padding: 15px 50px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   background: rgba(0, 0, 0, 0.5);
   color: white;
   z-index: 1000;
+  box-sizing: border-box; /* Ensures padding is included in the width */
 }
 
 .navbar-logo {
@@ -68,10 +68,11 @@
 .navbar-actions {
   display: flex;
   align-items: center;
+  gap: 15px; /* Adds space between the buttons */
+  margin-left: auto; /* Pushes the actions to the right */
 }
 
 .navbar-actions button {
-  margin-left: 15px;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
