@@ -1,0 +1,33 @@
+<div class="hotel-details-container" *ngIf="hotel">
+  <div class="hotel-card">
+    <div class="hotel-image-container">
+      <img [src]="'data:image/jpeg;base64,' + hotel.imageBase64" alt="Photo of {{ hotel.name }}" class="hotel-image">
+    </div>
+    <div class="hotel-info">
+      <h1 class="hotel-name">{{ hotel.name }}</h1>
+      <div class="hotel-rating">
+        <span *ngFor="let i of getStarArray(hotel.rating)" class="star">&#9733;</span>
+      </div>
+      <p class="hotel-description">{{ hotel.description }}</p>
+      <p class="hotel-location">
+        <i class="fas fa-map-marker-alt"></i>
+        {{ hotel.location.city }}, {{ hotel.location.country }}
+      </p>
+      <div class="hotel-amenities">
+        <span class="amenity">
+          <i class="fas fa-wifi"></i> Free Wi-Fi
+        </span>
+        <span class="amenity">
+          <i class="fas fa-parking"></i> Free Parking
+        </span>
+        <span class="amenity">
+          <i class="fas fa-concierge-bell"></i> 24-hour Front Desk
+        </span>
+      </div>
+      <p class="hotel-price">
+        <strong>₹{{ hotel.price | number:'1.2-2' }}</strong> / night
+      </p>
+      <button class="book-now-btn">Book Now</button>
+    </div>
+  </div>
+</div>

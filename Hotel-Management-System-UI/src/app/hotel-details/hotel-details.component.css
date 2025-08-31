@@ -1,0 +1,102 @@
+.hotel-details-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding: 20px;
+}
+
+.hotel-card {
+  display: flex;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  max-width: 1000px;
+  width: 100%;
+}
+
+.hotel-image-container {
+  flex: 1;
+}
+
+.hotel-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hotel-info {
+  flex: 1;
+  padding: 40px;
+}
+
+.hotel-name {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.hotel-rating {
+  margin-bottom: 20px;
+}
+
+.star {
+  color: #ffc107;
+  font-size: 1.5rem;
+}
+
+.hotel-description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.hotel-location {
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+.hotel-location i {
+  margin-right: 5px;
+}
+
+.hotel-amenities {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.amenity {
+  background-color: #e7f3ff;
+  color: #007bff;
+  padding: 8px 12px;
+  border-radius: 20px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+}
+
+.amenity i {
+  margin-right: 5px;
+}
+
+.hotel-price {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.book-now-btn {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.book-now-btn:hover {
+  background-color: #0056b3;
+}
