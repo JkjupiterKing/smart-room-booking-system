@@ -8,7 +8,7 @@
       <div *ngIf="(hotels$ | async) as hotels; else noResults">
         <div *ngIf="hotels.length > 0; else noResults" class="hotels-grid">
           <div *ngFor="let hotel of hotels" class="hotel-card" (click)="navigateToHotel(hotel.id)">
-            <img [src]="hotel.imageBase64" alt="Photo of {{ hotel.name }}" class="hotel-image">
+            <img [src]="'data:image/jpeg;base64,' + hotel.imageBase64" alt="Photo of {{ hotel.name }}" class="hotel-image">
             <div class="hotel-details">
               <h3 class="hotel-name">{{ hotel.name }}</h3>
               <div class="hotel-rating">
