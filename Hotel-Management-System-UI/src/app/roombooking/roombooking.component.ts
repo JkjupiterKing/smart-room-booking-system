@@ -46,7 +46,6 @@ interface Amenity {
 })
 export class RoomBookingComponent implements OnInit {
   city: string | null = '';
-  rooms: Room[] = [];
 
   selectedRoom: Room | null = null;
   showModal: boolean = false;
@@ -85,30 +84,11 @@ export class RoomBookingComponent implements OnInit {
     this.minCheckInDate = this.formatDate(tomorrow);
 
     if (this.city) {
-      this.fetchHotelsByCity(this.city);
       this.fetchAmenities();
     } else {
       alert('Please select a city first');
       this.router.navigate(['/dashboard']);
     }
-  }
-
-  fetchHotelsByCity(city: string): void {
-    const url = `http://localhost:8066/hotels/city/${city}`;
-    this.http.get<Room[]>(url)
-      .pipe(
-        catchError(error => {
-          console.error('Error fetching hotels:', error);
-          alert('Failed to fetch hotels. Please try again later.');
-          return of([]);
-        })
-      )
-      .subscribe(data => {
-        this.rooms = data.map(room => ({
-          ...room,
-          imageBase64: 'data:image/jpeg;base64,' + room.imageBase64
-        }));
-      });
   }
 
   fetchAmenities(): void {

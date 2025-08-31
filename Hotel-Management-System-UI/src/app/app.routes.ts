@@ -10,9 +10,11 @@ import { RoomTypeManagementComponent } from './room-type-management/room-type-ma
 import { BookingManagementComponent } from './booking-management/booking-management.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { RoomBookingAiAgentComponent } from './room-booking-ai-agent/room-booking-ai-agent.component'; // Import the new component
+import { SearchResultsComponent } from './search-results/search-results.component';
 
 export const routes: Routes = [
   { path: '', component: UserComponent },
+  { path: 'search-results', component: SearchResultsComponent },
   { path: 'user', component: UserComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'roombooking', component: RoomBookingComponent },

@@ -2,27 +2,7 @@
 
 <div class="content">
   <div class="roombooking-container">
-    <h1>Book a Room in {{ city }}</h1>
-
-    <!-- Room Grid -->
-    <div class="room-grid">
-      <div *ngFor="let room of rooms" class="room-card">
-        <img [src]="room.imageBase64" [alt]="room.name" class="room-image" />
-        <div class="room-details">
-          <h2>{{ room.name }}</h2>
-          <p>{{ room.description }}</p>
-          <p><strong>Price:</strong> Rs {{ room.price }} per night</p>
-          <p>
-            <strong>Rating:</strong>
-            <span *ngFor="let star of getStarArray(room.rating)">&#9733;</span>
-            ({{ room.rating }})
-          </p>
-          <button (click)="openBookingModal(room)" class="book-button">
-            Reserve Now
-          </button>
-        </div>
-      </div>
-    </div>
+    <h1>Book a Room</h1>
 
     <!-- Booking Modal -->
     <div *ngIf="showModal" class="modal-overlay">

@@ -1,0 +1,35 @@
+<div class="search-results-container">
+  <app-sidebar></app-sidebar>
+  <div class="content">
+    <div *ngIf="isLoading$ | async" class="loader">
+      <p>Loading hotels...</p>
+    </div>
+
+    <div *ngIf="!(isLoading$ | async)">
+      <div *ngIf="(hotels$ | async) as hotels; else noResults">
+        <div *ngIf="hotels.length > 0; else noResults" class="hotels-grid">
+          <div *ngFor="let hotel of hotels" class="hotel-card" (click)="navigateToHotel(hotel.id)">
+            <img [src]="hotel.imageBase64" alt="Photo of {{ hotel.name }}" class="hotel-image">
+            <div class="hotel-details">
+              <h3 class="hotel-name">{{ hotel.name }}</h3>
+              <div class="hotel-rating">
+                <span *ngFor="let i of getStarArray(hotel.rating)" class="star">&#9733;</span>
+              </div>
+              <p class="hotel-description">{{ hotel.description }}</p>
+              <p class="hotel-location">{{ hotel.location.city }}, {{ hotel.location.country }}</p>
+              <p class="hotel-price">
+                <strong>₹{{ hotel.price | number:'1.2-2' }}</strong> / night
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noResults>
+      <div class="no-results">
+        <p>No hotels found for your search.</p>
+      </div>
+    </ng-template>
+  </div>
+</div>

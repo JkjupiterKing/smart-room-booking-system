@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { SearchResultsService } from '../search-results.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,7 +17,11 @@ export class DashboardComponent implements OnInit {
   selectedLocation: string = '';
   locations: string[] = [];  // Will hold list of city names
 
-  constructor(private router: Router, private http: HttpClient) {}
+  constructor(
+    private router: Router,
+    private http: HttpClient,
+    private searchResultsService: SearchResultsService
+  ) {}
 
   ngOnInit(): void {
     this.fetchLocations();
@@ -41,8 +46,8 @@ export class DashboardComponent implements OnInit {
 
   searchLocation() {
     if (this.selectedLocation) {
-      this.router.navigate(['/roombooking'], {
-        queryParams: { location: this.selectedLocation },
+      this.searchResultsService.fetchHotelsByCity(this.selectedLocation).subscribe(() => {
+        this.router.navigate(['/search-results']);
       });
     } else {
       alert('Please select a location first!');
