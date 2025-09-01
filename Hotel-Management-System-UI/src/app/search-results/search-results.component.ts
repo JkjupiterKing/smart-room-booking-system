@@ -24,7 +24,6 @@ import { HttpErrorResponse } from '@angular/common/http';
     UserNavbarComponent,
     AdminNavbarComponent,
     RouterLink,
-    RouterLinkActive,
   ],
   templateUrl: './search-results.component.html',
   styleUrls: ['./search-results.component.css'],
