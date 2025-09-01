@@ -1,6 +1,8 @@
 package com.example.demo19.Controller;
 
 import com.example.demo19.Service.EmailService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,8 @@ import java.util.Optional;
 @RequestMapping("/api/bookings")
 public class RoomBookingController {
 
+    private static final Logger logger = LoggerFactory.getLogger(RoomBookingController.class);
+
     @Autowired
     private BookingRepository bookingRepository;
 
@@ -28,21 +32,32 @@ public class RoomBookingController {
     @PostMapping("/reserve")
     public ResponseEntity<Map<String, String>> reserveRoom(@RequestBody Booking booking) {
         Map<String, String> response = new HashMap<>();
+        // First, attempt to save the booking to the database
         try {
-            // Save booking
-            Booking savedBooking = bookingRepository.save(booking);
-
-            // Send confirmation email
-            if (booking.getUser() != null && booking.getUser().getEmail() != null) {
-                emailService.sendBookingConfirmation(booking.getUser().getEmail(), booking);
-            }
-
-            response.put("message", "Booking Successful! Confirmation email sent.");
-            return ResponseEntity.ok(response);
+            bookingRepository.save(booking);
         } catch (Exception e) {
+            logger.error("Failed to save booking", e);
             response.put("message", "Booking Failed: " + e.getMessage());
             return ResponseEntity.status(500).body(response);
         }
+
+        // Try to send confirmation email, but do not fail the whole request if email fails
+        if (booking.getUser() != null && booking.getUser().getEmail() != null) {
+            try {
+                emailService.sendBookingConfirmation(booking.getUser().getEmail(), booking);
+                response.put("message", "Booking Successful! Confirmation email sent.");
+            } catch (Exception e) {
+                // Log the email failure and return success for the booking with an email-failed note
+                logger.warn("Booking saved but failed to send confirmation email", e);
+                response.put("message", "Booking Successful! But confirmation email failed to send: " + e.getMessage());
+                // Optionally include an emailStatus field
+                response.put("emailStatus", "FAILED");
+            }
+        } else {
+            response.put("message", "Booking Successful! No user email provided for confirmation.");
+        }
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/all")
