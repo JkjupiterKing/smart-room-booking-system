@@ -17,6 +17,10 @@ export interface Hotel {
   price: number;
   rating: number;
   imageBase64: string;
+  imageBase64_2?: string;
+  imageBase64_3?: string;
+  imageBase64_4?: string;
+  imageBase64_5?: string;
   location: Location;
 }
 

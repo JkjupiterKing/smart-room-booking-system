@@ -36,10 +36,27 @@ public class HotelController {
     @PostMapping(value = "/create", consumes = {"multipart/form-data"})
     public ResponseEntity<Hotel> createHotel(
             @RequestPart("hotel") Hotel hotel,
-            @RequestPart(name = "image", required = false) MultipartFile image) throws IOException {
+            @RequestPart(name = "image", required = false) MultipartFile image,
+            @RequestPart(name = "image2", required = false) MultipartFile image2,
+            @RequestPart(name = "image3", required = false) MultipartFile image3,
+            @RequestPart(name = "image4", required = false) MultipartFile image4,
+            @RequestPart(name = "image5", required = false) MultipartFile image5
+    ) throws IOException {
 
         if (image != null && !image.isEmpty()) {
             hotel.setImage(image.getBytes());
+        }
+        if (image2 != null && !image2.isEmpty()) {
+            hotel.setImage2(image2.getBytes());
+        }
+        if (image3 != null && !image3.isEmpty()) {
+            hotel.setImage3(image3.getBytes());
+        }
+        if (image4 != null && !image4.isEmpty()) {
+            hotel.setImage4(image4.getBytes());
+        }
+        if (image5 != null && !image5.isEmpty()) {
+            hotel.setImage5(image5.getBytes());
         }
 
         // 2. Handle the Location entity correctly before saving
@@ -77,7 +94,11 @@ public class HotelController {
     public ResponseEntity<?> updateHotel(
             @PathVariable Long id,
             @RequestPart("hotel") Hotel hotelDetails,
-            @RequestPart(name = "image", required = false) MultipartFile image) throws IOException {
+            @RequestPart(name = "image", required = false) MultipartFile image,
+            @RequestPart(name = "image2", required = false) MultipartFile image2,
+            @RequestPart(name = "image3", required = false) MultipartFile image3,
+            @RequestPart(name = "image4", required = false) MultipartFile image4,
+            @RequestPart(name = "image5", required = false) MultipartFile image5) throws IOException {
 
         return hotelRepository.findById(id).map(hotel -> {
             hotel.setName(hotelDetails.getName());
@@ -102,6 +123,18 @@ public class HotelController {
             try {
                 if (image != null && !image.isEmpty()) {
                     hotel.setImage(image.getBytes());
+                }
+                if (image2 != null && !image2.isEmpty()) {
+                    hotel.setImage2(image2.getBytes());
+                }
+                if (image3 != null && !image3.isEmpty()) {
+                    hotel.setImage3(image3.getBytes());
+                }
+                if (image4 != null && !image4.isEmpty()) {
+                    hotel.setImage4(image4.getBytes());
+                }
+                if (image5 != null && !image5.isEmpty()) {
+                    hotel.setImage5(image5.getBytes());
                 }
             } catch (IOException e) {
                 return ResponseEntity.badRequest().build();
@@ -139,6 +172,26 @@ public class HotelController {
             base64Image = Base64.getEncoder().encodeToString(hotel.getImage());
         }
 
+        String base64Image2 = null;
+        if (hotel.getImage2() != null) {
+            base64Image2 = Base64.getEncoder().encodeToString(hotel.getImage2());
+        }
+
+        String base64Image3 = null;
+        if (hotel.getImage3() != null) {
+            base64Image3 = Base64.getEncoder().encodeToString(hotel.getImage3());
+        }
+
+        String base64Image4 = null;
+        if (hotel.getImage4() != null) {
+            base64Image4 = Base64.getEncoder().encodeToString(hotel.getImage4());
+        }
+
+        String base64Image5 = null;
+        if (hotel.getImage5() != null) {
+            base64Image5 = Base64.getEncoder().encodeToString(hotel.getImage5());
+        }
+
         Location location = hotel.getLocation();
         LocationDTO locationDTO = null;
 
@@ -150,14 +203,18 @@ public class HotelController {
             );
         }
 
-        return new HotelResponseDTO(
-                hotel.getId(),
-                hotel.getName(),
-                hotel.getDescription(),
-                hotel.getPrice(),
-                hotel.getRating(),
-                base64Image,
-                locationDTO
-        );
+    return new HotelResponseDTO(
+        hotel.getId(),
+        hotel.getName(),
+        hotel.getDescription(),
+        hotel.getPrice(),
+        hotel.getRating(),
+        base64Image,
+        base64Image2,
+        base64Image3,
+        base64Image4,
+        base64Image5,
+        locationDTO
+    );
     }
 }

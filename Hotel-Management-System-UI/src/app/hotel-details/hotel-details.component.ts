@@ -16,6 +16,7 @@ import { AdminNavbarComponent } from '../admin-navbar/admin-navbar.component';
 export class HotelDetailsComponent implements OnInit {
 
   hotel: Hotel | undefined;
+  images: string[] = [];
   isLoggedIn: boolean = false;
   userRole: string | null = null;
 
@@ -44,8 +45,33 @@ export class HotelDetailsComponent implements OnInit {
     if (hotelId) {
       this.hotelService.getHotelById(+hotelId).subscribe(hotel => {
         this.hotel = hotel;
+  // build images array from available base64 fields, detect MIME from signature
+  this.images = [];
+  const pushIf = (b64?: string) => {
+    if (b64 && b64.length > 10) {
+      this.images.push(this.getImageDataUri(b64));
+    }
+  };
+  pushIf((hotel as any).imageBase64);
+  pushIf((hotel as any).imageBase64_2);
+  pushIf((hotel as any).imageBase64_3);
+  pushIf((hotel as any).imageBase64_4);
+  pushIf((hotel as any).imageBase64_5);
       });
     }
+  }
+
+  /**
+   * Create data URI with a guessed mime type from base64 signature.
+   */
+  getImageDataUri(b64: string): string {
+    const sig = b64.slice(0, 8);
+    let mime = 'jpeg';
+    // PNG files often start with "iVBOR" in base64, JPEG often "/9j/"
+    if (sig.startsWith('iVBOR')) { mime = 'png'; }
+    else if (sig.startsWith('/9j/')) { mime = 'jpeg'; }
+    else if (sig.toLowerCase().includes('png')) { mime = 'png'; }
+    return `data:image/${mime};base64,${b64}`;
   }
 
   checkUserStatus(): void {

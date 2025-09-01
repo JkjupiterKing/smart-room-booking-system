@@ -13,14 +13,23 @@
 
 <div class="hotel-details-container" *ngIf="hotel">
   <div class="hotel-card">
-    <div class="hotel-image-container">
-      <img [src]="'data:image/jpeg;base64,' + hotel.imageBase64" alt="Photo of {{ hotel.name }}" class="hotel-image">
-    </div>
-    <div class="hotel-info">
+    <!-- Hotel name + rating above images -->
+    <div class="hotel-header">
       <h1 class="hotel-name">{{ hotel.name }}</h1>
       <div class="hotel-rating">
         <span *ngFor="let i of getStarArray(hotel.rating)" class="star">&#9733;</span>
       </div>
+    </div>
+
+    <!-- Images grid -->
+    <div class="images-grid" *ngIf="images.length > 0">
+      <div *ngFor="let img of images; let i = index" class="image-card">
+        <img [src]="img" [alt]="'Photo ' + (i+1) + ' of ' + hotel.name" />
+      </div>
+    </div>
+
+    <!-- Hotel details below images -->
+    <div class="hotel-info">
       <p class="hotel-description">{{ hotel.description }}</p>
       <p class="hotel-location">
         <i class="fas fa-map-marker-alt"></i>
@@ -40,7 +49,7 @@
       <p class="hotel-price">
         <strong>₹{{ hotel.price | number:'1.2-2' }}</strong> / night
       </p>
-  <button class="book-now-btn" (click)="bookNow()">Book Now</button>
+      <button class="book-now-btn" (click)="bookNow()">Book Now</button>
     </div>
   </div>
 </div>

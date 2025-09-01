@@ -17,6 +17,22 @@ public class Hotel {
     @Lob
     @Column(name ="image")
     private byte[] image;
+    
+    @Lob
+    @Column(name ="image2")
+    private byte[] image2;
+
+    @Lob
+    @Column(name ="image3")
+    private byte[] image3;
+
+    @Lob
+    @Column(name ="image4")
+    private byte[] image4;
+
+    @Lob
+    @Column(name ="image5")
+    private byte[] image5;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "location_id")
@@ -26,22 +42,30 @@ public class Hotel {
     public Hotel() {
     }
 
-    public Hotel(String name, String description, double price, double rating, byte[] image, Location location) {
+    public Hotel(String name, String description, double price, double rating, byte[] image, byte[] image2, byte[] image3, byte[] image4, byte[] image5, Location location) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.rating = rating;
         this.image = image;
+        this.image2 = image2;
+        this.image3 = image3;
+        this.image4 = image4;
+        this.image5 = image5;
         this.location = location;
     }
 
-    public Hotel(Long id, String name, String description, double price, double rating, byte[] image, Location location) {
+    public Hotel(Long id, String name, String description, double price, double rating, byte[] image, byte[] image2, byte[] image3, byte[] image4, byte[] image5, Location location) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.rating = rating;
         this.image = image;
+        this.image2 = image2;
+        this.image3 = image3;
+        this.image4 = image4;
+        this.image5 = image5;
         this.location = location;
     }
 
@@ -93,6 +117,38 @@ public class Hotel {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    public byte[] getImage2() {
+        return image2;
+    }
+
+    public void setImage2(byte[] image2) {
+        this.image2 = image2;
+    }
+
+    public byte[] getImage3() {
+        return image3;
+    }
+
+    public void setImage3(byte[] image3) {
+        this.image3 = image3;
+    }
+
+    public byte[] getImage4() {
+        return image4;
+    }
+
+    public void setImage4(byte[] image4) {
+        this.image4 = image4;
+    }
+
+    public byte[] getImage5() {
+        return image5;
+    }
+
+    public void setImage5(byte[] image5) {
+        this.image5 = image5;
     }
 
     public Location getLocation() {
