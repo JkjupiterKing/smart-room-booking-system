@@ -78,7 +78,7 @@ export class RoomBookingAiAgentComponent implements OnInit, OnDestroy {
     if (this.selectedLocation) {
       // Check if the location is valid (case-insensitive comparison)
       if (this.locations.some(loc => loc.toLowerCase() === this.selectedLocation.toLowerCase())) {
-        this.router.navigate(['/roombooking'], {
+        this.router.navigate(['/user/roombooking'], {
           queryParams: { location: this.selectedLocation },
         });
         this.feedbackMessage = `Searching for hotels in ${this.selectedLocation}...`;

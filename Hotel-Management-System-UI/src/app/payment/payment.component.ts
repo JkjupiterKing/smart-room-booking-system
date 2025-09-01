@@ -52,7 +52,7 @@ export class PaymentComponent {
       this.totalAmount = this.bookingDetails.price || 0;
     } else {
       alert('Booking details not found. Please try again.');
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/user/dashboard']);
     }
 
     this.paymentForm.get('paymentMethod')?.valueChanges.subscribe((method: string) => {
@@ -78,8 +78,6 @@ export class PaymentComponent {
     }
 
   this.isProcessing = true;
-  // Ensure change detection runs so template bindings are consistent
-  this.cd.detectChanges();
 
     const userString = localStorage.getItem('user');
     let user: any = null;
@@ -136,7 +134,7 @@ export class PaymentComponent {
               }
               this.isProcessing = false;
               this.cd.detectChanges();
-              this.router.navigate(['/dashboard']);
+              this.router.navigate(['/user/dashboard']);
             },
             error: (err) => {
               alert('Booking failed after payment. Please contact support.');
