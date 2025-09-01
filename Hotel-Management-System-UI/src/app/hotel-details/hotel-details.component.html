@@ -9,6 +9,11 @@
     <span class="logo-icon"><i class="fas fa-home"></i></span>
     <span class="logo-text">QuickStay</span>
   </div>
+  <div class="navbar-actions">
+    <button class="navbar-login" routerLink="/landing-page">Search</button>
+    <button class="navbar-login" (click)="openLoginModal()">Login</button>
+    <button class="navbar-login" (click)="openRegisterModal()">Register</button>
+  </div>
 </nav>
 
 <div class="hotel-details-container" *ngIf="hotel">
@@ -51,5 +56,117 @@
       </p>
       <button class="book-now-btn" (click)="bookNow()">Book Now</button>
     </div>
+  </div>
+</div>
+
+<!-- Login Modal -->
+<div *ngIf="isLoginModalOpen" class="modal">
+  <div class="modal-content">
+    <h2>Login</h2>
+    <form #loginForm="ngForm" (ngSubmit)="onLoginSubmit(loginForm)">
+      <div>
+        <label for="username">Username:</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          ngModel
+          required
+          #username="ngModel"
+        />
+        <div *ngIf="username.invalid && username.touched">
+          <small class="error">Username is required.</small>
+        </div>
+      </div>
+      <div>
+        <label for="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          ngModel
+          required
+          #password="ngModel"
+        />
+        <div *ngIf="password.invalid && password.touched">
+          <small class="error">Password is required.</small>
+        </div>
+      </div>
+      <br />
+      <button type="submit" [disabled]="loginForm.invalid">Login</button>
+    </form>
+    <br />
+    <button (click)="closeLoginModal()">Close</button>
+  </div>
+</div>
+
+<!-- Register Modal -->
+<div *ngIf="isRegisterModalOpen" class="modal">
+  <div class="modal-content">
+    <h2>Register</h2>
+    <form #registerForm="ngForm" (ngSubmit)="onRegisterSubmit(registerForm)">
+      <div>
+        <label for="username">Username:</label><br />
+        <input type="text" id="username" name="username" ngModel required />
+        <div
+          *ngIf="
+            registerForm.form.controls['username']?.invalid &&
+            registerForm.form.controls['username']?.touched
+          "
+        >
+          <small class="error">Username is required.</small>
+        </div>
+      </div>
+      <div>
+        <label for="email">Email:</label><br />
+        <input type="email" id="email" name="email" ngModel required />
+        <div
+          *ngIf="
+            registerForm.form.controls['email']?.invalid &&
+            registerForm.form.controls['email']?.touched
+          "
+        >
+          <small class="error">Email is required.</small>
+        </div>
+        <div
+          *ngIf="
+            registerForm.form.controls['email']?.touched &&
+            registerForm.form.controls['email']?.valid &&
+            !registerForm.form.controls['email'].value.endsWith('@gmail.com')
+          "
+        >
+          <small class="error">Please enter a valid email</small>
+        </div>
+      </div>
+      <div>
+        <label for="password">Password:</label><br />
+        <input
+          type="password"
+          id="password"
+          name="password"
+          ngModel
+          required
+          #passwordInput="ngModel"
+          pattern="^(?=.*[A-Za-z])(?=.*[0-9]).{6,}$"
+        />
+        <div
+          *ngIf="
+            passwordInput.invalid &&
+            (passwordInput.dirty || passwordInput.touched)
+          "
+        >
+          <small *ngIf="passwordInput.errors?.['required']" class="error">
+            Password is required.
+          </small>
+          <small *ngIf="passwordInput.errors?.['pattern']" class="error">
+            Password must contain both letters and numbers.
+          </small>
+        </div>
+      </div>
+      <br />
+      <button type="submit" [disabled]="registerForm.invalid">Register</button>
+    </form>
+    <br />
+    <button (click)="closeRegisterModal()">Close</button>
   </div>
 </div>
