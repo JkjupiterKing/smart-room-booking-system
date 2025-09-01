@@ -4,6 +4,8 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ChangeDetectorRef } from '@angular/core';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-payment',
@@ -25,7 +27,9 @@ export class PaymentComponent {
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
-    private http: HttpClient
+  private http: HttpClient,
+  private cd: ChangeDetectorRef,
+  private userService: UserService
   ) {
     this.paymentForm = this.fb.group({
       paymentMethod: ['', Validators.required],
@@ -73,7 +77,9 @@ export class PaymentComponent {
       return;
     }
 
-    this.isProcessing = true;
+  this.isProcessing = true;
+  // Ensure change detection runs so template bindings are consistent
+  this.cd.detectChanges();
 
     const userString = localStorage.getItem('user');
     let user: any = null;
@@ -119,19 +125,26 @@ export class PaymentComponent {
           alert('Payment successful! Booking now...');
 
           // Send booking (with email, paymentMethod, totalAmount) to reserve endpoint
-          this.http.post('http://localhost:8066/api/bookings/reserve', this.bookingDetails)
-            .subscribe({
-              next: (response: any) => {
-                alert(response.message || 'Room booked and email sent successfully!');
-                this.isProcessing = false;
-                this.router.navigate(['/dashboard']);
-              },
-              error: (err) => {
-                alert('Booking failed after payment. Please contact support.');
-                console.error(err);
-                this.isProcessing = false;
+          this.userService.reserveRoom(this.bookingDetails).subscribe({
+            next: (response: any) => {
+              // The backend returns plain text; try to parse if it's JSON-like
+              try {
+                const parsed = typeof response === 'string' ? JSON.parse(response) : response;
+                alert(parsed.message || 'Room booked and email sent successfully!');
+              } catch {
+                alert(response || 'Room booked and email sent successfully!');
               }
-            });
+              this.isProcessing = false;
+              this.cd.detectChanges();
+              this.router.navigate(['/dashboard']);
+            },
+            error: (err) => {
+              alert('Booking failed after payment. Please contact support.');
+              console.error(err);
+              this.isProcessing = false;
+              this.cd.detectChanges();
+            }
+          });
         },
         error: (err) => {
           alert('Payment failed. Booking not attempted.');

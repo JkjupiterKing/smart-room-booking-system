@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HotelService } from '../hotel/hotel.service';
 import { Hotel } from '../search-results.service';
 import { UserNavbarComponent } from '../user-navbar/user-navbar.component';
@@ -22,7 +22,21 @@ export class HotelDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private hotelService: HotelService
+    ,
+    private router: Router
   ) { }
+
+  bookNow(): void {
+    if (!this.hotel) {
+      alert('No hotel selected');
+      return;
+    }
+
+  const city = this.hotel.location?.city || '';
+  const hotelId = this.hotel.id;
+  // Navigate to the room booking component and pass the city and hotelId as query params
+  this.router.navigate(['/user/roombooking'], { queryParams: { location: city, hotelId } });
+  }
 
   ngOnInit(): void {
     this.checkUserStatus();
