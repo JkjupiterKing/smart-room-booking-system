@@ -1,3 +1,16 @@
+<!-- Navigation Bar -->
+<div *ngIf="isLoggedIn">
+  <app-admin-navbar *ngIf="userRole === 'admin'"></app-admin-navbar>
+  <app-user-navbar *ngIf="userRole === 'user'"></app-user-navbar>
+</div>
+
+<nav class="navbar" *ngIf="!isLoggedIn">
+  <div class="navbar-logo">
+    <span class="logo-icon"><i class="fas fa-home"></i></span>
+    <span class="logo-text">QuickStay</span>
+  </div>
+</nav>
+
 <div class="hotel-details-container" *ngIf="hotel">
   <div class="hotel-card">
     <div class="hotel-image-container">
