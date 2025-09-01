@@ -4,13 +4,53 @@
 
 .header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center; /* center header content horizontally */
   align-items: center;
+  gap: 20px; /* space between title and button */
+  margin-top: 20px; /* create space below the navbar */
   margin-bottom: 20px;
 }
 
 .add-hotel-btn {
   background-color: #ff5722 !important;
+  /* Bigger, more prominent button */
+  padding: 12px 20px; /* vertical / horizontal padding */
+  font-size: 1.05rem;
+  min-width: 140px;
+  height: auto;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+  transform: translateY(0);
+}
+
+.add-hotel-btn .icon-left {
+  margin-right: 10px;
+  font-size: 20px; /* make the icon larger */
+}
+
+.add-hotel-label {
+  font-weight: 700;
+}
+
+/* Make the Add Hotel text and icon black */
+.add-hotel-btn .add-hotel-label {
+  color: #000 !important;
+}
+
+.add-hotel-btn .icon-left {
+  color: #000 !important;
+}
+
+/* Responsive: stack title and button on smaller screens */
+@media (max-width: 600px) {
+  .header {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .add-hotel-btn {
+    min-width: 160px;
+    padding: 10px 18px;
+  }
 }
 
 .hotel-grid {
