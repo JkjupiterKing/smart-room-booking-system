@@ -1,10 +1,22 @@
+/* Outer container and background */
+.roombooking-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  font-family: Arial, sans-serif;
+  /* Relevant background: main landing image with subtle gradient overlay */
+  background: linear-gradient(rgba(8, 28, 37, 0.45), rgba(8, 28, 37, 0.25)),
+    url('/assets/mainpage.png') no-repeat center center/cover;
+  background-attachment: fixed;
+}
+
+/* Inner content wrapper */
 .content {
   padding: 20px;
-}
-.roombooking-container {
-  font-family: Arial, sans-serif;
-  padding: 20px;
   max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
 }
 

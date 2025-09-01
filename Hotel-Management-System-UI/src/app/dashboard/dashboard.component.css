@@ -1,123 +1,90 @@
-/* Dashboard container to center everything */
-.dashboard {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background: url("../../assets/resort.jpg") no-repeat center center/cover;
-  font-family: "Arial", sans-serif;
-}
-
-/* Search Container Styling */
-.search-container {
-  text-align: center;
-  background: rgba(255, 255, 255, 0.9); /* Slight transparency */
-  padding: 40px;
-  border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-/* Location Search */
-.location-search {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-}
-
-/* Dropdown Styling */
-.location-search select {
-  padding: 15px;
-  font-size: 1.2rem;
-  border-radius: 25px;
-  border: 2px solid #ccc;
-  width: 300px;
-  transition: border-color 0.3s ease;
-}
-
-/* Search Button Styling */
-.location-search button {
-  padding: 15px 30px;
-  font-size: 1.2rem;
-  color: white;
-  background-color: #ff5722; /* Accent color */
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.location-search button:hover {
-  background-color: #e64a19; /* Darker shade of accent color */
-}
-/* Layout container: sidebar + main dashboard content side by side */
+/* Dashboard layout and background */
 .dashboard-container {
   display: flex;
   min-height: 100vh;
   font-family: "Arial", sans-serif;
-  background: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSIrDRQqqaF2Cy0B8nOJo6tROcNd1LSOBdUw&s")
-    no-repeat center center/cover;
+  /* Relevant background: main landing image with a subtle gradient overlay */
+  background: linear-gradient(rgba(8, 28, 37, 0.45), rgba(8, 28, 37, 0.25)),
+    url('/assets/mainpage.png') no-repeat center center/cover;
+  background-attachment: fixed;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
 }
 
-
-/* Main dashboard content takes remaining width */
+/* Inner dashboard area centers content */
 .dashboard {
-  flex: 1;
+  width: 100%;
+  max-width: 1100px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* Search Container Styling */
+/* Search Container Styling - card over the background */
 .search-container {
   text-align: center;
-  background: rgba(255, 255, 255, 0.9);
-  padding: 40px;
-  border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
+  background: rgba(255, 255, 255, 0.95); /* Slightly translucent for contrast */
+  padding: 36px 32px;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(2, 6, 23, 0.25);
+  max-width: 720px;
   width: 100%;
 }
 
 /* Title Styling */
 .search-title {
-  font-size: 2rem;
-  color: #333;
-  margin-bottom: 20px;
-  font-weight: 600;
+  font-size: 1.9rem;
+  color: #1b2b34;
+  margin-bottom: 18px;
+  font-weight: 700;
 }
 
-/* Location Search */
+/* Location Search layout */
 .location-search {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 15px;
+  gap: 14px;
   flex-wrap: wrap;
 }
 
 /* Dropdown Styling */
 .location-search select {
-  padding: 15px;
-  font-size: 1.2rem;
-  border-radius: 25px;
-  border: 2px solid #ccc;
-  width: 300px;
-  transition: border-color 0.3s ease;
+  padding: 12px 16px;
+  font-size: 1.05rem;
+  border-radius: 22px;
+  border: 1px solid #d6dfe6;
+  width: 280px;
+  transition: border-color 0.2s ease;
 }
 
 /* Search Button Styling */
 .location-search button {
-  padding: 15px 30px;
-  font-size: 1.2rem;
+  padding: 12px 26px;
+  font-size: 1.05rem;
   color: white;
-  background-color: #ff5722; /* Accent color */
+  background-color: #1976d2; /* Calmer blue accent */
   border: none;
-  border-radius: 25px;
+  border-radius: 22px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s ease, transform 0.08s ease;
 }
 
 .location-search button:hover {
-  background-color: #e64a19; /* Darker shade of accent color */
+  background-color: #155fa0;
+  transform: translateY(-1px);
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .location-search select {
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .search-container {
+    padding: 24px;
+    border-radius: 10px;
+  }
 }
