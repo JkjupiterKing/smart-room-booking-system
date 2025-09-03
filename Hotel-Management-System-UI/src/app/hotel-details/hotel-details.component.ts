@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HotelService } from '../hotel/hotel.service';
 import { Hotel } from '../search-results.service';
 import { UserNavbarComponent } from '../user-navbar/user-navbar.component';
@@ -9,11 +9,12 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { UserService } from '../user.service';
 import { AdminService } from '../admin.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { PublicNavbarComponent } from '../public-navbar/public-navbar.component';
 
 @Component({
   selector: 'app-hotel-details',
   standalone: true,
-  imports: [CommonModule, UserNavbarComponent, AdminNavbarComponent, FormsModule, RouterLink],
+  imports: [CommonModule, UserNavbarComponent, AdminNavbarComponent, FormsModule, PublicNavbarComponent],
   templateUrl: './hotel-details.component.html',
   styleUrls: ['./hotel-details.component.css']
 })
