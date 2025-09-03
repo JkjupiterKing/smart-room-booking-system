@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   ActivatedRoute,
-  Router,
-  RouterLink,
-  RouterLinkActive,
+  Router
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { SearchResultsService, Hotel } from '../search-results.service';
@@ -14,6 +12,7 @@ import { AdminService } from '../admin.service';
 import { UserNavbarComponent } from '../user-navbar/user-navbar.component';
 import { AdminNavbarComponent } from '../admin-navbar/admin-navbar.component';
 import { HttpErrorResponse } from '@angular/common/http';
+import { PublicNavbarComponent } from '../public-navbar/public-navbar.component';
 
 @Component({
   selector: 'app-search-results',
@@ -23,7 +22,7 @@ import { HttpErrorResponse } from '@angular/common/http';
     FormsModule,
     UserNavbarComponent,
     AdminNavbarComponent,
-    RouterLink,
+    PublicNavbarComponent,
   ],
   templateUrl: './search-results.component.html',
   styleUrls: ['./search-results.component.css'],
