@@ -4,17 +4,11 @@
   <app-user-navbar *ngIf="userRole === 'user'"></app-user-navbar>
 </div>
 
-<nav class="navbar" *ngIf="!isLoggedIn">
-  <div class="navbar-logo">
-    <span class="logo-icon"><i class="fas fa-home"></i></span>
-    <span class="logo-text">QuickStay</span>
-  </div>
-  <div class="navbar-actions">
-    <button class="navbar-login" routerLink="/landing-page">Search</button>
-    <button class="navbar-login" (click)="openLoginModal()">Login</button>
-    <button class="navbar-login" (click)="openRegisterModal()">Register</button>
-  </div>
-</nav>
+<app-public-navbar
+  *ngIf="!isLoggedIn"
+  (loginClicked)="openLoginModal()"
+  (registerClicked)="openRegisterModal()"
+></app-public-navbar>
 
 <div class="search-results-container">
   <div class="content">

@@ -1,0 +1,13 @@
+<nav class="navbar">
+  <div class="navbar-logo">
+    <span class="logo-icon"><i class="fas fa-home"></i></span>
+    <span class="logo-text">QuickStay</span>
+  </div>
+  <div class="navbar-actions">
+    <button class="navbar-login" routerLink="/landing-page">Search</button>
+    <button class="navbar-login" (click)="loginClicked.emit()">Login</button>
+    <button class="navbar-login" (click)="registerClicked.emit()">
+      Register
+    </button>
+  </div>
+</nav>
