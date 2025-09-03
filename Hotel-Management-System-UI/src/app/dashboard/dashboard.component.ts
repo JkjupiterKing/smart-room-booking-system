@@ -2,29 +2,24 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { SearchResultsService } from '../search-results.service';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  selectedLocation: string = '';
-  locations: string[] = [];  // Will hold list of city names
+  selectedCity: string = '';
+  locations: any[] = [];
   checkInDate: string = '';
   checkOutDate: string = '';
+  guestCount: number = 1;
   today: string = '';
   minCheckoutDate: string = '';
 
-  constructor(
-    private router: Router,
-    private http: HttpClient,
-    private searchResultsService: SearchResultsService
-  ) {}
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
     this.fetchLocations();
@@ -32,20 +27,14 @@ export class DashboardComponent implements OnInit {
   }
 
   fetchLocations(): void {
-    this.http.get<{ id: number, country: string | null, city: string }[]>(
-      'http://localhost:8066/api/locations/all'
-    ).subscribe({
-      next: (data) => {
-        // Map API response to extract only city names
-        this.locations = data
-          .map(item => item.city)
-          .filter(city => !!city); // Filter out null/undefined
-      },
-      error: (err) => {
-        console.error('Failed to fetch cities:', err);
-        alert('Could not load city list. Please try again later.');
-      }
-    });
+    fetch('http://localhost:8066/api/locations/all')
+      .then((res) => res.json())
+      .then((data) => {
+        this.locations = data;
+      })
+      .catch((error) => {
+        console.error('Error fetching locations:', error);
+      });
   }
 
   setTodayDate(): void {
@@ -67,17 +56,18 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  searchLocation() {
-    if (this.selectedLocation) {
-      this.router.navigate(['/search-results'], {
-        queryParams: {
-          city: this.selectedLocation,
-          checkIn: this.checkInDate,
-          checkOut: this.checkOutDate,
-        },
-      });
-    } else {
-      alert('Please select a location first!');
+  onSearchHotels(): void {
+    if (!this.selectedCity || !this.checkInDate || !this.checkOutDate) {
+      alert('Please select a destination, check-in and check-out dates.');
+      return;
     }
+
+    this.router.navigate(['/search-results'], {
+      queryParams: {
+        city: this.selectedCity,
+        checkIn: this.checkInDate,
+        checkOut: this.checkOutDate,
+      },
+    });
   }
 }
