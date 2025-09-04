@@ -2,7 +2,7 @@ import { Hotel } from './hotel/hotel.model';
 
 export interface Room {
   roomId?: number;
-  hotel: Hotel;
+  hotel: Hotel | null;
   roomType: string;
   capacity: number;
   pricePerNight: number;
