@@ -6,6 +6,7 @@ import { PaymentComponent } from './payment/payment.component';
 import { LocationComponent } from './location/location.component';
 import { HotelManagementComponent } from './hotel-management/hotel-management.component';
 import { RoomTypeManagementComponent } from './room-type-management/room-type-management.component';
+import { RoomManagementComponent } from './room-management/room-management.component';
 import { BookingManagementComponent } from './booking-management/booking-management.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { RoomBookingAiAgentComponent } from './room-booking-ai-agent/room-booking-ai-agent.component';
@@ -38,6 +39,7 @@ export const routes: Routes = [
       { path: 'dashboard', component: AdminDashboardComponent },
       { path: 'locations', component: LocationComponent },
       { path: 'room-types', component: RoomTypeManagementComponent },
+      { path: 'rooms', component: RoomManagementComponent },
       { path: 'booking-management', component: BookingManagementComponent },
       { path: 'hotel-management', component: HotelManagementComponent },
     ],
