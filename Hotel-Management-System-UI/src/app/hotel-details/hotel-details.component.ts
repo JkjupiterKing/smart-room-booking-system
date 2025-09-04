@@ -23,6 +23,7 @@ export class HotelDetailsComponent implements OnInit {
 
   hotel: Hotel | undefined;
   images: string[] = [];
+  selectedImage: string = ''; // Property to hold the main image
   isLoggedIn: boolean = false;
   userRole: string | null = null;
   isLoginModalOpen: boolean = false;
@@ -107,6 +108,10 @@ export class HotelDetailsComponent implements OnInit {
   pushIf((hotel as any).imageBase64_3);
   pushIf((hotel as any).imageBase64_4);
   pushIf((hotel as any).imageBase64_5);
+
+        if (this.images.length > 0) {
+          this.selectedImage = this.images[0]; // Set the first image as the selected one
+        }
       });
     }
   }
@@ -122,6 +127,11 @@ export class HotelDetailsComponent implements OnInit {
     else if (sig.startsWith('/9j/')) { mime = 'jpeg'; }
     else if (sig.toLowerCase().includes('png')) { mime = 'png'; }
     return `data:image/${mime};base64,${b64}`;
+  }
+
+  // Method to change the selected image
+  selectImage(image: string): void {
+    this.selectedImage = image;
   }
 
   checkUserStatus(): void {
