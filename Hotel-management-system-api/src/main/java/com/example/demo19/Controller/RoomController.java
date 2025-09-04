@@ -29,7 +29,7 @@ public class RoomController {
     public ResponseEntity<Map<String, Boolean>> checkAvailability(@RequestBody AvailabilityCheckRequest request) {
         Optional<HotelRoom> roomOptional = hotelRoomRepository.findById(request.getRoomId());
         if (roomOptional.isEmpty()) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.ok(Collections.singletonMap("available", false));
         }
         HotelRoom room = roomOptional.get();
 
