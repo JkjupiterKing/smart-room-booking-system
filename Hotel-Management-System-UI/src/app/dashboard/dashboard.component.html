@@ -1,51 +1,76 @@
-<div class="dashboard-container">
-  <!-- Main dashboard content -->
-  <div class="dashboard">
-    <!-- Search Container -->
-    <div class="search-container">
-      <p class="search-title">Search for Your Stay</p>
-
-      <!-- Search Form -->
-      <div class="location-search">
-        <!-- Destination -->
-        <div class="search-field">
-          <label for="location" class="location-label">Choose a City:</label>
-          <select id="location" [(ngModel)]="selectedLocation">
-            <option value="" disabled>Select a Location</option>
-            <option *ngFor="let location of locations" [value]="location">
-              {{ location }}
-            </option>
-          </select>
-        </div>
-
-        <!-- Check-in Date -->
-        <div class="search-field">
-          <label for="checkin" class="location-label">Check-in:</label>
-          <input
-            type="date"
-            id="checkin"
-            [(ngModel)]="checkInDate"
-            [min]="today"
-            (change)="updateMinCheckoutDate()"
-          />
-        </div>
-
-        <!-- Check-out Date -->
-        <div class="search-field">
-          <label for="checkout" class="location-label">Check-out:</label>
-          <input
-            type="date"
-            id="checkout"
-            [(ngModel)]="checkOutDate"
-            [min]="minCheckoutDate"
-          />
-        </div>
-
-        <!-- Search Button -->
-        <button (click)="searchLocation()" [disabled]="!selectedLocation">
-          Search
-        </button>
-      </div>
-    </div>
+<!-- Animated Hero Text -->
+<div class="hero-section">
+  <div class="hero-text">
+    Discover Your Perfect <br />
+    Gateway Destination <br />
+    <span class="hero-subtext">
+      Unparalleled luxury and comfort await at the world's most exclusive <br />
+      hotels and resorts. Start your journey today.
+    </span>
   </div>
 </div>
+
+<!-- Badge and Search Bar below Hero Text -->
+<div class="hero-badge">The Ultimate Hotel Experience</div>
+<div class="search-bar-container">
+  <form class="search-bar" (ngSubmit)="onSearchHotels()" #searchForm="ngForm">
+    <div class="search-field">
+      <span class="search-icon"><i class="fa fa-map-marker-alt"></i></span>
+      <label>
+        Destination
+        <select
+          [(ngModel)]="selectedCity"
+          name="destination"
+          class="destination-select"
+        >
+          <option value="" disabled selected>Select a destination</option>
+          <option *ngFor="let loc of locations" [value]="loc.city">
+            {{ loc.city }}
+          </option>
+        </select>
+      </label>
+    </div>
+
+    <!-- Check-in Date -->
+    <div class="search-field">
+      <span class="search-icon"><i class="fa fa-calendar-check"></i></span>
+      <label>
+        Check-in
+        <input
+          type="date"
+          name="checkin"
+          [(ngModel)]="checkInDate"
+          [min]="today"
+          (change)="updateMinCheckoutDate()"
+        />
+      </label>
+    </div>
+
+    <!-- Check-out Date -->
+    <div class="search-field">
+      <span class="search-icon"><i class="fa fa-calendar-times"></i></span>
+      <label>
+        Check-out
+        <input
+          type="date"
+          name="checkout"
+          [(ngModel)]="checkOutDate"
+          [min]="minCheckoutDate"
+        />
+      </label>
+    </div>
+
+    <div class="search-field">
+      <label>
+        Guests
+        <input type="number" min="0" placeholder="0" />
+      </label>
+    </div>
+    <button class="search-btn" type="submit">
+      <span class="search-btn-icon"><i class="fa fa-search"></i></span> Search
+    </button>
+  </form>
+</div>
+
+<br />
+<br />
