@@ -10,6 +10,7 @@ import { UserService } from '../user.service';
 import { AdminService } from '../admin.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PublicNavbarComponent } from '../public-navbar/public-navbar.component';
+import { RoomService } from './room.service';
 
 @Component({
   selector: 'app-hotel-details',
@@ -31,6 +32,12 @@ export class HotelDetailsComponent implements OnInit {
   successMessage: string = '';
   errorMessage: string = '';
 
+  checkInDate: string = '';
+  checkOutDate: string = '';
+  guests: number = 1;
+  availabilityChecked: boolean = false;
+  isAvailable: boolean = false;
+
   user = {
     name: '',
     email: '',
@@ -42,8 +49,29 @@ export class HotelDetailsComponent implements OnInit {
     private hotelService: HotelService,
     private router: Router,
     private userService: UserService,
-    private adminService: AdminService
+    private adminService: AdminService,
+    private roomService: RoomService
   ) { }
+
+  checkAvailability(): void {
+    if (!this.hotel) {
+      alert('No hotel selected');
+      return;
+    }
+
+    const request = {
+      hotelId: this.hotel.id,
+      roomId: 1, // Assuming a default room ID for now
+      checkInDate: this.checkInDate,
+      checkOutDate: this.checkOutDate,
+      guests: this.guests
+    };
+
+    this.roomService.checkAvailability(request).subscribe(response => {
+      this.isAvailable = response.available;
+      this.availabilityChecked = true;
+    });
+  }
 
   bookNow(): void {
     if (!this.hotel) {

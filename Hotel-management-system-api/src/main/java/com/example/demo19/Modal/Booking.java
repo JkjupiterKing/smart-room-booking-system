@@ -22,6 +22,10 @@ public class Booking {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "room_id")
+    private HotelRoom room;
+
     private String paymentMethod;
     private double totalAmount;
 
@@ -116,5 +120,13 @@ public class Booking {
 
     public void setUser(User user) { // Setter for user
         this.user = user;
+    }
+
+    public HotelRoom getRoom() {
+        return room;
+    }
+
+    public void setRoom(HotelRoom room) {
+        this.room = room;
     }
 }

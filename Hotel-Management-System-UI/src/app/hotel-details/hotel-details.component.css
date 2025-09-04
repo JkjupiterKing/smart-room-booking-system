@@ -144,6 +144,56 @@
   background-color: #0056b3;
 }
 
+/* Check Availability Section */
+.check-availability-container {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+}
+
+.availability-form {
+  display: flex;
+  gap: 15px;
+  align-items: flex-end;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.availability-form button {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.availability-form button:hover {
+  background-color: #218838;
+}
+
+.not-available-message {
+  color: #dc3545;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
 /* Responsive rules */
 @media (max-width: 1200px) {
   .main-content-grid {
