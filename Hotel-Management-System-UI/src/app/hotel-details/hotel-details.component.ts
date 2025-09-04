@@ -27,6 +27,7 @@ export class HotelDetailsComponent implements OnInit {
   isLoginModalOpen: boolean = false;
   isRegisterModalOpen: boolean = false;
   registrationSuccess: boolean = false;
+  isBookingFlow: boolean = false;
   successMessage: string = '';
   errorMessage: string = '';
 
@@ -50,10 +51,14 @@ export class HotelDetailsComponent implements OnInit {
       return;
     }
 
-  const city = this.hotel.location?.city || '';
-  const hotelId = this.hotel.id;
-  // Navigate to the room booking component and pass the city and hotelId as query params
-  this.router.navigate(['/user/roombooking'], { queryParams: { location: city, hotelId } });
+    if (this.isLoggedIn) {
+      const city = this.hotel.location?.city || '';
+      const hotelId = this.hotel.id;
+      this.router.navigate(['/user/roombooking'], { queryParams: { location: city, hotelId } });
+    } else {
+      this.isBookingFlow = true;
+      this.openLoginModal();
+    }
   }
 
   ngOnInit(): void {
@@ -139,26 +144,39 @@ export class HotelDetailsComponent implements OnInit {
             localStorage.setItem('user', JSON.stringify(response.user));
             localStorage.setItem('role', 'user');
           }
-
           this.successMessage = 'Login successful!';
-          this.router
-            .navigate(['/user/dashboard'])
-            .then(() => window.location.reload());
           this.closeLoginModal();
           loginForm.reset();
+
+          if (this.isBookingFlow) {
+            this.isBookingFlow = false; // Reset the flag
+            const city = this.hotel?.location?.city || '';
+            const hotelId = this.hotel?.id;
+            this.router.navigate(['/user/roombooking'], { queryParams: { location: city, hotelId } });
+          } else {
+            this.router
+              .navigate(['/user/dashboard'])
+              .then(() => window.location.reload());
+          }
         },
         error: (userError: HttpErrorResponse) => {
           this.adminService.loginAdmin(username, password).subscribe({
             next: () => {
               localStorage.setItem('admin', JSON.stringify({ username }));
               localStorage.setItem('role', 'admin');
-
               this.successMessage = 'Admin login successful!';
-              this.router
-                .navigate(['/admin/dashboard'])
-                .then(() => window.location.reload());
               this.closeLoginModal();
               loginForm.reset();
+
+              if (this.isBookingFlow) {
+                this.isBookingFlow = false; // Reset the flag, though admins typically don't book
+                alert("Admin users cannot book rooms. Redirecting to dashboard.");
+                this.router.navigate(['/admin/dashboard']).then(() => window.location.reload());
+              } else {
+                this.router
+                  .navigate(['/admin/dashboard'])
+                  .then(() => window.location.reload());
+              }
             },
             error: () => {
               this.errorMessage =
