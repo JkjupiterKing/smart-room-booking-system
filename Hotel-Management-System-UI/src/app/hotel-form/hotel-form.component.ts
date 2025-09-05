@@ -54,7 +54,9 @@ export class HotelFormComponent implements OnInit {
       location: [data.hotel?.location?.id || '', Validators.required], // store locationId
       price: [data.hotel?.price || '', Validators.required],
       rating: [data.hotel?.rating || '', Validators.required],
-      description: [data.hotel?.description || '']
+      description: [data.hotel?.description || ''],
+      latitude: [data.hotel?.latitude || '', [Validators.required, Validators.min(-90), Validators.max(90)]],
+      longitude: [data.hotel?.longitude || '', [Validators.required, Validators.min(-180), Validators.max(180)]]
     });
   }
 
@@ -90,7 +92,9 @@ export class HotelFormComponent implements OnInit {
         description: hotelData.description,
         price: hotelData.price,
         rating: hotelData.rating,
-        location: selectedLocation // ✅ send full object
+        location: selectedLocation, // ✅ send full object
+        latitude: hotelData.latitude,
+        longitude: hotelData.longitude
       };
 
       formData.append('hotel', new Blob([JSON.stringify(hotelPayload)], { type: 'application/json' }));

@@ -11,15 +11,20 @@ import { AdminService } from '../admin.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PublicNavbarComponent } from '../public-navbar/public-navbar.component';
 import { RoomService } from './room.service';
+import { LeafletModule } from '@bluehalo/ngx-leaflet';
+import { latLng, tileLayer, marker } from 'leaflet';
 
 @Component({
   selector: 'app-hotel-details',
   standalone: true,
-  imports: [CommonModule, UserNavbarComponent, AdminNavbarComponent, FormsModule, PublicNavbarComponent],
+  imports: [CommonModule, UserNavbarComponent, AdminNavbarComponent, FormsModule, PublicNavbarComponent, LeafletModule],
   templateUrl: './hotel-details.component.html',
   styleUrls: ['./hotel-details.component.css']
 })
 export class HotelDetailsComponent implements OnInit {
+  tileLayer = tileLayer;
+  latLng = latLng;
+  marker = marker;
 
   hotel: Hotel | undefined;
   images: string[] = [];

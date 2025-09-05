@@ -38,11 +38,14 @@ public class Hotel {
     @JoinColumn(name = "location_id")
     private Location location;
 
+    private Double longitude;
+    private Double latitude;
+
     // Constructors
     public Hotel() {
     }
 
-    public Hotel(String name, String description, double price, double rating, byte[] image, byte[] image2, byte[] image3, byte[] image4, byte[] image5, Location location) {
+    public Hotel(String name, String description, double price, double rating, byte[] image, byte[] image2, byte[] image3, byte[] image4, byte[] image5, Location location, Double longitude, Double latitude) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -53,9 +56,11 @@ public class Hotel {
         this.image4 = image4;
         this.image5 = image5;
         this.location = location;
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
 
-    public Hotel(Long id, String name, String description, double price, double rating, byte[] image, byte[] image2, byte[] image3, byte[] image4, byte[] image5, Location location) {
+    public Hotel(Long id, String name, String description, double price, double rating, byte[] image, byte[] image2, byte[] image3, byte[] image4, byte[] image5, Location location, Double longitude, Double latitude) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -67,9 +72,27 @@ public class Hotel {
         this.image4 = image4;
         this.image5 = image5;
         this.location = location;
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
 
     // Getters and Setters
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
 
     public Long getId() {
         return id;

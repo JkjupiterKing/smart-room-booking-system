@@ -12,4 +12,6 @@ export interface Hotel {
   image4: any;
   image5: any;
   location: Location;
+  longitude?: number;
+  latitude?: number;
 }

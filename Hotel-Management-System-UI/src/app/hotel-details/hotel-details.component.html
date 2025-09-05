@@ -91,6 +91,25 @@
       </ng-template>
     </div>
   </div>
+
+  <!-- Location Map Section -->
+  <div class="location-map-container" *ngIf="hotel && hotel.latitude && hotel.longitude">
+    <h2>Location Map</h2>
+    <div class="map-wrapper">
+      <div leaflet [leafletOptions]="{
+        layers: [
+          tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '© OpenStreetMap contributors'
+          })
+        ],
+        zoom: 13,
+        center: latLng(hotel.latitude, hotel.longitude)
+      }">
+        <div [leafletLayer]="marker([hotel.latitude, hotel.longitude])"></div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Login Modal -->
