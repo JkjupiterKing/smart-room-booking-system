@@ -12,6 +12,9 @@ import java.util.List;
 public interface HotelRepository extends JpaRepository<Hotel, Long> {
     List<Hotel> findByLocation_CityIgnoreCase(String city);
 
-    @Query("SELECT new com.example.demo19.dto.HotelSimpleDTO(h.id, h.name, h.description, h.price, h.rating, new com.example.demo19.dto.LocationDTO(h.location.id, h.location.city, h.location.country)) FROM Hotel h")
+    @Query("SELECT new com.example.demo19.dto.HotelSimpleDTO(" +
+            "h.id, h.name, h.description, h.price, h.rating, " +
+            "h.location.id, h.location.city, h.location.country) " +
+            "FROM Hotel h")
     List<HotelSimpleDTO> findAllSimplified();
 }

@@ -8,6 +8,7 @@ import com.example.demo19.Modal.Location;
 import com.example.demo19.Repository.HotelRepository;
 import com.example.demo19.Repository.LocationRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -245,12 +246,14 @@ public class HotelController {
     @PostMapping("/ai-search")
     public Mono<ResponseEntity<List<Long>>> aiSearch(@RequestBody Map<String, String> request) {
         String userQuery = request.get("query");
+        System.out.println("userQuery = " + userQuery);
         List<HotelSimpleDTO> hotels = hotelRepository.findAllSimplified();
-
+        System.out.println("hotels = " + hotels);
         String hotelsJson;
         try {
             hotelsJson = convertDTOListToJson(hotels);
         } catch (JsonProcessingException e) {
+            e.printStackTrace();
             return Mono.just(ResponseEntity.status(500).body(Collections.<Long>emptyList()));
         }
 
@@ -266,14 +269,20 @@ public class HotelController {
                 .bodyToMono(Map.class)
                 .map(response -> {
                     try {
+                        System.out.println("HotelController.aiSearch");
+                        System.out.println("response = " + response);
                         List<Map<String, Object>> candidates = (List<Map<String, Object>>) response.get("candidates");
                         Map<String, Object> content = (Map<String, Object>) candidates.get(0).get("content");
                         List<Map<String, Object>> parts = (List<Map<String, Object>>) content.get("parts");
                         String text = (String) parts.get(0).get("text");
+                        System.out.println("text = " + text);
                         // Assuming the response is a JSON array of numbers, e.g., "[1, 2, 3]"
-                        List<Long> hotelIds = new ObjectMapper().readValue(text.replaceAll("[^0-9,]", ""), new com.fasterxml.jackson.core.type.TypeReference<List<Long>>() {});
+//                        List<Long> hotelIds = new ObjectMapper().readValue(text.replaceAll("[^0-9,]", ""), new TypeReference<List<Long>>() {});
+                        List<Long> hotelIds = new ObjectMapper()
+                                .readValue(text, new TypeReference<List<Long>>() {});
                         return ResponseEntity.ok(hotelIds);
                     } catch (Exception e) {
+                        e.printStackTrace();
                         return ResponseEntity.status(500).body(Collections.<Long>emptyList());
                     }
                 })

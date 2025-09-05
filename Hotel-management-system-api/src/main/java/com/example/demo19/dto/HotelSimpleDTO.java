@@ -5,37 +5,63 @@ public class HotelSimpleDTO {
     private Long id;
     private String name;
     private String description;
-    private double price;
-    private double rating;
-    private LocationDTO location;
+    private Double price;
+    private Double rating;
 
-    public HotelSimpleDTO() {
-    }
+    private Long locationId;
+    private String city;
+    private String country;
 
-    public HotelSimpleDTO(Long id, String name, String description, double price, double rating, LocationDTO location) {
+    public HotelSimpleDTO(Long id, String name, String description, Double price, Double rating,
+                          Long locationId, String city, String country) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.rating = rating;
-        this.location = location;
+        this.locationId = locationId;
+        this.city = city;
+        this.country = country;
     }
 
-    // Getters and Setters
-    public Long getId() {
-        return id;
+    public String getCountry() {
+        return country;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
-    public String getName() {
-        return name;
+    public String getCity() {
+        return city;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public Long getLocationId() {
+        return locationId;
+    }
+
+    public void setLocationId(Long locationId) {
+        this.locationId = locationId;
+    }
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public String getDescription() {
@@ -46,27 +72,33 @@ public class HotelSimpleDTO {
         this.description = description;
     }
 
-    public double getPrice() {
-        return price;
+    public String getName() {
+        return name;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public double getRating() {
-        return rating;
+    public Long getId() {
+        return id;
     }
 
-    public void setRating(double rating) {
-        this.rating = rating;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public LocationDTO getLocation() {
-        return location;
-    }
-
-    public void setLocation(LocationDTO location) {
-        this.location = location;
+    @Override
+    public String toString() {
+        return "HotelSimpleDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", rating=" + rating +
+                ", locationId=" + locationId +
+                ", city='" + city + '\'' +
+                ", country='" + country + '\'' +
+                '}';
     }
 }
