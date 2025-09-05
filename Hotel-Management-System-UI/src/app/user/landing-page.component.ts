@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AiSearchService } from '../ai-search.service';
+import { Hotel } from '../search-results.service';
 
 @Component({
   selector: 'app-landing-page',
@@ -17,6 +18,7 @@ import { AiSearchService } from '../ai-search.service';
   styleUrls: ['./landing-page.component.css']
 })
 export class LandingPageComponent implements OnInit {
+  hotels: Hotel[] = [];
   // Modal states
   isLoginModalOpen: boolean = false;
   isRegisterModalOpen: boolean = false;
@@ -111,6 +113,10 @@ export class LandingPageComponent implements OnInit {
         checkOut: this.checkOutDate,
       },
     });
+  }
+
+  onReserve(hotel: Hotel): void {
+    this.router.navigate(['/hotel-details', hotel.id]);
   }
 
   onAiSearch(): void {

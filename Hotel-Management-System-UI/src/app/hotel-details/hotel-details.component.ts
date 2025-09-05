@@ -27,7 +27,7 @@ export class HotelDetailsComponent implements OnInit {
   marker = marker;
   icon = icon;
 
-  map: Map;
+  map!: Map;
   hotel: Hotel | undefined;
   images: string[] = [];
   selectedImage: string = ''; // Property to hold the main image
