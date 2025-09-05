@@ -220,6 +220,11 @@
   overflow: hidden;
 }
 
+/* Fix for map container height */
+.map-wrapper > div {
+  height: 100%;
+}
+
 /* Responsive rules */
 @media (max-width: 1200px) {
   .main-content-grid {
