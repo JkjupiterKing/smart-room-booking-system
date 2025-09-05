@@ -12,7 +12,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { PublicNavbarComponent } from '../public-navbar/public-navbar.component';
 import { RoomService } from './room.service';
 import { LeafletModule } from '@bluehalo/ngx-leaflet';
-import { latLng, tileLayer, marker } from 'leaflet';
+import { latLng, tileLayer, marker, icon } from 'leaflet';
 
 @Component({
   selector: 'app-hotel-details',
@@ -25,6 +25,7 @@ export class HotelDetailsComponent implements OnInit {
   tileLayer = tileLayer;
   latLng = latLng;
   marker = marker;
+  icon = icon;
 
   hotel: Hotel | undefined;
   images: string[] = [];

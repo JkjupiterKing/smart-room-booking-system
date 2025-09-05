@@ -106,7 +106,14 @@
         zoom: 13,
         center: latLng(hotel.latitude, hotel.longitude)
       }">
-        <div [leafletLayer]="marker([hotel.latitude, hotel.longitude])"></div>
+        <div [leafletLayer]="marker([hotel.latitude, hotel.longitude], {
+          icon: icon({
+            iconSize: [ 25, 41 ],
+            iconAnchor: [ 13, 41 ],
+            iconUrl: 'assets/marker-icon.png',
+            shadowUrl: 'assets/marker-shadow.png'
+          })
+        })"></div>
       </div>
     </div>
   </div>
