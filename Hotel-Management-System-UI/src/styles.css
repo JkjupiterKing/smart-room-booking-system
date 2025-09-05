@@ -2,3 +2,146 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Ensure AI search container doesn't get pinned to screen corners by other styles */
+.ai-search-container {
+  position: relative !important;
+  left: auto !important;
+  bottom: auto !important;
+  margin: 2.4rem auto 2rem !important; /* match larger gaps */
+  display: flex;
+  justify-content: center;
+}
+
+/* Full container styling so landing-page shows the prominent centered AI search */
+.ai-search-container {
+  gap: 1.6rem;
+  z-index: 1200;
+  width: 84%;
+  max-width: 980px;
+  background: rgba(0, 0, 0, 0.38);
+  padding: 24px 28px;
+  border-radius: 44px;
+  box-shadow: 0 18px 60px rgba(0,0,0,0.55);
+  align-items: center;
+}
+
+/* Stronger, landing-page specific rules to ensure proper placement */
+.hero-section .ai-search-container {
+  display: flex !important;
+  position: relative !important;
+  margin: 2.4rem auto 2rem !important;
+  left: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  justify-content: center !important;
+  width: 84% !important;
+  max-width: 980px !important;
+  background: rgba(0,0,0,0.38) !important;
+  padding: 24px 28px !important;
+  border-radius: 44px !important;
+  box-shadow: 0 18px 60px rgba(0,0,0,0.55) !important;
+}
+
+.hero-section .ai-search-input { max-width: 720px !important; width: 100% !important; }
+.hero-section .ai-search-btn { margin-left: 16px !important; }
+
+/* Make the traditional search panel clearly white and above the hero background */
+.search-bar-container {
+  background: #ffffff !important; /* solid white */
+  color: #222 !important;
+  padding: 28px 36px !important;
+  border-radius: 20px !important;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.15) !important;
+  z-index: 1250 !important; /* sit above hero overlay */
+  width: 78% !important;
+  max-width: 975px !important;
+}
+
+/* Inputs and selects inside the white panel should be dark text on white */
+.search-bar-container .destination-select,
+.search-bar-container input[type="date"],
+.search-bar-container input[type="number"],
+.search-bar-container input[type="text"] {
+  background: #fff !important;
+  color: #222 !important;
+  border: 1px solid #dcdcdc !important;
+}
+
+/* Make the search button highly visible */
+.search-bar-container .search-btn,
+.search-btn {
+  background: #f1c40f !important;
+  color: #000 !important;
+  border: none !important;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12) !important;
+}
+
+/* Ensure the white panel doesn't become translucent due to inheritance */
+.hero-section .search-bar-container { background: #fff !important; }
+
+/* Global AI search input/button styling (landing page uses component CSS but ensure consistency) */
+.ai-search-input {
+  width: 100%;
+  max-width: 720px;
+  padding: 18px 22px;
+  border-radius: 32px;
+  border: 1px solid rgba(255,255,255,0.85);
+  background: transparent;
+  color: #fff;
+  font-size: 1.15rem;
+}
+
+.ai-search-input::placeholder { color: rgba(255,255,255,0.7); }
+
+.ai-search-btn {
+  margin-left: 16px;
+  padding: 14px 36px;
+  border-radius: 28px;
+  border: none;
+  background: linear-gradient(45deg,#f39c12,#f1c40f);
+  color: #fff;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 350px;
+  text-align: center;
+  color: black;
+}
+
+.modal-content input {
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.modal-content button {
+  width: 100%;
+  padding: 10px;
+  background: #f1c40f;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}

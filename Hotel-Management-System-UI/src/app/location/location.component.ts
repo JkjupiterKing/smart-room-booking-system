@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms'; // Import ReactiveFormsModule and form related classes
-import { SidebarComponent } from '../sidebar/sidebar.component';
 
 interface Location {
   id?: number;
@@ -13,7 +12,7 @@ interface Location {
 @Component({
   selector: 'app-location',
   standalone: true,
-  imports: [CommonModule, FormsModule, SidebarComponent, ReactiveFormsModule], // Add ReactiveFormsModule here
+  imports: [CommonModule, FormsModule, ReactiveFormsModule], // Add ReactiveFormsModule here
   templateUrl: './location.component.html',
   styleUrls: ['./location.component.css']
 })

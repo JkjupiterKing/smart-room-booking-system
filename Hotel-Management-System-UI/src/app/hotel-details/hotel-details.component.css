@@ -1,0 +1,242 @@
+.hotel-details-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-image: url('../../assets/resort1.jpg');
+  background-size: cover;
+  background-position: center;
+  padding: 10px;
+}
+
+.hotel-card {
+  display: block;
+  background-color: rgba(255, 255, 255, 0.98);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  width: min(95vw, 1400px);
+  max-width: 1400px;
+}
+
+.hotel-header {
+  text-align: center;
+  padding: 18px 20px 6px 20px;
+  background: transparent;
+}
+
+.hotel-header .hotel-name {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.hotel-header .hotel-rating { margin-top: 6px; }
+
+.main-content-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 30px;
+  padding: 20px;
+}
+
+.images-grid {
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: 10px;
+}
+
+.main-image {
+  width: 100%;
+  height: 400px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.main-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumbnail-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px;
+}
+
+.thumbnail-card {
+  width: 100%;
+  height: 80px;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.3s;
+}
+
+.thumbnail-card.selected {
+  border-color: #007bff;
+}
+
+.thumbnail-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hotel-info {
+  padding: 10px;
+  background: #fdfdfd;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.hotel-name {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.hotel-rating {
+  margin-bottom: 20px;
+}
+
+.star {
+  color: #ffc107;
+  font-size: 1.5rem;
+}
+
+.hotel-description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.hotel-amenities {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.amenity {
+  background-color: #e7f3ff;
+  color: #007bff;
+  padding: 8px 12px;
+  border-radius: 20px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+}
+
+.amenity i {
+  margin-right: 5px;
+}
+
+.hotel-price {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.book-now-btn {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.book-now-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Check Availability Section */
+.check-availability-container {
+  width: min(95vw, 1400px);
+  margin-top: 20px;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.98);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.availability-form {
+  display: flex;
+  gap: 15px;
+  align-items: flex-end;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.availability-form button {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.availability-form button:hover {
+  background-color: #218838;
+}
+
+.not-available-message {
+  color: #dc3545;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+/* Responsive rules */
+@media (max-width: 1200px) {
+  .main-content-grid {
+    grid-template-columns: 1fr; /* Stack columns on smaller screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .main-image {
+    height: 300px;
+  }
+  .thumbnail-images {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  }
+  .hotel-info {
+    padding: 20px;
+  }
+  .hotel-header .hotel-name {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-image {
+    height: 200px;
+  }
+  .main-content-grid {
+    padding: 10px;
+  }
+  .hotel-header {
+    padding: 12px 15px 4px 15px;
+  }
+  .hotel-header .hotel-name {
+    font-size: 1.5rem;
+  }
+}

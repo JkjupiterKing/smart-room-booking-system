@@ -1,0 +1,74 @@
+<div class="room-container">
+  <h2>Manage Rooms</h2>
+
+  <div class="table-view" *ngIf="!showAddRoomModal">
+    <div class="actions-container">
+      <button (click)="showAddForm()" class="add-button">Add New Room</button>
+    </div>
+
+    <div class="table-container">
+      <h3>Existing Rooms</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Hotel Name</th>
+            <th>Room Type</th>
+            <th>Capacity</th>
+            <th>Price per Night</th>
+            <th>Total Rooms</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let room of rooms">
+            <td>{{ room.hotel?.name }}</td>
+            <td>{{ room.roomType }}</td>
+            <td>{{ room.capacity }}</td>
+            <td>{{ room.pricePerNight }}</td>
+            <td>{{ room.totalRooms }}</td>
+            <td>
+              <button (click)="editRoom(room)" class="edit-button">Edit</button>
+              <button (click)="deleteRoom(room.roomId!)" class="delete-button">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="form-view" *ngIf="showAddRoomModal">
+    <div class="form-container">
+      <h3>{{ selectedRoom.roomId ? 'Update Room' : 'Add New Room' }}</h3>
+      <form (ngSubmit)="saveRoom()">
+        <div class="form-group">
+          <label for="hotel">Hotel:</label>
+          <select id="hotel" [(ngModel)]="selectedRoom.hotel" name="hotel" required>
+            <option *ngFor="let hotel of hotels" [ngValue]="hotel">{{ hotel.name }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="roomType">Room Type:</label>
+          <select id="roomType" [(ngModel)]="selectedRoom.roomType" name="roomType" required>
+            <option *ngFor="let type of roomTypes" [value]="type.name">{{ type.name }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="capacity">Capacity:</label>
+          <input id="capacity" type="number" [(ngModel)]="selectedRoom.capacity" name="capacity" required />
+        </div>
+        <div class="form-group">
+          <label for="pricePerNight">Price per Night:</label>
+          <input id="pricePerNight" type="number" [(ngModel)]="selectedRoom.pricePerNight" name="pricePerNight" required />
+        </div>
+        <div class="form-group">
+          <label for="totalRooms">Total Rooms:</label>
+          <input id="totalRooms" type="number" [(ngModel)]="selectedRoom.totalRooms" name="totalRooms" required />
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="submit-button">{{ selectedRoom.roomId ? 'Update' : 'Save' }}</button>
+          <button type="button" (click)="resetFormAndHide()" class="cancel-button">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

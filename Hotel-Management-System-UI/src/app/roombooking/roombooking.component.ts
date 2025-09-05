@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
-import { SidebarComponent } from '../sidebar/sidebar.component';
+import { HotelService } from '../hotel/hotel.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -38,7 +38,6 @@ interface Amenity {
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
-    SidebarComponent,
     HttpClientModule
   ],
   templateUrl: './roombooking.component.html',
@@ -46,7 +45,6 @@ interface Amenity {
 })
 export class RoomBookingComponent implements OnInit {
   city: string | null = '';
-  rooms: Room[] = [];
 
   selectedRoom: Room | null = null;
   showModal: boolean = false;
@@ -63,6 +61,7 @@ export class RoomBookingComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     @Inject(UserService) private userService: UserService,
+  private hotelService: HotelService,
     private fb: FormBuilder,
     private http: HttpClient
   ) {
@@ -78,6 +77,30 @@ export class RoomBookingComponent implements OnInit {
 
   ngOnInit(): void {
     this.city = this.route.snapshot.queryParamMap.get('location');
+    const hotelIdParam = this.route.snapshot.queryParamMap.get('hotelId');
+
+    if (hotelIdParam) {
+      const hotelId = Number(hotelIdParam);
+      if (!isNaN(hotelId)) {
+        this.hotelService.getHotelById(hotelId).subscribe(hotel => {
+          // Map fetched hotel to Room shape (Room and Hotel have similar fields)
+          this.selectedRoom = {
+            id: hotel.id,
+            name: hotel.name,
+            description: hotel.description,
+            price: hotel.price,
+            rating: hotel.rating,
+            imageBase64: hotel.imageBase64,
+            location: hotel.location
+          };
+
+          // Pre-open modal so user can book this specific hotel/room
+          this.openBookingModal(this.selectedRoom);
+        }, err => {
+          console.error('Failed to fetch hotel by id', err);
+        });
+      }
+    }
 
     const today = new Date();
     const tomorrow = new Date(today);
@@ -85,30 +108,11 @@ export class RoomBookingComponent implements OnInit {
     this.minCheckInDate = this.formatDate(tomorrow);
 
     if (this.city) {
-      this.fetchHotelsByCity(this.city);
       this.fetchAmenities();
     } else {
       alert('Please select a city first');
       this.router.navigate(['/dashboard']);
     }
-  }
-
-  fetchHotelsByCity(city: string): void {
-    const url = `http://localhost:8066/hotels/city/${city}`;
-    this.http.get<Room[]>(url)
-      .pipe(
-        catchError(error => {
-          console.error('Error fetching hotels:', error);
-          alert('Failed to fetch hotels. Please try again later.');
-          return of([]);
-        })
-      )
-      .subscribe(data => {
-        this.rooms = data.map(room => ({
-          ...room,
-          imageBase64: 'data:image/jpeg;base64,' + room.imageBase64
-        }));
-      });
   }
 
   fetchAmenities(): void {
@@ -181,7 +185,7 @@ export class RoomBookingComponent implements OnInit {
         price: this.selectedRoom.price,
       };
 
-      this.router.navigate(['/payment'], { state: { booking: bookingData } });
+  this.router.navigate(['/user/payment'], { state: { booking: bookingData } });
     } else {
       alert('Please fill all required fields');
     }

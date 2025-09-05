@@ -3,12 +3,11 @@ import { RoomTypeService } from '../room-type.service';
 import { RoomType } from '../room-type.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SidebarComponent } from '../sidebar/sidebar.component';
 
 @Component({
   selector: 'app-room-type-management',
   standalone: true,
-  imports: [CommonModule, FormsModule, SidebarComponent],
+  imports: [CommonModule, FormsModule],
   templateUrl: './room-type-management.component.html',
   styleUrls: ['./room-type-management.component.css'],
 })

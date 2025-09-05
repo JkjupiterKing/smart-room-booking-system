@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { SidebarComponent } from '../sidebar/sidebar.component';
 
 // Extend the Window interface to include webkitSpeechRecognition for better type safety
 declare global {
@@ -16,7 +15,7 @@ declare global {
 @Component({
   selector: 'app-room-booking-ai-agent',
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule, SidebarComponent],
+  imports: [CommonModule, FormsModule, HttpClientModule],
   templateUrl: './room-booking-ai-agent.component.html',
   styleUrl: './room-booking-ai-agent.component.css'
 })
@@ -79,7 +78,7 @@ export class RoomBookingAiAgentComponent implements OnInit, OnDestroy {
     if (this.selectedLocation) {
       // Check if the location is valid (case-insensitive comparison)
       if (this.locations.some(loc => loc.toLowerCase() === this.selectedLocation.toLowerCase())) {
-        this.router.navigate(['/roombooking'], {
+        this.router.navigate(['/user/roombooking'], {
           queryParams: { location: this.selectedLocation },
         });
         this.feedbackMessage = `Searching for hotels in ${this.selectedLocation}...`;

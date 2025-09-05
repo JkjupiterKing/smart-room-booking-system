@@ -1,6 +1,5 @@
 .location-management-container {
   padding: 20px;
-  margin-left: 290px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -116,6 +115,7 @@ h1 {
   width: 400px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
   animation: fadeIn 0.3s ease-in-out;
+  color: black;
 }
 
 .modal-content h2 {

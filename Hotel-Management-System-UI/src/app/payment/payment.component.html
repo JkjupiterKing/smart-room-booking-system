@@ -1,5 +1,3 @@
-<app-sidebar></app-sidebar>
-
 <div class="payment-container">
   <h2>Payment for {{ roomTitle }}</h2>
   <p>Total Amount: ₹{{ totalAmount }}</p>
@@ -7,7 +5,7 @@
   <form [formGroup]="paymentForm" (ngSubmit)="onPaymentSubmit()">
     <label for="paymentMethod">Choose Payment Method:</label>
     <select formControlName="paymentMethod" id="paymentMethod">
-      <option value="" disabled selected>Select Payment Method</option>
+      <option value="" disabled>Select Payment Method</option>
       <option *ngFor="let method of paymentMethods" [value]="method">
         {{ method }}
       </option>

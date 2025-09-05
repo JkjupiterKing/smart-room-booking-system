@@ -36,6 +36,7 @@ export class HotelFormComponent implements OnInit {
   hotelForm: FormGroup;
   isEditMode: boolean;
   selectedFile: File | null = null;
+  selectedFiles: (File | null)[] = [null, null, null, null, null];
   locations: Location[] = [];
   private locationApiUrl = 'http://localhost:8066/api/locations/all'; 
 
@@ -68,8 +69,12 @@ export class HotelFormComponent implements OnInit {
     });
   }
 
-  onFileSelected(event: any): void {
-    this.selectedFile = event.target.files[0];
+  onFileSelected(event: any, index: number = 0): void {
+    const file = event.target.files && event.target.files[0] ? event.target.files[0] : null;
+    this.selectedFiles[index] = file;
+    if (index === 0) {
+      this.selectedFile = file;
+    }
   }
 
   onSubmit(): void {
@@ -90,8 +95,13 @@ export class HotelFormComponent implements OnInit {
 
       formData.append('hotel', new Blob([JSON.stringify(hotelPayload)], { type: 'application/json' }));
 
-      if (this.selectedFile) {
-        formData.append('image', this.selectedFile, this.selectedFile.name);
+      // Append up to 5 optional images. Keys: image, image2, image3, image4, image5
+      const keys = ['image', 'image2', 'image3', 'image4', 'image5'];
+      for (let i = 0; i < this.selectedFiles.length; i++) {
+        const f = this.selectedFiles[i];
+        if (f) {
+          formData.append(keys[i], f, f.name);
+        }
       }
 
       if (this.isEditMode) {

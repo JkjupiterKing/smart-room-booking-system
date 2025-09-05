@@ -1,0 +1,4 @@
+.content {
+  /* Make room for the fixed admin navbar (height: 80px) + breathing space */
+  padding-top: 100px;
+}

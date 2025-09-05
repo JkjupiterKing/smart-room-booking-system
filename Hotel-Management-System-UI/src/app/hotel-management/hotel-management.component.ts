@@ -7,7 +7,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { SidebarComponent } from '../sidebar/sidebar.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; // Import this for a loading spinner
 
 interface Hotel {
@@ -31,7 +30,6 @@ interface Hotel {
     MatCardModule,
     MatButtonModule,
     MatIconModule,
-    SidebarComponent,
     MatProgressSpinnerModule,
   ],
   templateUrl: './hotel-management.component.html',

@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { SidebarComponent } from '../sidebar/sidebar.component';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-booking-management',
   standalone: true,
-  imports: [SidebarComponent, CommonModule],
+  imports: [CommonModule],
   templateUrl: './booking-management.component.html',
   styleUrl: './booking-management.component.css'
 })

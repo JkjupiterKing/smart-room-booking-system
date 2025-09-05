@@ -1,0 +1,159 @@
+<!-- Navigation Bar -->
+<div *ngIf="isLoggedIn">
+  <app-admin-navbar *ngIf="userRole === 'admin'"></app-admin-navbar>
+  <app-user-navbar *ngIf="userRole === 'user'"></app-user-navbar>
+</div>
+
+<app-public-navbar
+  *ngIf="!isLoggedIn"
+  (loginClicked)="openLoginModal()"
+  (registerClicked)="openRegisterModal()"
+></app-public-navbar>
+
+<div class="search-results-container">
+  <div class="content">
+    <div *ngIf="isLoading$ | async" class="loader">
+      <p>Loading hotels...</p>
+    </div>
+
+    <div *ngIf="!(isLoading$ | async)">
+      <div *ngIf="(hotels$ | async) as hotels; else noResults">
+        <h2 class="search-heading" *ngIf="hotels.length > 0">Here are some options for your search</h2>
+        <div *ngIf="hotels.length > 0; else noResults" class="hotels-grid">
+          <div *ngFor="let hotel of hotels" class="hotel-card" (click)="navigateToHotel(hotel.id)">
+            <img [src]="'data:image/jpeg;base64,' + hotel.imageBase64" alt="Photo of {{ hotel.name }}" class="hotel-image">
+            <div class="hotel-details">
+              <h3 class="hotel-name">{{ hotel.name }}</h3>
+              <div class="hotel-rating">
+                <span *ngFor="let i of getStarArray(hotel.rating)" class="star">&#9733;</span>
+              </div>
+              <p class="hotel-description">{{ hotel.description }}</p>
+              <p class="hotel-location">{{ hotel.location.city }}, {{ hotel.location.country }}</p>
+              <p class="hotel-price">
+                <strong>₹{{ hotel.price | number:'1.2-2' }}</strong> / night
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noResults>
+      <div class="no-results">
+        <p>No hotels found for your search.</p>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<!-- Login Modal -->
+<div *ngIf="isLoginModalOpen" class="modal">
+  <div class="modal-content">
+    <h2>Login</h2>
+    <form #loginForm="ngForm" (ngSubmit)="onLoginSubmit(loginForm)">
+      <div>
+        <label for="username">Username:</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          ngModel
+          required
+          #username="ngModel"
+        />
+        <div *ngIf="username.invalid && username.touched">
+          <small class="error">Username is required.</small>
+        </div>
+      </div>
+      <div>
+        <label for="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          ngModel
+          required
+          #password="ngModel"
+        />
+        <div *ngIf="password.invalid && password.touched">
+          <small class="error">Password is required.</small>
+        </div>
+      </div>
+      <br />
+      <button type="submit" [disabled]="loginForm.invalid">Login</button>
+    </form>
+    <br />
+    <button (click)="closeLoginModal()">Close</button>
+  </div>
+</div>
+
+<!-- Register Modal -->
+<div *ngIf="isRegisterModalOpen" class="modal">
+  <div class="modal-content">
+    <h2>Register</h2>
+    <form #registerForm="ngForm" (ngSubmit)="onRegisterSubmit(registerForm)">
+      <div>
+        <label for="username">Username:</label><br />
+        <input type="text" id="username" name="username" ngModel required />
+        <div
+          *ngIf="
+            registerForm.form.controls['username']?.invalid &&
+            registerForm.form.controls['username']?.touched
+          "
+        >
+          <small class="error">Username is required.</small>
+        </div>
+      </div>
+      <div>
+        <label for="email">Email:</label><br />
+        <input type="email" id="email" name="email" ngModel required />
+        <div
+          *ngIf="
+            registerForm.form.controls['email']?.invalid &&
+            registerForm.form.controls['email']?.touched
+          "
+        >
+          <small class="error">Email is required.</small>
+        </div>
+        <div
+          *ngIf="
+            registerForm.form.controls['email']?.touched &&
+            registerForm.form.controls['email']?.valid &&
+            !registerForm.form.controls['email'].value.endsWith('@gmail.com')
+          "
+        >
+          <small class="error">Please enter a valid email</small>
+        </div>
+      </div>
+      <div>
+        <label for="password">Password:</label><br />
+        <input
+          type="password"
+          id="password"
+          name="password"
+          ngModel
+          required
+          #passwordInput="ngModel"
+          pattern="^(?=.*[A-Za-z])(?=.*[0-9]).{6,}$"
+        />
+        <div
+          *ngIf="
+            passwordInput.invalid &&
+            (passwordInput.dirty || passwordInput.touched)
+          "
+        >
+          <small *ngIf="passwordInput.errors?.['required']" class="error">
+            Password is required.
+          </small>
+          <small *ngIf="passwordInput.errors?.['pattern']" class="error">
+            Password must contain both letters and numbers.
+          </small>
+        </div>
+      </div>
+      <br />
+      <button type="submit" [disabled]="registerForm.invalid">Register</button>
+    </form>
+    <br />
+    <button (click)="closeRegisterModal()">Close</button>
+  </div>
+</div>
