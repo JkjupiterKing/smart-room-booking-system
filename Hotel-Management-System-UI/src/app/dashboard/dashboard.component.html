@@ -18,8 +18,9 @@
       class="ai-search-input"
       placeholder="Describe your dream hotel..."
       aria-label="AI search"
+      [(ngModel)]="aiSearchQuery"
     />
-    <button class="ai-search-btn">AI Search</button>
+    <button class="ai-search-btn" (click)="onAiSearch()">AI Search</button>
   </div>
   <div class="search-bar-container">
     <form class="search-bar" (ngSubmit)="onSearchHotels()" #searchForm="ngForm">

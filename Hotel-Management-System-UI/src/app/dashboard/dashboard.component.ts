@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AiSearchService } from '../ai-search.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,10 +17,11 @@ export class DashboardComponent implements OnInit {
   checkInDate: string = '';
   checkOutDate: string = '';
   guestCount: number = 1;
+  aiSearchQuery: string = '';
   today: string = '';
   minCheckoutDate: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private aiSearchService: AiSearchService) {}
 
   ngOnInit(): void {
     this.fetchLocations();
@@ -67,6 +69,27 @@ export class DashboardComponent implements OnInit {
         city: this.selectedCity,
         checkIn: this.checkInDate,
         checkOut: this.checkOutDate,
+      },
+    });
+  }
+
+  onAiSearch(): void {
+    if (!this.aiSearchQuery) {
+      alert('Please enter a search query.');
+      return;
+    }
+
+    this.aiSearchService.search(this.aiSearchQuery).subscribe({
+      next: (hotelIds) => {
+        this.router.navigate(['/search-results'], {
+          queryParams: {
+            hotelIds: hotelIds.join(','),
+          },
+        });
+      },
+      error: (error) => {
+        console.error('Error during AI search:', error);
+        alert('An error occurred during the AI search. Please try again.');
       },
     });
   }
