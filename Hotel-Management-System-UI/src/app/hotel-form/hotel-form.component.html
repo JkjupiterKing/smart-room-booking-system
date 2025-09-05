@@ -32,6 +32,22 @@
       <textarea matInput formControlName="description"></textarea>
     </mat-form-field>
 
+    <mat-form-field appearance="fill">
+      <mat-label>Latitude</mat-label>
+      <input matInput formControlName="latitude" type="number" />
+      <mat-error *ngIf="hotelForm.get('latitude')?.hasError('required')">Latitude is required.</mat-error>
+      <mat-error *ngIf="hotelForm.get('latitude')?.hasError('min')">Latitude must be at least -90.</mat-error>
+      <mat-error *ngIf="hotelForm.get('latitude')?.hasError('max')">Latitude must be at most 90.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Longitude</mat-label>
+      <input matInput formControlName="longitude" type="number" />
+      <mat-error *ngIf="hotelForm.get('longitude')?.hasError('required')">Longitude is required.</mat-error>
+      <mat-error *ngIf="hotelForm.get('longitude')?.hasError('min')">Longitude must be at least -180.</mat-error>
+      <mat-error *ngIf="hotelForm.get('longitude')?.hasError('max')">Longitude must be at most 180.</mat-error>
+    </mat-form-field>
+
     <div class="file-input">
       <label>Image 1 (primary)</label>
       <input type="file" (change)="onFileSelected($event, 0)" />

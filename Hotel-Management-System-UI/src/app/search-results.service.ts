@@ -22,6 +22,8 @@ export interface Hotel {
   imageBase64_4?: string;
   imageBase64_5?: string;
   location: Location;
+  latitude?: number;
+  longitude?: number;
 }
 
 @Injectable({

@@ -20,6 +20,8 @@ interface Hotel {
     id: number;
     city: string;
   };
+  latitude?: number;
+  longitude?: number;
 }
 
 @Component({

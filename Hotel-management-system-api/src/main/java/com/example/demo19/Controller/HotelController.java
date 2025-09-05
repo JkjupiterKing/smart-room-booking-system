@@ -119,6 +119,8 @@ public class HotelController {
             hotel.setDescription(hotelDetails.getDescription());
             hotel.setPrice(hotelDetails.getPrice());
             hotel.setRating(hotelDetails.getRating());
+            hotel.setLatitude(hotelDetails.getLatitude());
+            hotel.setLongitude(hotelDetails.getLongitude());
 
             // 3. Handle Location during an update
             Location locationDetails = hotelDetails.getLocation();
@@ -239,7 +241,9 @@ public class HotelController {
         base64Image3,
         base64Image4,
         base64Image5,
-        locationDTO
+        locationDTO,
+        hotel.getLongitude(),
+        hotel.getLatitude()
     );
     }
 

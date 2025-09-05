@@ -11,16 +11,23 @@ import { AdminService } from '../admin.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PublicNavbarComponent } from '../public-navbar/public-navbar.component';
 import { RoomService } from './room.service';
+import { LeafletModule } from '@bluehalo/ngx-leaflet';
+import { latLng, tileLayer, marker, icon, Map } from 'leaflet';
 
 @Component({
   selector: 'app-hotel-details',
   standalone: true,
-  imports: [CommonModule, UserNavbarComponent, AdminNavbarComponent, FormsModule, PublicNavbarComponent],
+  imports: [CommonModule, UserNavbarComponent, AdminNavbarComponent, FormsModule, PublicNavbarComponent, LeafletModule],
   templateUrl: './hotel-details.component.html',
   styleUrls: ['./hotel-details.component.css']
 })
 export class HotelDetailsComponent implements OnInit {
+  tileLayer = tileLayer;
+  latLng = latLng;
+  marker = marker;
+  icon = icon;
 
+  map: Map;
   hotel: Hotel | undefined;
   images: string[] = [];
   selectedImage: string = ''; // Property to hold the main image
@@ -53,6 +60,13 @@ export class HotelDetailsComponent implements OnInit {
     private adminService: AdminService,
     private roomService: RoomService
   ) { }
+
+  onMapReady(map: Map) {
+    this.map = map;
+    setTimeout(() => {
+      this.map.invalidateSize();
+    }, 0);
+  }
 
   checkAvailability(): void {
     if (!this.hotel) {
