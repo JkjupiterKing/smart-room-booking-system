@@ -43,7 +43,7 @@ export class SearchResultsService {
   ): Observable<Hotel[]> {
     this.isLoadingSource.next(true);
 
-    let url = `http://localhost:8066/hotels/city/${city}`;
+    let url = `http://localhost:8066/hotels/search?city=${city}`;
     const params: string[] = [];
 
     if (checkIn) {
@@ -54,7 +54,7 @@ export class SearchResultsService {
     }
 
     if (params.length > 0) {
-      url += `?${params.join('&')}`;
+      url += `&${params.join('&')}`;
     }
 
     return this.http.get<Hotel[]>(url).pipe(
@@ -64,6 +64,25 @@ export class SearchResultsService {
       }),
       catchError((error) => {
         console.error('Error fetching hotels:', error);
+        this.hotelsSource.next([]);
+        this.isLoadingSource.next(false);
+        return of([]);
+      })
+    );
+  }
+
+  fetchHotelsByIds(ids: string): Observable<Hotel[]> {
+    this.isLoadingSource.next(true);
+
+    const url = `http://localhost:8066/hotels/search?hotelIds=${ids}`;
+
+    return this.http.get<Hotel[]>(url).pipe(
+      tap((hotels) => {
+        this.hotelsSource.next(hotels);
+        this.isLoadingSource.next(false);
+      }),
+      catchError((error) => {
+        console.error('Error fetching hotels by ids:', error);
         this.hotelsSource.next([]);
         this.isLoadingSource.next(false);
         return of([]);

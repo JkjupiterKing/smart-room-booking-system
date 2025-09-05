@@ -6,6 +6,7 @@ import { AdminService } from '../admin.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AiSearchService } from '../ai-search.service';
 
 @Component({
   selector: 'app-landing-page',
@@ -37,6 +38,7 @@ export class LandingPageComponent implements OnInit {
   checkInDate: string = '';
   checkOutDate: string = '';
   guestCount: number = 1;
+  aiSearchQuery: string = '';
 
   // Min date values for validations
   today: string = '';
@@ -45,7 +47,8 @@ export class LandingPageComponent implements OnInit {
   constructor(
     private userService: UserService,
     private adminService: AdminService,
-    private router: Router
+    private router: Router,
+    private aiSearchService: AiSearchService
   ) {}
 
   ngOnInit() {
@@ -100,6 +103,27 @@ export class LandingPageComponent implements OnInit {
         city: this.selectedCity,
         checkIn: this.checkInDate,
         checkOut: this.checkOutDate,
+      },
+    });
+  }
+
+  onAiSearch(): void {
+    if (!this.aiSearchQuery) {
+      alert('Please enter a search query.');
+      return;
+    }
+
+    this.aiSearchService.search(this.aiSearchQuery).subscribe({
+      next: (hotelIds) => {
+        this.router.navigate(['/search-results'], {
+          queryParams: {
+            hotelIds: hotelIds.join(','),
+          },
+        });
+      },
+      error: (error) => {
+        console.error('Error during AI search:', error);
+        alert('An error occurred during the AI search. Please try again.');
       },
     });
   }

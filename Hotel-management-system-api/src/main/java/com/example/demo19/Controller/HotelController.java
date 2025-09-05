@@ -1,22 +1,29 @@
 package com.example.demo19.Controller;
 
 import com.example.demo19.dto.HotelResponseDTO;
+import com.example.demo19.dto.HotelSimpleDTO;
 import com.example.demo19.dto.LocationDTO;
 import com.example.demo19.Modal.Hotel;
 import com.example.demo19.Modal.Location;
 import com.example.demo19.Repository.HotelRepository;
 import com.example.demo19.Repository.LocationRepository;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 import jakarta.persistence.EntityNotFoundException;
 
 import java.io.IOException;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -27,6 +34,12 @@ public class HotelController {
 
     @Autowired
     private HotelRepository hotelRepository;
+
+    @Autowired
+    private WebClient.Builder webClientBuilder;
+
+    @Value("${GEMINI_API_KEY}")
+    private String geminiApiKey;
 
     // 1. Inject LocationRepository
     @Autowired
@@ -156,9 +169,20 @@ public class HotelController {
 
     // ✅ Get hotels by city name
     @Transactional(readOnly = true)
-    @GetMapping("/city/{city}")
-    public ResponseEntity<List<HotelResponseDTO>> getHotelsByCity(@PathVariable String city) {
-        List<Hotel> hotels = hotelRepository.findByLocation_CityIgnoreCase(city);
+    @GetMapping("/search")
+    public ResponseEntity<List<HotelResponseDTO>> searchHotels(
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) List<Long> hotelIds) {
+
+        List<Hotel> hotels;
+        if (hotelIds != null && !hotelIds.isEmpty()) {
+            hotels = hotelRepository.findAllById(hotelIds);
+        } else if (city != null && !city.isEmpty()) {
+            hotels = hotelRepository.findByLocation_CityIgnoreCase(city);
+        } else {
+            hotels = hotelRepository.findAll();
+        }
+
         List<HotelResponseDTO> response = hotels.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
@@ -216,5 +240,48 @@ public class HotelController {
         base64Image5,
         locationDTO
     );
+    }
+
+    @PostMapping("/ai-search")
+    public Mono<ResponseEntity<List<Long>>> aiSearch(@RequestBody Map<String, String> request) {
+        String userQuery = request.get("query");
+        List<HotelSimpleDTO> hotels = hotelRepository.findAllSimplified();
+
+        String hotelsJson;
+        try {
+            hotelsJson = convertDTOListToJson(hotels);
+        } catch (JsonProcessingException e) {
+            return Mono.just(ResponseEntity.status(500).body(Collections.<Long>emptyList()));
+        }
+
+        String prompt = "Based on the following hotel data, return only a JSON array of hotel IDs that match the user's request. Do not include any other text in the response. Hotel data: " + hotelsJson + ". User request: " + userQuery;
+
+        WebClient webClient = webClientBuilder.baseUrl("https://generativelanguage.googleapis.com").build();
+
+        return webClient.post()
+                .uri("/v1beta/models/gemini-2.0-flash:generateContent?key=" + geminiApiKey)
+                .header("Content-Type", "application/json")
+                .bodyValue(Map.of("contents", List.of(Map.of("parts", List.of(Map.of("text", prompt))))))
+                .retrieve()
+                .bodyToMono(Map.class)
+                .map(response -> {
+                    try {
+                        List<Map<String, Object>> candidates = (List<Map<String, Object>>) response.get("candidates");
+                        Map<String, Object> content = (Map<String, Object>) candidates.get(0).get("content");
+                        List<Map<String, Object>> parts = (List<Map<String, Object>>) content.get("parts");
+                        String text = (String) parts.get(0).get("text");
+                        // Assuming the response is a JSON array of numbers, e.g., "[1, 2, 3]"
+                        List<Long> hotelIds = new ObjectMapper().readValue(text.replaceAll("[^0-9,]", ""), new com.fasterxml.jackson.core.type.TypeReference<List<Long>>() {});
+                        return ResponseEntity.ok(hotelIds);
+                    } catch (Exception e) {
+                        return ResponseEntity.status(500).body(Collections.<Long>emptyList());
+                    }
+                })
+                .defaultIfEmpty(ResponseEntity.status(404).body(Collections.<Long>emptyList()));
+    }
+
+    private String convertDTOListToJson(List<HotelSimpleDTO> dtoList) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(dtoList);
     }
 }
