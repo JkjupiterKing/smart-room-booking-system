@@ -57,9 +57,10 @@
     </div>
 
     <div class="search-field">
+       <span class="search-icon"><i class="fa fa-users"></i></span>
       <label>
         Guests
-        <input type="number" min="0" placeholder="0" [(ngModel)]="guestCount" name="guests" />
+        <input type="number" min="1" placeholder="1" [(ngModel)]="guestCount" name="guests" />
       </label>
     </div>
     <button class="search-btn" type="submit">

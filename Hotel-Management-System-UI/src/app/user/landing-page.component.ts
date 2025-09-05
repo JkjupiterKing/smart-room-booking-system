@@ -99,8 +99,8 @@ export class LandingPageComponent implements OnInit {
 
   // Fetch hotels for selected city
   onSearchHotels(): void {
-    if (!this.selectedCity || !this.checkInDate || !this.checkOutDate) {
-      alert('Please select a destination, check-in and check-out dates.');
+    if (!this.selectedCity || !this.checkInDate || !this.checkOutDate || !this.guestCount) {
+      alert('Please select a destination, check-in, check-out dates and guests.');
       return;
     }
 
