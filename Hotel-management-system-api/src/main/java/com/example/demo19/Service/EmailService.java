@@ -34,4 +34,15 @@ public class EmailService {
         message.setText(text);
         mailSender.send(message);
     }
+    public void sendWelcomeEmail(String toEmail, String username) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("yourgmail@gmail.com"); // must match your configured email
+        message.setTo(toEmail);
+        message.setSubject("Welcome to QuickStay!");
+        message.setText("Hi " + username + ",\n\n" +
+                "Thank you for registering with QuickStay. We're excited to have you on board!\n\n" +
+                "Best Regards,\nQuickStay Team");
+
+        mailSender.send(message);
+    }
 }

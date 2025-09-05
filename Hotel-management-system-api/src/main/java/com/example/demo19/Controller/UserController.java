@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo19.Modal.User;
+import com.example.demo19.Service.EmailService;
 import com.example.demo19.Repository.UserRepository;
 
 
@@ -17,7 +18,9 @@ import com.example.demo19.Repository.UserRepository;
 @CrossOrigin(origins = "http://localhost:4200") 
 
 public class UserController {
-	
+
+	@Autowired
+	private EmailService emailService;
 
 	    @Autowired
 	    private UserRepository userRepository;
@@ -34,23 +37,35 @@ public class UserController {
 //	        return "User registered successfully!";
 //	    }
 
-	    @PostMapping("/register")
-	    public ResponseEntity<?> registerUser(@RequestBody User user) {
-	        // Check if the username already exists
-	        if (userRepository.findByUsername(user.getUsername()) != null) {
-	            return ResponseEntity
-	                .status(HttpStatus.BAD_REQUEST)
-	                .body("Username already exists!");
-	        }
-	        
-	        // Save user
-	        userRepository.save(user);
-	        return ResponseEntity
-	            .status(HttpStatus.OK)
-	            .body("User registered successfully!");
-	    }
-	    
-	    // Login endpoint
+	// Registration endpoint
+	@PostMapping("/register")
+	public ResponseEntity<?> registerUser(@RequestBody User user) {
+		// Check if the username already exists
+		if (userRepository.findByUsername(user.getUsername()) != null) {
+			return ResponseEntity
+					.status(HttpStatus.BAD_REQUEST)
+					.body("Username already exists!");
+		}
+
+		// Save user
+		User savedUser = userRepository.save(user);
+
+		// ✅ Send Welcome Email
+		if (savedUser.getEmail() != null && !savedUser.getEmail().isEmpty()) {
+			emailService.sendWelcomeEmail(savedUser.getEmail(), savedUser.getUsername());
+		}
+
+		Map<String, Object> response = new HashMap<>();
+		response.put("message", "User registered successfully!");
+		response.put("user", savedUser);
+
+		return ResponseEntity
+				.status(HttpStatus.OK)
+				.body(response);
+	}
+
+
+	// Login endpoint
 		@PostMapping("/login")
 		public ResponseEntity<?> loginUser(@RequestBody User user) {
 			// Check if the user exists

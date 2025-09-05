@@ -12,7 +12,7 @@
 
 <!-- Registration Success Popup -->
 <div *ngIf="registrationSuccess" class="popup-success">
-  Registration successful!
+  {{ successMessage }}
 </div>
 
 <!-- Animated Hero Text -->
@@ -77,10 +77,11 @@
       </label>
     </div>
 
+    <!-- Guests -->
     <div class="search-field">
       <label>
         Guests
-        <input type="number" min="0" placeholder="0" />
+        <input type="number" [(ngModel)]="guestCount" name="guests" min="1" />
       </label>
     </div>
     <button class="search-btn" type="submit">
@@ -89,6 +90,7 @@
   </form>
 </div>
 
+<!-- Hotel Cards -->
 <div class="hotel-cards-container" *ngIf="hotels.length">
   <div class="hotel-card" *ngFor="let hotel of hotels">
     <img
@@ -103,12 +105,19 @@
     <button class="reserve-btn" (click)="onReserve(hotel)">Reserve Now</button>
   </div>
 </div>
-<br />
-<br />
+
+<br /><br />
+
 <!-- Login Modal -->
 <div *ngIf="isLoginModalOpen" class="modal">
   <div class="modal-content">
     <h2>Login</h2>
+
+    <!-- Error message -->
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
     <form #loginForm="ngForm" (ngSubmit)="onLoginSubmit(loginForm)">
       <div>
         <label for="username">Username:</label>
@@ -124,6 +133,7 @@
           <small class="error">Username is required.</small>
         </div>
       </div>
+
       <div>
         <label for="password">Password:</label>
         <input
@@ -138,9 +148,11 @@
           <small class="error">Password is required.</small>
         </div>
       </div>
+
       <br />
       <button type="submit" [disabled]="loginForm.invalid">Login</button>
     </form>
+
     <br />
     <button (click)="closeLoginModal()">Close</button>
   </div>
@@ -150,7 +162,15 @@
 <div *ngIf="isRegisterModalOpen" class="modal">
   <div class="modal-content">
     <h2>Register</h2>
+
+    <!-- Success and Error Messages -->
+    <div *ngIf="successMessage" class="success-message">
+      {{ successMessage }}
+    </div>
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
     <form #registerForm="ngForm" (ngSubmit)="onRegisterSubmit(registerForm)">
+      <!-- Username -->
       <div>
         <label for="username">Username:</label><br />
         <input type="text" id="username" name="username" ngModel required />
@@ -163,6 +183,8 @@
           <small class="error">Username is required.</small>
         </div>
       </div>
+
+      <!-- Email -->
       <div>
         <label for="email">Email:</label><br />
         <input type="email" id="email" name="email" ngModel required />
@@ -174,16 +196,9 @@
         >
           <small class="error">Email is required.</small>
         </div>
-        <div
-          *ngIf="
-            registerForm.form.controls['email']?.touched &&
-            registerForm.form.controls['email']?.valid &&
-            !registerForm.form.controls['email'].value.endsWith('@gmail.com')
-          "
-        >
-          <small class="error">Please enter a valid email</small>
-        </div>
       </div>
+
+      <!-- Password -->
       <div>
         <label for="password">Password:</label><br />
         <input
@@ -201,17 +216,20 @@
             (passwordInput.dirty || passwordInput.touched)
           "
         >
-          <small *ngIf="passwordInput.errors?.['required']" class="error">
-            Password is required.
-          </small>
+          <small *ngIf="passwordInput.errors?.['required']" class="error"
+            >Password is required.</small
+          >
           <small *ngIf="passwordInput.errors?.['pattern']" class="error">
-            Password must contain both letters and numbers.
+            Password must contain at least 6 characters with letters and
+            numbers.
           </small>
         </div>
       </div>
+
       <br />
       <button type="submit" [disabled]="registerForm.invalid">Register</button>
     </form>
+
     <br />
     <button (click)="closeRegisterModal()">Close</button>
   </div>

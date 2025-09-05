@@ -181,37 +181,38 @@ export class UserComponent implements OnInit {
   }
 
   // Register
-  onRegisterSubmit(registerForm: NgForm) {
-    if (registerForm.valid) {
-      this.userService.registerUser(registerForm.value).subscribe({
-        next: (response) => {
-          if (response && response.user) {
-            localStorage.setItem('user', JSON.stringify(response.user));
-            localStorage.setItem('role', 'user');
-          }
-
-          this.successMessage = 'Registration successful!';
-          this.registrationSuccess = true;
-          this.closeRegisterModal();
-          registerForm.reset();
-
-          setTimeout(() => {
-            this.registrationSuccess = false;
-            this.openLoginModal();
-            window.location.reload();
-          }, 2000);
-        },
-        error: (error) => {
-          if (error instanceof HttpErrorResponse) {
-            this.errorMessage = error.error || 'Error registering user';
-          } else {
-            this.errorMessage = 'An unexpected error occurred';
-          }
-
-          alert(this.errorMessage);
+onRegisterSubmit(registerForm: NgForm) {
+  if (registerForm.valid) {
+    this.userService.registerUser(registerForm.value).subscribe({
+      next: (response) => {
+        // ✅ Store user if present
+        if (response && response.user) {
+          localStorage.setItem('user', JSON.stringify(response.user));
+          localStorage.setItem('role', 'user');
         }
-      });
-    }
+
+        // ✅ Display backend message (which confirms email was sent)
+        this.successMessage = response.message || 'Registration successful!';
+        this.registrationSuccess = true;
+
+        this.closeRegisterModal();
+        registerForm.reset();
+
+        setTimeout(() => {
+          this.registrationSuccess = false;
+          this.openLoginModal();
+          window.location.reload();
+        }, 2000);
+      },
+      error: (error) => {
+        if (error.error && typeof error.error === 'string') {
+          this.errorMessage = error.error;
+        } else {
+          this.errorMessage = 'Error registering user';
+        }
+        alert(this.errorMessage);
+      }
+    });
   }
 }
-
+}
