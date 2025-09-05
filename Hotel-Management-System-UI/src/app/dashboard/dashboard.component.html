@@ -20,6 +20,9 @@
       aria-label="AI search"
       [(ngModel)]="aiSearchQuery"
     />
+    <button class="mic-btn" [class.recording]="isRecording" (click)="toggleMic()" title="Start/Stop voice input">
+      <i class="fas fa-microphone"></i>
+    </button>
     <button class="ai-search-btn" (click)="onAiSearch()">AI Search</button>
   </div>
   <div class="search-bar-container">
