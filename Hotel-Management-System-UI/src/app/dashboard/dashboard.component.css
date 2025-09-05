@@ -115,6 +115,8 @@
   display: flex;
   gap: 30px; /* Increased gap */
   align-items: center;
+  width: 100%;
+  justify-content: space-between;
 }
 
 .search-field label {

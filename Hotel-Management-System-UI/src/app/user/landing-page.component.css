@@ -115,6 +115,8 @@
   display: flex;
   gap: 30px; /* Increased gap */
   align-items: center;
+  width: 100%;
+  justify-content: space-between;
 }
 
 .search-field label {
@@ -135,7 +137,7 @@
 
 .search-btn {
   background: #f1c40f;
-  padding: 15px 40px; /* Matched vertical padding with inputs */
+  /* padding: 25px 40px; Matched vertical padding with inputs */
   border: none;
   border-radius: 10px;
   font-weight: 700;

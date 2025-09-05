@@ -55,7 +55,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   box-shadow: 0 12px 40px rgba(0,0,0,0.15) !important;
   z-index: 1250 !important; /* sit above hero overlay */
   width: 78% !important;
-  max-width: 1100px !important;
+  max-width: 975px !important;
 }
 
 /* Inputs and selects inside the white panel should be dark text on white */
