@@ -256,22 +256,22 @@
 /* AI Search Section */
 .ai-search-container {
   /* Place the AI search directly beneath the hero text inside the hero section */
-  position: relative; /* ensure it's positioned in document flow (override accidental absolute rules) */
-  margin: 1.2rem auto 0; /* small gap below hero text */
+  position: relative; /* ensure it's positioned in document flow */
+  margin: 2.4rem auto 2rem; /* larger gap above (from hero) and below (to traditional search) */
   display: flex;
   align-items: center;
-  gap: 1rem;
-  z-index: 1100; /* above navbar and hero overlay */
+  gap: 1.6rem; /* larger gap between input and button */
+  z-index: 1200; /* above navbar and hero overlay */
   justify-content: center;
-  width: 80%;
-  max-width: 900px;
+  width: 84%;
+  max-width: 980px;
   opacity: 0;
   transform: translateY(10px);
   animation: slideInUp 0.8s ease-out 0.35s forwards;
-  background: rgba(0, 0, 0, 0.35); /* subtle container background for contrast */
-  padding: 18px 22px;
-  border-radius: 40px;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+  background: rgba(0, 0, 0, 0.38); /* slightly stronger contrast */
+  padding: 24px 28px; /* increased padding for prominence */
+  border-radius: 44px;
+  box-shadow: 0 18px 60px rgba(0,0,0,0.55);
 }
 
 @keyframes slideInUp {
@@ -287,13 +287,13 @@
 
 .ai-search-input {
   width: 100%;
-  max-width: 640px; /* limit width inside container */
-  padding: 14px 18px;
-  border-radius: 28px;
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  max-width: 720px; /* wider input */
+  padding: 18px 22px; /* taller input */
+  border-radius: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.85);
   background: transparent;
   color: white;
-  font-size: 1.05rem;
+  font-size: 1.15rem; /* larger text */
   transition: all 0.2s ease-in-out;
 }
 
@@ -309,16 +309,16 @@
 }
 
 .ai-search-btn {
-  padding: 12px 28px;
-  border-radius: 24px;
+  padding: 14px 36px; /* larger clickable area */
+  border-radius: 28px;
   border: none;
   background: linear-gradient(45deg, #f39c12, #f1c40f);
   color: white;
-  font-weight: 700;
-  font-size: 1rem;
+  font-weight: 800;
+  font-size: 1.12rem;
   cursor: pointer;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
 
 .ai-search-btn:hover {
