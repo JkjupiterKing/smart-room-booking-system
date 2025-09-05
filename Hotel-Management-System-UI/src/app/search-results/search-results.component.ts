@@ -59,11 +59,14 @@ export class SearchResultsComponent implements OnInit {
   ngOnInit(): void {
     this.checkUserStatus();
     this.route.queryParams.subscribe((params) => {
+      const hotelIds = params['hotelIds'];
       const city = params['city'];
       const checkIn = params['checkIn'];
       const checkOut = params['checkOut'];
 
-      if (city) {
+      if (hotelIds) {
+        this.searchResultsService.fetchHotelsByIds(hotelIds).subscribe();
+      } else if (city) {
         this.searchResultsService
           .fetchHotelsByCity(city, checkIn, checkOut)
           .subscribe();
