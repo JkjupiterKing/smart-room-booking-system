@@ -3,8 +3,8 @@
   background: url("../../assets/mainpage.png") no-repeat center center/cover;
   height: 100vh;
   display: flex;
-  align-items: flex-start; /* Aligns content to the top */
-  padding-top: 150px; /* Adds space from the top */
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
   text-align: center;
   color: white;
@@ -90,30 +90,26 @@
 
 /* Badge */
 .hero-badge {
-  position: absolute;
-  top: 120px;
-  left: 50px;
   background: #f1c40f;
   padding: 8px 20px;
   border-radius: 25px;
   font-weight: 600;
   color: black;
+  margin-bottom: 1rem;
 }
 
 /* Search Bar */
 .search-bar-container {
-  position: absolute;
-  bottom: 120px; /* Reduced gap to hero section */
-  left: 50%;
-  transform: translateX(-50%);
+.search-bar-container {
   background: rgba(255, 255, 255, 0.95);
-  padding: 40px; /* Increased padding */
+  padding: 30px 36px;
   border-radius: 20px;
   display: flex;
   align-items: center;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   width: 80%;
   max-width: 1000px;
+  margin-top: 1rem;
 }
 
 .search-bar {

@@ -1,5 +1,7 @@
 <!-- Animated Hero Text -->
 <div class="hero-section">
+  <!-- Badge above hero text -->
+  <div class="hero-badge">The Ultimate Hotel Experience</div>
   <div class="hero-text">
     Discover Your Perfect <br />
     Gateway Destination <br />
@@ -8,25 +10,26 @@
       hotels and resorts. Start your journey today.
     </span>
   </div>
-</div>
 
-<!-- Badge and Search Bar below Hero Text -->
-<div class="hero-badge">The Ultimate Hotel Experience</div>
-<div class="search-bar-container">
-  <form class="search-bar" (ngSubmit)="onSearchHotels()" #searchForm="ngForm">
+  <!-- AI Search Section (placed inside hero-section so it's positioned just below hero text) -->
+  <div class="ai-search-container">
+    <input
+      type="text"
+      class="ai-search-input"
+      placeholder="Describe your dream hotel..."
+      aria-label="AI search"
+    />
+    <button class="ai-search-btn">AI Search</button>
+  </div>
+  <div class="search-bar-container">
+    <form class="search-bar" (ngSubmit)="onSearchHotels()" #searchForm="ngForm">
     <div class="search-field">
       <span class="search-icon"><i class="fa fa-map-marker-alt"></i></span>
       <label>
         Destination
-        <select
-          [(ngModel)]="selectedCity"
-          name="destination"
-          class="destination-select"
-        >
+        <select [(ngModel)]="selectedCity" name="destination" class="destination-select">
           <option value="" disabled selected>Select a destination</option>
-          <option *ngFor="let loc of locations" [value]="loc.city">
-            {{ loc.city }}
-          </option>
+          <option *ngFor="let loc of locations" [value]="loc.city">{{ loc.city }}</option>
         </select>
       </label>
     </div>
@@ -36,13 +39,7 @@
       <span class="search-icon"><i class="fa fa-calendar-check"></i></span>
       <label>
         Check-in
-        <input
-          type="date"
-          name="checkin"
-          [(ngModel)]="checkInDate"
-          [min]="today"
-          (change)="updateMinCheckoutDate()"
-        />
+        <input type="date" name="checkin" [(ngModel)]="checkInDate" [min]="today" (change)="updateMinCheckoutDate()" />
       </label>
     </div>
 
@@ -51,19 +48,14 @@
       <span class="search-icon"><i class="fa fa-calendar-times"></i></span>
       <label>
         Check-out
-        <input
-          type="date"
-          name="checkout"
-          [(ngModel)]="checkOutDate"
-          [min]="minCheckoutDate"
-        />
+        <input type="date" name="checkout" [(ngModel)]="checkOutDate" [min]="minCheckoutDate" />
       </label>
     </div>
 
     <div class="search-field">
       <label>
         Guests
-        <input type="number" min="0" placeholder="0" />
+        <input type="number" min="0" placeholder="0" [(ngModel)]="guestCount" name="guests" />
       </label>
     </div>
     <button class="search-btn" type="submit">
@@ -72,5 +64,4 @@
   </form>
 </div>
 
-<br />
-<br />
+</div>

@@ -17,6 +17,8 @@
 
 <!-- Animated Hero Text -->
 <div class="hero-section">
+  <!-- Badge above hero text -->
+  <div class="hero-badge">The Ultimate Hotel Experience</div>
   <div class="hero-text">
     Discover Your Perfect <br />
     Gateway Destination <br />
@@ -25,18 +27,13 @@
       hotels and resorts. Start your journey today.
     </span>
   </div>
-</div>
-
-<!-- AI Search Section -->
-<div class="ai-search-container">
-  <input type="text" class="ai-search-input" placeholder="Describe your dream hotel..." [(ngModel)]="aiSearchQuery">
-  <button class="ai-search-btn" (click)="onAiSearch()">AI Search</button>
-</div>
-
-<!-- Badge and Search Bar below Hero Text -->
-<div class="hero-badge">The Ultimate Hotel Experience</div>
-<div class="search-bar-container">
-  <form class="search-bar" (ngSubmit)="onSearchHotels()" #searchForm="ngForm">
+  <!-- AI Search Section (moved inside hero so it's positioned under hero text) -->
+  <div class="ai-search-container">
+    <input type="text" class="ai-search-input" placeholder="Describe your dream hotel..." [(ngModel)]="aiSearchQuery" aria-label="AI search">
+    <button class="ai-search-btn" (click)="onAiSearch()">AI Search</button>
+  </div>
+  <div class="search-bar-container">
+    <form class="search-bar" (ngSubmit)="onSearchHotels()" #searchForm="ngForm">
     <div class="search-field">
       <span class="search-icon"><i class="fa fa-map-marker-alt"></i></span>
       <label>
