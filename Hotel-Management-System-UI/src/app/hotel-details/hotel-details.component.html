@@ -96,7 +96,7 @@
   <div class="location-map-container" *ngIf="hotel && hotel.latitude && hotel.longitude">
     <h2>Location Map</h2>
     <div class="map-wrapper">
-      <div leaflet [leafletOptions]="{
+      <div leaflet (leafletMapReady)="onMapReady($event)" [leafletOptions]="{
         layers: [
           tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 18,
