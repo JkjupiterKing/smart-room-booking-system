@@ -12,70 +12,198 @@
 
 <div class="search-results-container">
   <div class="content">
-    <div *ngIf="isLoading$ | async" class="loader">
-      <p>Loading hotels...</p>
-    </div>
+    <div class="main-content">
+      <div *ngIf="isLoading$ | async" class="loader">
+        <p>Loading hotels...</p>
+      </div>
 
-    <div *ngIf="!(isLoading$ | async)">
-      <div *ngIf="(hotels$ | async) as hotels; else noResults">
-        <h2 class="search-heading" *ngIf="hotels.length > 0">
-          Here are some options for your search
-        </h2>
-        <div *ngIf="hotels.length > 0; else noResults" class="hotels-grid">
-          <div
-            *ngFor="let hotel of hotels"
-            class="hotel-card"
-            (click)="navigateToHotel(hotel.id)"
-          >
-            <img
-              [src]="'data:image/jpeg;base64,' + hotel.imageBase64"
-              alt="Photo of {{ hotel.name }}"
-              class="hotel-image"
-            />
-            <div class="hotel-details">
-              <h3 class="hotel-name">{{ hotel.name }}</h3>
-              <p class="hotel-location">
-                {{ hotel.location.city }}, {{ hotel.location.country }}
-              </p>
-              <div class="hotel-rating">
-                <span *ngFor="let i of getStarArray(hotel.rating)" class="star"
-                  >&#9733;</span
-                >
-                <span class="reviews">(120 reviews)</span>
-              </div>
-
-              <div class="hotel-amenities">
-                <div class="amenity">
-                  <i class="fas fa-concierge-bell"></i>
-                  <span>Room Service</span>
-                </div>
-                <div class="amenity">
-                  <i class="fas fa-swimmer"></i>
-                  <span>Pool Access</span>
-                </div>
-                <div class="amenity">
-                  <i class="fas fa-mountain"></i>
-                  <span>Mountain View</span>
-                </div>
-              </div>
-
-              <div class="price-container">
-                <p class="hotel-price">
-                  <strong>₹{{ hotel.price | number : "1.2-2" }}</strong> /
-                  night
+      <div *ngIf="!(isLoading$ | async)">
+        <div *ngIf="(filteredHotels$ | async) as hotels; else noResults">
+          <h2 class="search-heading" *ngIf="hotels.length > 0">
+            Here are some options for your search
+          </h2>
+          <div *ngIf="hotels.length > 0; else noResults" class="hotels-grid">
+            <div
+              *ngFor="let hotel of hotels"
+              class="hotel-card"
+              (click)="navigateToHotel(hotel.id)"
+            >
+              <img
+                [src]="'data:image/jpeg;base64,' + hotel.imageBase64"
+                alt="Photo of {{ hotel.name }}"
+                class="hotel-image"
+              />
+              <div class="hotel-details">
+                <h3 class="hotel-name">{{ hotel.name }}</h3>
+                <p class="hotel-location">
+                  {{ hotel.location.city }}, {{ hotel.location.country }}
                 </p>
+                <div class="hotel-rating">
+                  <span *ngFor="let i of getStarArray(hotel.rating)" class="star"
+                    >&#9733;</span
+                  >
+                  <span class="reviews">(120 reviews)</span>
+                </div>
+
+                <div class="hotel-amenities">
+                  <div class="amenity">
+                    <i class="fas fa-concierge-bell"></i>
+                    <span>Room Service</span>
+                  </div>
+                  <div class="amenity">
+                    <i class="fas fa-swimmer"></i>
+                    <span>Pool Access</span>
+                  </div>
+                  <div class="amenity">
+                    <i class="fas fa-mountain"></i>
+                    <span>Mountain View</span>
+                  </div>
+                </div>
+
+                <div class="price-container">
+                  <p class="hotel-price">
+                    <strong>₹{{ hotel.price | number : "1.2-2" }}</strong> /
+                    night
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      <ng-template #noResults>
+        <div class="no-results">
+          <p>No hotels found for your search.</p>
+        </div>
+      </ng-template>
     </div>
 
-    <ng-template #noResults>
-      <div class="no-results">
-        <p>No hotels found for your search.</p>
+    <div class="sidebar">
+      <div class="filter-card">
+        <div class="filter-header">
+          <h3>Filters</h3>
+          <a href="#" class="clear-link" (click)="clearFilters(); $event.preventDefault()">Clear</a>
+        </div>
+
+        <div class="filter-group">
+          <h4>Popular Filters</h4>
+          <div class="filter-option">
+            <input
+              type="checkbox"
+              id="single-bed"
+              [checked]="popularFilters.singleBed"
+              (change)="onPopularFilterChange('singleBed', $event)"
+            />
+            <label for="single-bed">Single Bed</label>
+          </div>
+          <div class="filter-option">
+            <input
+              type="checkbox"
+              id="double-bed"
+              [checked]="popularFilters.doubleBed"
+              (change)="onPopularFilterChange('doubleBed', $event)"
+            />
+            <label for="double-bed">Double Bed</label>
+          </div>
+          <div class="filter-option">
+            <input
+              type="checkbox"
+              id="luxury-room"
+              [checked]="popularFilters.luxuryRoom"
+              (change)="onPopularFilterChange('luxuryRoom', $event)"
+            />
+            <label for="luxury-room">Luxury Room</label>
+          </div>
+          <div class="filter-option">
+            <input
+              type="checkbox"
+              id="family-suite"
+              [checked]="popularFilters.familySuite"
+              (change)="onPopularFilterChange('familySuite', $event)"
+            />
+            <label for="family-suite">Family Suite</label>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h4>Price Range</h4>
+          <div class="filter-option">
+            <input
+              type="checkbox"
+              id="price-1"
+              [checked]="priceFilters['0-500']"
+              (change)="onPriceFilterChange('0-500', $event)"
+            />
+            <label for="price-1">$0 to 500</label>
+          </div>
+          <div class="filter-option">
+            <input
+              type="checkbox"
+              id="price-2"
+              [checked]="priceFilters['500-1000']"
+              (change)="onPriceFilterChange('500-1000', $event)"
+            />
+            <label for="price-2">$500 to 1000</label>
+          </div>
+          <div class="filter-option">
+            <input
+              type="checkbox"
+              id="price-3"
+              [checked]="priceFilters['1000-2000']"
+              (change)="onPriceFilterChange('1000-2000', $event)"
+            />
+            <label for="price-3">$1000 to 2000</label>
+          </div>
+          <div class="filter-option">
+            <input
+              type="checkbox"
+              id="price-4"
+              [checked]="priceFilters['2000-3000']"
+              (change)="onPriceFilterChange('2000-3000', $event)"
+            />
+            <label for="price-4">$2000 to 3000</label>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h4>Sort By</h4>
+          <div class="filter-option">
+            <input
+              type="radio"
+              id="sort-low-high"
+              name="sort"
+              value="priceLowToHigh"
+              (change)="onSortChange($event)"
+              [checked]="sortBy === 'priceLowToHigh'"
+            />
+            <label for="sort-low-high">Price Low to High</label>
+          </div>
+          <div class="filter-option">
+            <input
+              type="radio"
+              id="sort-high-low"
+              name="sort"
+              value="priceHighToLow"
+              (change)="onSortChange($event)"
+              [checked]="sortBy === 'priceHighToLow'"
+            />
+            <label for="sort-high-low">Price High to Low</label>
+          </div>
+          <div class="filter-option">
+            <input
+              type="radio"
+              id="sort-newest"
+              name="sort"
+              value="newestFirst"
+              (change)="onSortChange($event)"
+              [checked]="sortBy === 'newestFirst'"
+            />
+            <label for="sort-newest">Newest First</label>
+          </div>
+        </div>
       </div>
-    </ng-template>
+    </div>
   </div>
 </div>
 
