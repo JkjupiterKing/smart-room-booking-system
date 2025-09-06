@@ -1,23 +1,20 @@
 .hotel-details-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  display: block;
+  background: linear-gradient(to left, #cbcfd4, #7d7f91);
   min-height: 100vh;
-  background-image: url('../../assets/resort1.jpg');
-  background-size: cover;
-  background-position: center;
-  padding: 10px;
+  background-color: #f4f7f9;
+  padding: 120px 20px 20px 20px;
+  box-sizing: border-box;
 }
 
 .hotel-card {
   display: block;
-  background-color: rgba(255, 255, 255, 0.98);
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  background: linear-gradient(to right, #a1a6ab, #b5b8d0);
+  border-radius: 16px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.05);
   overflow: hidden;
-  width: min(95vw, 1400px);
-  max-width: 1400px;
+  width: 100%;
+  margin-bottom: 20px;
 }
 
 .hotel-header {
@@ -87,9 +84,8 @@
 
 .hotel-info {
   padding: 10px;
-  background: #fdfdfd;
+  background: transparent;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
 .hotel-name {
@@ -154,12 +150,15 @@
 
 /* Check Availability Section */
 .check-availability-container {
-  width: min(95vw, 1400px);
+  width: 100%;
   margin-top: 20px;
   padding: 20px;
-  background-color: rgba(255, 255, 255, 0.98);
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  background: linear-gradient(to right, #d7d1d1, #c8d2db);
+  /* background-color: #f8f9fa; */
+  border-radius: 16px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+  box-sizing: border-box;
 }
 
 .availability-form {
@@ -206,12 +205,13 @@
 
 /* Location Map Section */
 .location-map-container {
-  width: min(95vw, 1400px);
+  width: 100%;
   margin-top: 20px;
   padding: 20px;
-  background-color: rgba(255, 255, 255, 0.98);
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+  box-sizing: border-box;
 }
 
 .map-wrapper {
