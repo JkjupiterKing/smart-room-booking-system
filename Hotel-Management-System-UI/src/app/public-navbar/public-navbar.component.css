@@ -7,9 +7,7 @@
   padding: 15px 50px;
   display: flex;
   align-items: center;
-  background: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.5);
   color: white;
   z-index: 1000;
   box-sizing: border-box;

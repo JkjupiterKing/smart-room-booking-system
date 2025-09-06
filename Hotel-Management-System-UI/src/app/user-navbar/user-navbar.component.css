@@ -2,17 +2,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background-color: #007bff;
   padding: 1rem 1.5rem;
   color: white;
   position: fixed;
   top: 0;
-  left: 0;
   width: 100%;
   z-index: 1000;
-  box-sizing: border-box;
+  height: 80px;
 }
 
 .navbar-brand {
