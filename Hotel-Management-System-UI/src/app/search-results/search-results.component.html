@@ -18,20 +18,53 @@
 
     <div *ngIf="!(isLoading$ | async)">
       <div *ngIf="(hotels$ | async) as hotels; else noResults">
-        <h2 class="search-heading" *ngIf="hotels.length > 0">Here are some options for your search</h2>
+        <h2 class="search-heading" *ngIf="hotels.length > 0">
+          Here are some options for your search
+        </h2>
         <div *ngIf="hotels.length > 0; else noResults" class="hotels-grid">
-          <div *ngFor="let hotel of hotels" class="hotel-card" (click)="navigateToHotel(hotel.id)">
-            <img [src]="'data:image/jpeg;base64,' + hotel.imageBase64" alt="Photo of {{ hotel.name }}" class="hotel-image">
+          <div
+            *ngFor="let hotel of hotels"
+            class="hotel-card"
+            (click)="navigateToHotel(hotel.id)"
+          >
+            <img
+              [src]="'data:image/jpeg;base64,' + hotel.imageBase64"
+              alt="Photo of {{ hotel.name }}"
+              class="hotel-image"
+            />
             <div class="hotel-details">
               <h3 class="hotel-name">{{ hotel.name }}</h3>
-              <div class="hotel-rating">
-                <span *ngFor="let i of getStarArray(hotel.rating)" class="star">&#9733;</span>
-              </div>
-              <p class="hotel-description">{{ hotel.description }}</p>
-              <p class="hotel-location">{{ hotel.location.city }}, {{ hotel.location.country }}</p>
-              <p class="hotel-price">
-                <strong>₹{{ hotel.price | number:'1.2-2' }}</strong> / night
+              <p class="hotel-location">
+                {{ hotel.location.city }}, {{ hotel.location.country }}
               </p>
+              <div class="hotel-rating">
+                <span *ngFor="let i of getStarArray(hotel.rating)" class="star"
+                  >&#9733;</span
+                >
+                <span class="reviews">(120 reviews)</span>
+              </div>
+
+              <div class="hotel-amenities">
+                <div class="amenity">
+                  <i class="fas fa-concierge-bell"></i>
+                  <span>Room Service</span>
+                </div>
+                <div class="amenity">
+                  <i class="fas fa-swimmer"></i>
+                  <span>Pool Access</span>
+                </div>
+                <div class="amenity">
+                  <i class="fas fa-mountain"></i>
+                  <span>Mountain View</span>
+                </div>
+              </div>
+
+              <div class="price-container">
+                <p class="hotel-price">
+                  <strong>₹{{ hotel.price | number : "1.2-2" }}</strong> /
+                  night
+                </p>
+              </div>
             </div>
           </div>
         </div>
