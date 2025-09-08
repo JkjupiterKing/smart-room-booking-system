@@ -10,17 +10,19 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AiSearchService } from '../ai-search.service';
 import { Hotel } from '../search-results.service';
 import { ChangePasswordModalComponent } from '../change-password-modal/change-password-modal.component';
+import { PublicNavbarComponent } from '../public-navbar/public-navbar.component';
 
 @Component({
   selector: 'app-landing-page',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule, ChangePasswordModalComponent],
+  imports: [FormsModule, CommonModule, RouterModule, ChangePasswordModalComponent, PublicNavbarComponent],
   templateUrl: './landing-page.component.html',
   styleUrls: ['./landing-page.component.css']
 })
 export class LandingPageComponent implements OnInit {
   hotels: Hotel[] = [];
-  // Modal states
+  isLoggedIn: boolean = false;
+  
   isLoginModalOpen: boolean = false;
   isRegisterModalOpen: boolean = false;
   registrationSuccess: boolean = false;

@@ -1,31 +1,9 @@
-<!-- Navigation Bar -->
-<nav class="navbar">
-  <div class="navbar-logo">
-    <span class="logo-icon"><i class="fas fa-home"></i></span>
-    <span class="logo-text">QuickStay</span>
-  </div>
-  <div class="navbar-actions">
-    <div *ngIf="!isUserLoggedIn">
-      <button class="navbar-login" (click)="openLoginModal()">Login</button>
-      <button class="navbar-login" (click)="openRegisterModal()">Register</button>
-    </div>
-    <div *ngIf="isUserLoggedIn" class="profile-dropdown">
-      <button class="profile-btn" (click)="toggleDropdown()">
-        <span class="avatar">{{ userInitial }}</span>
-      </button>
-      <div class="dropdown-content" [class.show]="isDropdownOpen">
-        <a routerLink="/booking-management">Booking Management</a>
-        <a (click)="openPasswordModal()">Manage Account</a>
-        <a (click)="logout()">Logout</a>
-      </div>
-    </div>
-  </div>
-</nav>
+<app-public-navbar
+  *ngIf="!isLoggedIn"
+  (loginClicked)="openLoginModal()"
+  (registerClicked)="openRegisterModal()"
+></app-public-navbar>
 
-<!-- Registration Success Popup -->
-<div *ngIf="registrationSuccess" class="popup-success">
-  {{ successMessage }}
-</div>
 
 <!-- Animated Hero Text -->
 <div class="hero-section">
