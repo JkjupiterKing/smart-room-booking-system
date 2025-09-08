@@ -5,8 +5,6 @@ import { UserService } from './user.service';
 import { PublicNavbarComponent } from './public-navbar/public-navbar.component';
 import { UserNavbarComponent } from './user-navbar/user-navbar.component';
 import { AdminNavbarComponent } from './admin-navbar/admin-navbar.component';
-import { UserLoginModalComponent } from './user-login-modal/user-login-modal.component';
-import { UserRegistrationModalComponent } from './user-registration-modal/user-registration-modal.component';
 import { ChangePasswordModalComponent } from './change-password-modal/change-password-modal.component';
 
 @Component({
@@ -18,8 +16,6 @@ import { ChangePasswordModalComponent } from './change-password-modal/change-pas
     PublicNavbarComponent,
     UserNavbarComponent,
     AdminNavbarComponent,
-    UserLoginModalComponent,
-    UserRegistrationModalComponent,
     ChangePasswordModalComponent
   ],
   templateUrl: './app.component.html',

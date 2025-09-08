@@ -1,7 +1,5 @@
-<app-public-navbar *ngIf="!isLoggedIn() && !isAdmin()" (loginClicked)="openLoginModal()" (registerClicked)="openRegisterModal()"></app-public-navbar>
-<app-user-navbar *ngIf="isLoggedIn() && !isAdmin()"></app-user-navbar>
+<app-public-navbar *ngIf="!isLoggedIn() && !isAdmin()"></app-public-navbar>
+<app-user-navbar *ngIf="isLoggedIn() && !isAdmin()" (changePasswordClicked)="openChangePasswordModal()"></app-user-navbar>
 <app-admin-navbar *ngIf="isLoggedIn() && isAdmin()"></app-admin-navbar>
 <router-outlet></router-outlet>
-<app-user-login-modal *ngIf="showLoginModal" (closeModal)="closeLoginModal()"></app-user-login-modal>
-<app-user-registration-modal *ngIf="showRegisterModal" (closeModal)="closeRegisterModal()"></app-user-registration-modal>
 <app-change-password-modal *ngIf="showChangePasswordModal" (closeModal)="closeChangePasswordModal()"></app-change-password-modal>
