@@ -1,0 +1,78 @@
+.user-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 50px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  box-sizing: border-box;
+  color: white;
+}
+
+.navbar-brand a {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #f1c40f;
+  text-decoration: none;
+}
+
+.navbar-right {
+  position: relative;
+}
+
+.profile-section {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  min-width: 200px;
+  z-index: 1000;
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 12px 16px;
+  color: #333;
+  text-decoration: none;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 0.95rem;
+}
+
+.dropdown-menu a:last-child {
+  border-bottom: none;
+}
+
+.dropdown-menu a:hover {
+  background-color: #f5f5f5;
+}

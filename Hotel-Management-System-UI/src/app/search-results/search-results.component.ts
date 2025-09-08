@@ -12,6 +12,7 @@ import { AdminService } from '../admin.service';
 import { AdminNavbarComponent } from '../admin-navbar/admin-navbar.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PublicNavbarComponent } from '../public-navbar/public-navbar.component';
+import { AppUserNavbarComponent } from '../app-user-navbar/app-user-navbar.component';
 
 @Component({
   selector: 'app-search-results',
@@ -21,6 +22,7 @@ import { PublicNavbarComponent } from '../public-navbar/public-navbar.component'
     FormsModule,
     AdminNavbarComponent,
     PublicNavbarComponent,
+    AppUserNavbarComponent,
   ],
   templateUrl: './search-results.component.html',
   styleUrls: ['./search-results.component.css'],

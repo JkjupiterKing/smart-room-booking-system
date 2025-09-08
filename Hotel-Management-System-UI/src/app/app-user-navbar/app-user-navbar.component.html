@@ -1,0 +1,23 @@
+<nav class="user-navbar">
+  <div class="navbar-brand">
+    <a href="/landing-page">Smart hotel</a>
+  </div>
+  <div class="navbar-right">
+    <div class="profile-section" (click)="toggleDropdown()">
+      <div class="avatar">
+        <span>{{ userInitial }}</span>
+      </div>
+      <div class="dropdown-menu" [class.show]="isDropdownOpen">
+        <a (click)="navigateToBookingManagement()">Booking Management</a>
+        <a (click)="openPasswordModal()">Manage Account</a>
+        <a (click)="logout()">Logout</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<app-change-password-modal
+  *ngIf="isPasswordModalOpen"
+  (close)="closePasswordModal()"
+  (passwordChange)="handlePasswordChange($event)">
+</app-change-password-modal>

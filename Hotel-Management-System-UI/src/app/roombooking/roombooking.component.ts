@@ -31,6 +31,8 @@ interface Amenity {
   description: string;
 }
 
+import { AppUserNavbarComponent } from '../app-user-navbar/app-user-navbar.component';
+
 @Component({
   selector: 'app-roombooking',
   standalone: true,
@@ -38,7 +40,8 @@ interface Amenity {
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
-    HttpClientModule
+    HttpClientModule,
+    AppUserNavbarComponent
   ],
   templateUrl: './roombooking.component.html',
   styleUrls: ['./roombooking.component.css']
