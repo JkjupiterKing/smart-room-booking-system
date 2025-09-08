@@ -9,7 +9,6 @@ import { RoomTypeManagementComponent } from './room-type-management/room-type-ma
 import { RoomManagementComponent } from './room-management/room-management.component';
 import { BookingManagementComponent } from './booking-management/booking-management.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
-import { RoomBookingAiAgentComponent } from './room-booking-ai-agent/room-booking-ai-agent.component';
 import { SearchResultsComponent } from './search-results/search-results.component';
 import { HotelDetailsComponent } from './hotel-details/hotel-details.component';
 import { UserLayoutComponent } from './user-layout/user-layout.component';
@@ -26,7 +25,6 @@ export const routes: Routes = [
     component: UserLayoutComponent,
     children: [
       { path: 'dashboard', component: DashboardComponent },
-      { path: 'room-booking-ai-agent', component: RoomBookingAiAgentComponent },
       { path: 'booking-management', component: BookingManagementComponent },
       { path: 'roombooking', component: RoomBookingComponent },
       { path: 'payment', component: PaymentComponent },
