@@ -1,5 +1,6 @@
+<app-user-navbar *ngIf="isUserLoggedIn"></app-user-navbar>
 <app-public-navbar
-  *ngIf="!isLoggedIn"
+  *ngIf="!isUserLoggedIn"
   (loginClicked)="openLoginModal()"
   (registerClicked)="openRegisterModal()"
 ></app-public-navbar>
@@ -232,9 +233,3 @@
   </div>
 </div>
 
-<!-- Password Change Modal -->
-<app-change-password-modal
-  *ngIf="isPasswordModalOpen"
-  (close)="closePasswordModal()"
-  (passwordChange)="handlePasswordChange($event)">
-</app-change-password-modal>
