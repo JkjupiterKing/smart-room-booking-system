@@ -5,8 +5,20 @@
     <span class="logo-text">QuickStay</span>
   </div>
   <div class="navbar-actions">
-    <button class="navbar-login" (click)="openLoginModal()">Login</button>
-    <button class="navbar-login" (click)="openRegisterModal()">Register</button>
+    <div *ngIf="!isUserLoggedIn">
+      <button class="navbar-login" (click)="openLoginModal()">Login</button>
+      <button class="navbar-login" (click)="openRegisterModal()">Register</button>
+    </div>
+    <div *ngIf="isUserLoggedIn" class="profile-dropdown">
+      <button class="profile-btn" (click)="toggleDropdown()">
+        <span class="avatar">{{ userInitial }}</span>
+      </button>
+      <div class="dropdown-content" [class.show]="isDropdownOpen">
+        <a routerLink="/booking-management">Booking Management</a>
+        <a (click)="openPasswordModal()">Manage Account</a>
+        <a (click)="logout()">Logout</a>
+      </div>
+    </div>
   </div>
 </nav>
 
@@ -241,3 +253,10 @@
     <button (click)="closeRegisterModal()">Close</button>
   </div>
 </div>
+
+<!-- Password Change Modal -->
+<app-change-password-modal
+  *ngIf="isPasswordModalOpen"
+  (close)="closePasswordModal()"
+  (passwordChange)="handlePasswordChange($event)">
+</app-change-password-modal>
