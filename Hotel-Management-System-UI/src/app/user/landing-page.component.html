@@ -27,6 +27,14 @@
       hotels and resorts. Start your journey today.
     </span>
   </div>
+  <!-- AI Search Section (moved inside hero so it's positioned under hero text) -->
+  <div class="ai-search-container">
+    <input type="text" class="ai-search-input" placeholder="Describe your dream hotel..." [(ngModel)]="aiSearchQuery" aria-label="AI search">
+    <button class="mic-btn" [class.recording]="isRecording" (click)="toggleMic()" title="Start/Stop voice input">
+      <i class="fas fa-microphone"></i>
+    </button>
+    <button class="ai-search-btn" (click)="onAiSearch()">AI Search</button>
+  </div>
   <div class="search-bar-container">
     <form class="search-bar" (ngSubmit)="onSearchHotels()" #searchForm="ngForm">
     <div class="search-field">

@@ -11,6 +11,20 @@
     </span>
   </div>
 
+  <!-- AI Search Section (placed inside hero-section so it's positioned just below hero text) -->
+  <div class="ai-search-container">
+    <input
+      type="text"
+      class="ai-search-input"
+      placeholder="Describe your dream hotel..."
+      aria-label="AI search"
+      [(ngModel)]="aiSearchQuery"
+    />
+    <button class="mic-btn" [class.recording]="isRecording" (click)="toggleMic()" title="Start/Stop voice input">
+      <i class="fas fa-microphone"></i>
+    </button>
+    <button class="ai-search-btn" (click)="onAiSearch()">AI Search</button>
+  </div>
   <div class="search-bar-container">
     <form class="search-bar" (ngSubmit)="onSearchHotels()" #searchForm="ngForm">
     <div class="search-field">
