@@ -52,7 +52,7 @@ export class PaymentComponent {
       this.totalAmount = this.bookingDetails.price || 0;
     } else {
       alert('Booking details not found. Please try again.');
-      this.router.navigate(['/user/dashboard']);
+      this.router.navigate(['/landing-page']);
     }
 
     this.paymentForm.get('paymentMethod')?.valueChanges.subscribe((method: string) => {
@@ -134,7 +134,7 @@ export class PaymentComponent {
               }
               this.isProcessing = false;
               this.cd.detectChanges();
-              this.router.navigate(['/user/dashboard']);
+              this.router.navigate(['/landing-page']);
             },
             error: (err) => {
               alert('Booking failed after payment. Please contact support.');

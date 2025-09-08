@@ -1,19 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { NgZone } from '@angular/core';
 import { UserService } from '../user.service';
 import { AdminService } from '../admin.service';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AiSearchService } from '../ai-search.service';
 import { Hotel } from '../search-results.service';
+import { ChangePasswordModalComponent } from '../change-password-modal/change-password-modal.component';
 
 @Component({
   selector: 'app-landing-page',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, RouterModule, ChangePasswordModalComponent],
   templateUrl: './landing-page.component.html',
   styleUrls: ['./landing-page.component.css']
 })
@@ -23,6 +24,7 @@ export class LandingPageComponent implements OnInit {
   isLoginModalOpen: boolean = false;
   isRegisterModalOpen: boolean = false;
   registrationSuccess: boolean = false;
+  isPasswordModalOpen = false;
 
   // Messages
   successMessage: string = '';
@@ -34,6 +36,10 @@ export class LandingPageComponent implements OnInit {
     email: '',
     password: ''
   };
+  isUserLoggedIn: boolean = false;
+  userInitial: string | null = null;
+  isDropdownOpen = false;
+  userId: number | null = null;
 
   // Search bar
   locations: any[] = [];
@@ -56,12 +62,21 @@ export class LandingPageComponent implements OnInit {
   private adminService: AdminService,
   private router: Router,
   private aiSearchService: AiSearchService,
-  private ngZone: NgZone
+  private ngZone: NgZone,
+  @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit() {
     this.fetchLocations();
     this.setTodayDate();
+    if (isPlatformBrowser(this.platformId)) {
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      if (user && user.id) {
+        this.isUserLoggedIn = true;
+        this.userInitial = user.username.charAt(0).toUpperCase();
+        this.userId = user.id;
+      }
+    }
   }
 
   // Set today's date in yyyy-MM-dd format
@@ -264,7 +279,7 @@ export class LandingPageComponent implements OnInit {
           }
 
           this.successMessage = 'Login successful!';
-          this.router.navigate(['/user/dashboard']).then(() => window.location.reload());
+          this.router.navigate(['/landing-page']).then(() => window.location.reload());
           this.closeLoginModal();
           loginForm.reset();
         },
@@ -325,4 +340,43 @@ onRegisterSubmit(registerForm: NgForm) {
     });
   }
 }
+
+  toggleDropdown(): void {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  openPasswordModal(): void {
+    this.isPasswordModalOpen = true;
+    this.isDropdownOpen = false;
+  }
+
+  closePasswordModal(): void {
+    this.isPasswordModalOpen = false;
+  }
+
+  handlePasswordChange(newPassword: string): void {
+    if (!this.userId) {
+      console.error('User ID not found');
+      return;
+    }
+    this.userService.updatePassword(this.userId, newPassword).subscribe({
+      next: () => {
+        console.log('Password updated successfully');
+        this.closePasswordModal();
+      },
+      error: (err) => {
+        console.error('Error updating password', err);
+      }
+    });
+  }
+
+  logout(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('user');
+      localStorage.removeItem('role');
+      this.isUserLoggedIn = false;
+      this.userInitial = null;
+      this.router.navigate(['/landing-page']).then(() => window.location.reload());
+    }
+  }
 }
