@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo19.Modal.User;
@@ -26,8 +27,8 @@ public class UserController {
 	@Autowired
 	private UserRepository userRepository;
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+//	@Autowired
+//	private PasswordEncoder passwordEncoder;
 
 	// Registration endpoint
 	@PostMapping("/register")
@@ -40,7 +41,8 @@ public class UserController {
 		}
 
 		// Hash the password before saving
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
+//		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		user.setPassword(user.getPassword());
 		User savedUser = userRepository.save(user);
 
 		// ✅ Send Welcome Email
@@ -70,7 +72,7 @@ public class UserController {
 		}
 
 		// Check if the password matches
-		if (passwordEncoder.matches(user.getPassword(), existingUser.getPassword())) {
+		if (user.getPassword().equals(existingUser.getPassword())) {
 			Map<String, Object> response = new HashMap<>();
 			response.put("message", "Login successful!");
 			response.put("user", existingUser);
@@ -97,7 +99,7 @@ public class UserController {
 		User user = userOptional.get();
 		user.setUsername(updatedUser.getUsername());
 		if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
-			user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+			user.setPassword(updatedUser.getPassword());
 		}
 		user.setEmail(updatedUser.getEmail()); // Added this line to update the email
 		userRepository.save(user);
@@ -119,7 +121,7 @@ public class UserController {
 					.status(HttpStatus.BAD_REQUEST)
 					.body("Password is required!");
 		}
-		user.setPassword(passwordEncoder.encode(newPassword));
+		user.setPassword(newPassword);
 		userRepository.save(user);
 		return ResponseEntity.ok("User password updated successfully!");
 	}
