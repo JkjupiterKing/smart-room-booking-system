@@ -53,4 +53,14 @@ export class UserService {
       catchError((error) => throwError(() => error))
     );
   }
+
+  // ✅ Update Password
+  updatePassword(userId: number, password: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/update/password/${userId}`, { password }, {
+      headers: { 'Content-Type': 'application/json' },
+      responseType: 'text'
+    }).pipe(
+      catchError((error) => throwError(() => error))
+    );
+  }
 }

@@ -6,6 +6,8 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo19.Modal.User;
@@ -15,27 +17,18 @@ import com.example.demo19.Repository.UserRepository;
 
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin(origins = "http://localhost:4200") 
+@CrossOrigin(origins = "http://localhost:4200")
 
 public class UserController {
 
 	@Autowired
 	private EmailService emailService;
 
-	    @Autowired
-	    private UserRepository userRepository;
+	@Autowired
+	private UserRepository userRepository;
 
-	    // Registration endpoint
-//	    @PostMapping("/register")
-//	    public String registerUser(@RequestBody User user) {
-//	        // Check if the username already exists
-//	        if (userRepository.findByUsername(user.getUsername()) != null) {
-//	            return "Username already exists!";
-//	        }
-//	        // Save user with plain text password (not recommended for production)
-//	        userRepository.save(user);
-//	        return "User registered successfully!";
-//	    }
+//	@Autowired
+//	private PasswordEncoder passwordEncoder;
 
 	// Registration endpoint
 	@PostMapping("/register")
@@ -47,7 +40,9 @@ public class UserController {
 					.body("Username already exists!");
 		}
 
-		// Save user
+		// Hash the password before saving
+//		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		user.setPassword(user.getPassword());
 		User savedUser = userRepository.save(user);
 
 		// ✅ Send Welcome Email
@@ -66,31 +61,31 @@ public class UserController {
 
 
 	// Login endpoint
-		@PostMapping("/login")
-		public ResponseEntity<?> loginUser(@RequestBody User user) {
-			// Check if the user exists
-			User existingUser = userRepository.findByUsername(user.getUsername());
-			if (existingUser == null) {
-				return ResponseEntity
-						.status(HttpStatus.BAD_REQUEST)
-						.body("User not found!");
-			}
-
-			// Check if the password matches
-			if (user.getPassword().equals(existingUser.getPassword())) {
-				Map<String, Object> response = new HashMap<>();
-				response.put("message", "Login successful!");
-				response.put("user", existingUser);
-
-				return ResponseEntity
-						.ok()
-						.body(response);
-			} else {
-				return ResponseEntity
-						.status(HttpStatus.BAD_REQUEST)
-						.body("Invalid credentials!");
-			}
+	@PostMapping("/login")
+	public ResponseEntity<?> loginUser(@RequestBody User user) {
+		// Check if the user exists
+		User existingUser = userRepository.findByUsername(user.getUsername());
+		if (existingUser == null) {
+			return ResponseEntity
+					.status(HttpStatus.BAD_REQUEST)
+					.body("User not found!");
 		}
+
+		// Check if the password matches
+		if (user.getPassword().equals(existingUser.getPassword())) {
+			Map<String, Object> response = new HashMap<>();
+			response.put("message", "Login successful!");
+			response.put("user", existingUser);
+
+			return ResponseEntity
+					.ok()
+					.body(response);
+		} else {
+			return ResponseEntity
+					.status(HttpStatus.BAD_REQUEST)
+					.body("Invalid credentials!");
+		}
+	}
 
 	// Update endpoint
 	@PutMapping("/update/{id}")
@@ -103,10 +98,32 @@ public class UserController {
 		}
 		User user = userOptional.get();
 		user.setUsername(updatedUser.getUsername());
-		user.setPassword(updatedUser.getPassword());
+		if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
+			user.setPassword(updatedUser.getPassword());
+		}
 		user.setEmail(updatedUser.getEmail()); // Added this line to update the email
 		userRepository.save(user);
 		return ResponseEntity.ok("User updated successfully!");
+	}
+
+	@PutMapping("/update/password/{id}")
+	public ResponseEntity<?> updateUserPassword(@PathVariable Long id, @RequestBody Map<String, String> passwordMap) {
+		Optional<User> userOptional = userRepository.findById(id);
+		if (!userOptional.isPresent()) {
+			return ResponseEntity
+					.status(HttpStatus.NOT_FOUND)
+					.body("User not found!");
+		}
+		User user = userOptional.get();
+		String newPassword = passwordMap.get("password");
+		if (newPassword == null || newPassword.isEmpty()) {
+			return ResponseEntity
+					.status(HttpStatus.BAD_REQUEST)
+					.body("Password is required!");
+		}
+		user.setPassword(newPassword);
+		userRepository.save(user);
+		return ResponseEntity.ok("User password updated successfully!");
 	}
 	// Delete endpoint
 	@DeleteMapping("/delete/{id}")
