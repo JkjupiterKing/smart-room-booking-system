@@ -188,7 +188,7 @@ export class RoomBookingComponent implements OnInit {
         price: this.selectedRoom.price,
       };
 
-  this.router.navigate(['/user/payment'], { state: { booking: bookingData } });
+  this.router.navigate(['/payment'], { state: { booking: bookingData } });
     } else {
       alert('Please fill all required fields');
     }
