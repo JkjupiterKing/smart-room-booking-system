@@ -11,7 +11,31 @@ export class UserService {
   private roomUrl = 'http://localhost:8066/api/bookings';
   private paymentUrl = 'http://localhost:8066/api/payment';
 
+  private loggedIn = false;
+  private admin = false;
+
   constructor(private http: HttpClient) {}
+
+  login() {
+    this.loggedIn = true;
+  }
+
+  logout() {
+    this.loggedIn = false;
+    this.admin = false;
+  }
+
+  isLoggedIn(): boolean {
+    return this.loggedIn;
+  }
+
+  isAdmin(): boolean {
+    return this.admin;
+  }
+
+  setAdmin(isAdmin: boolean) {
+    this.admin = isAdmin;
+  }
 
   // ✅ Register User (expects { message, user })
   registerUser(user: any): Observable<any> {

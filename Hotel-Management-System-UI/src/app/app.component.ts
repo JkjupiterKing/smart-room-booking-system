@@ -1,12 +1,67 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import { UserService } from './user.service';
+import { PublicNavbarComponent } from './public-navbar/public-navbar.component';
+import { UserNavbarComponent } from './user-navbar/user-navbar.component';
+import { AdminNavbarComponent } from './admin-navbar/admin-navbar.component';
+import { UserLoginModalComponent } from './user-login-modal/user-login-modal.component';
+import { UserRegistrationModalComponent } from './user-registration-modal/user-registration-modal.component';
+import { ChangePasswordModalComponent } from './change-password-modal/change-password-modal.component';
+
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    PublicNavbarComponent,
+    UserNavbarComponent,
+    AdminNavbarComponent,
+    UserLoginModalComponent,
+    UserRegistrationModalComponent,
+    ChangePasswordModalComponent
+  ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'user-auth';
+  title = 'Hotel-Management-System-UI';
+  showLoginModal = false;
+  showRegisterModal = false;
+  showChangePasswordModal = false;
+
+  constructor(private userService: UserService) {}
+
+  isLoggedIn(): boolean {
+    return this.userService.isLoggedIn();
+  }
+
+  isAdmin(): boolean {
+    return this.userService.isAdmin();
+  }
+
+  openLoginModal() {
+    this.showLoginModal = true;
+  }
+
+  closeLoginModal() {
+    this.showLoginModal = false;
+  }
+
+  openRegisterModal() {
+    this.showRegisterModal = true;
+  }
+
+  closeRegisterModal() {
+    this.showRegisterModal = false;
+  }
+
+  openChangePasswordModal() {
+    this.showChangePasswordModal = true;
+  }
+
+  closeChangePasswordModal() {
+    this.showChangePasswordModal = false;
+  }
 }

@@ -1,0 +1,20 @@
+<nav class="navbar">
+  <div class="navbar-logo">
+    <a routerLink="/" class="logo-link">
+      <span class="logo-icon"><i class="fas fa-home"></i></span>
+      <span class="logo-text">QuickStay</span>
+    </a>
+  </div>
+  <div class="navbar-actions">
+    <div class="profile-menu">
+      <button class="profile-icon" (click)="toggleDropdown()">
+        <i class="fas fa-user-circle"></i>
+      </button>
+      <div class="dropdown-menu" *ngIf="isDropdownOpen">
+        <a class="dropdown-item" (click)="navigateToBookingManagement()">Booking Management</a>
+        <a class="dropdown-item" (click)="openChangePasswordModal()">Manage Account</a>
+        <a class="dropdown-item" (click)="logout()">Logout</a>
+      </div>
+    </div>
+  </div>
+</nav>
