@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { AppUserNavbarComponent } from '../app-user-navbar/app-user-navbar.component';
 
 @Component({
   selector: 'app-booking-management',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, AppUserNavbarComponent],
   templateUrl: './booking-management.component.html',
   styleUrl: './booking-management.component.css'
 })

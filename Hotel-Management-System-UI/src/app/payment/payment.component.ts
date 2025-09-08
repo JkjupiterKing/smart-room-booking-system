@@ -6,11 +6,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ChangeDetectorRef } from '@angular/core';
 import { UserService } from '../user.service';
+import { AppUserNavbarComponent } from '../app-user-navbar/app-user-navbar.component';
 
 @Component({
   selector: 'app-payment',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, AppUserNavbarComponent],
   templateUrl: './payment.component.html',
   styleUrls: ['./payment.component.css']
 })

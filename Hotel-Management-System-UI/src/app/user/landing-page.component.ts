@@ -11,11 +11,12 @@ import { AiSearchService } from '../ai-search.service';
 import { Hotel } from '../search-results.service';
 import { ChangePasswordModalComponent } from '../change-password-modal/change-password-modal.component';
 import { PublicNavbarComponent } from '../public-navbar/public-navbar.component';
+import { AppUserNavbarComponent } from '../app-user-navbar/app-user-navbar.component';
 
 @Component({
   selector: 'app-landing-page',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule, ChangePasswordModalComponent, PublicNavbarComponent],
+  imports: [FormsModule, CommonModule, RouterModule, PublicNavbarComponent, AppUserNavbarComponent],
   templateUrl: './landing-page.component.html',
   styleUrls: ['./landing-page.component.css']
 })
@@ -39,9 +40,6 @@ export class LandingPageComponent implements OnInit {
     password: ''
   };
   isUserLoggedIn: boolean = false;
-  userInitial: string | null = null;
-  isDropdownOpen = false;
-  userId: number | null = null;
 
   // Search bar
   locations: any[] = [];
@@ -75,8 +73,6 @@ export class LandingPageComponent implements OnInit {
       const user = JSON.parse(localStorage.getItem('user') || '{}');
       if (user && user.id) {
         this.isUserLoggedIn = true;
-        this.userInitial = user.username.charAt(0).toUpperCase();
-        this.userId = user.id;
       }
     }
   }
@@ -343,42 +339,4 @@ onRegisterSubmit(registerForm: NgForm) {
   }
 }
 
-  toggleDropdown(): void {
-    this.isDropdownOpen = !this.isDropdownOpen;
-  }
-
-  openPasswordModal(): void {
-    this.isPasswordModalOpen = true;
-    this.isDropdownOpen = false;
-  }
-
-  closePasswordModal(): void {
-    this.isPasswordModalOpen = false;
-  }
-
-  handlePasswordChange(newPassword: string): void {
-    if (!this.userId) {
-      console.error('User ID not found');
-      return;
-    }
-    this.userService.updatePassword(this.userId, newPassword).subscribe({
-      next: () => {
-        console.log('Password updated successfully');
-        this.closePasswordModal();
-      },
-      error: (err) => {
-        console.error('Error updating password', err);
-      }
-    });
-  }
-
-  logout(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem('user');
-      localStorage.removeItem('role');
-      this.isUserLoggedIn = false;
-      this.userInitial = null;
-      this.router.navigate(['/landing-page']).then(() => window.location.reload());
-    }
-  }
 }
