@@ -9,7 +9,6 @@ import { SearchResultsService, Hotel } from '../search-results.service';
 import { FormsModule, NgForm } from '@angular/forms';
 import { UserService } from '../user.service';
 import { AdminService } from '../admin.service';
-import { UserNavbarComponent } from '../user-navbar/user-navbar.component';
 import { AdminNavbarComponent } from '../admin-navbar/admin-navbar.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PublicNavbarComponent } from '../public-navbar/public-navbar.component';
@@ -20,7 +19,6 @@ import { PublicNavbarComponent } from '../public-navbar/public-navbar.component'
   imports: [
     CommonModule,
     FormsModule,
-    UserNavbarComponent,
     AdminNavbarComponent,
     PublicNavbarComponent,
   ],
@@ -143,7 +141,7 @@ export class SearchResultsComponent implements OnInit {
 
           this.successMessage = 'Login successful!';
           this.router
-            .navigate(['/user/dashboard'])
+            .navigate(['/landing-page'])
             .then(() => window.location.reload());
           this.closeLoginModal();
           loginForm.reset();

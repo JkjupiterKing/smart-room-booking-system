@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HotelService } from '../hotel/hotel.service';
 import { Hotel } from '../search-results.service';
-import { UserNavbarComponent } from '../user-navbar/user-navbar.component';
 import { AdminNavbarComponent } from '../admin-navbar/admin-navbar.component';
 import { FormsModule, NgForm } from '@angular/forms';
 import { UserService } from '../user.service';
@@ -17,7 +16,7 @@ import { latLng, tileLayer, marker, icon, Map } from 'leaflet';
 @Component({
   selector: 'app-hotel-details',
   standalone: true,
-  imports: [CommonModule, UserNavbarComponent, AdminNavbarComponent, FormsModule, PublicNavbarComponent, LeafletModule],
+  imports: [CommonModule, AdminNavbarComponent, FormsModule, PublicNavbarComponent, LeafletModule],
   templateUrl: './hotel-details.component.html',
   styleUrls: ['./hotel-details.component.css']
 })
@@ -97,7 +96,7 @@ export class HotelDetailsComponent implements OnInit {
     if (this.isLoggedIn) {
       const city = this.hotel.location?.city || '';
       const hotelId = this.hotel.id;
-      this.router.navigate(['/user/roombooking'], { queryParams: { location: city, hotelId } });
+      this.router.navigate(['/roombooking'], { queryParams: { location: city, hotelId } });
     } else {
       this.isBookingFlow = true;
       this.openLoginModal();
@@ -204,10 +203,10 @@ export class HotelDetailsComponent implements OnInit {
             this.isBookingFlow = false; // Reset the flag
             const city = this.hotel?.location?.city || '';
             const hotelId = this.hotel?.id;
-            this.router.navigate(['/user/roombooking'], { queryParams: { location: city, hotelId } });
+            this.router.navigate(['/roombooking'], { queryParams: { location: city, hotelId } });
           } else {
             this.router
-              .navigate(['/user/dashboard'])
+              .navigate(['/landing-page'])
               .then(() => window.location.reload());
           }
         },

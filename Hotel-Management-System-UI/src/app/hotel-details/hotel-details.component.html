@@ -1,7 +1,6 @@
 <!-- Navigation Bar -->
 <div *ngIf="isLoggedIn">
   <app-admin-navbar *ngIf="userRole === 'admin'"></app-admin-navbar>
-  <app-user-navbar *ngIf="userRole === 'user'"></app-user-navbar>
 </div>
 
 <app-public-navbar
