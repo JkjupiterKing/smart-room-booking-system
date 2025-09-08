@@ -11,7 +11,6 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { SearchResultsComponent } from './search-results/search-results.component';
 import { HotelDetailsComponent } from './hotel-details/hotel-details.component';
 import { AdminLayoutComponent } from './admin-layout/admin-layout.component';
-import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { MyBookingsComponent } from './my-bookings/my-bookings.component';
 
 export const routes: Routes = [
@@ -34,5 +33,4 @@ export const routes: Routes = [
       { path: 'hotel-management', component: HotelManagementComponent },
     ],
   }
-  // ,{ path: 'admin/login', component: AdminLoginComponent },
 ];
