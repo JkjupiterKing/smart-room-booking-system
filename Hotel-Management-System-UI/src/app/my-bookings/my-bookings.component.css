@@ -1,0 +1,176 @@
+/* --- General Layout --- */
+.room-type-container {
+  padding: 40px;
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: #333;
+}
+
+h2 {
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: 300;
+  margin-bottom: 40px;
+  color: #1a237e; /* Deep blue heading */
+}
+
+/* --- Button Styles --- */
+.add-button,
+.submit-button,
+.cancel-button,
+.delete-button,
+.edit-button {
+  /* Add the new class here */
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  letter-spacing: 0.5px;
+  margin-right: 10px; /* Added margin to separate buttons */
+}
+
+.add-button {
+  background-color: #007bff; /* Primary blue */
+  color: white;
+}
+
+.add-button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.submit-button {
+  background-color: #28a745; /* Success green */
+  color: white;
+}
+
+.submit-button:hover {
+  background-color: #218838;
+}
+
+.cancel-button {
+  background-color: #6c757d; /* Secondary gray */
+  color: white;
+}
+
+.cancel-button:hover {
+  background-color: #5a6268;
+}
+
+.delete-button {
+  background-color: #dc3545; /* Danger red */
+  color: white;
+}
+
+.delete-button:hover {
+  background-color: #c82333;
+}
+
+/* Styling for the new edit button */
+.edit-button {
+  background-color: #ffc107; /* Warning yellow/orange */
+  color: #333; /* Dark text for contrast */
+}
+
+.edit-button:hover {
+  background-color: #e0a800;
+  transform: translateY(-2px);
+}
+
+/* --- Table Styles --- */
+.table-view {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+}
+
+.actions-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 18px 20px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #495057;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+}
+
+tr:hover {
+  background-color: #f0f2f5;
+  transition: background-color 0.2s ease;
+}
+
+/* Rounded corners for table */
+thead tr:first-child th:first-child {
+  border-top-left-radius: 8px;
+}
+thead tr:first-child th:last-child {
+  border-top-right-radius: 8px;
+}
+
+/* --- Form Styles --- */
+.form-view {
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.form-group {
+  margin-bottom: 25px;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #555;
+}
+
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem #007bff40;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+}

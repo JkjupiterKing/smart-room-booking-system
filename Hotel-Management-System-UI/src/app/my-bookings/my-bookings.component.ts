@@ -4,13 +4,13 @@ import { CommonModule } from '@angular/common';
 import { AppUserNavbarComponent } from '../app-user-navbar/app-user-navbar.component';
 
 @Component({
-  selector: 'app-booking-management',
+  selector: 'app-my-bookings',
   standalone: true,
-  imports: [CommonModule],
-  templateUrl: './booking-management.component.html',
-  styleUrl: './booking-management.component.css'
+  imports: [CommonModule, AppUserNavbarComponent],
+  templateUrl: './my-bookings.component.html',
+  styleUrl: './my-bookings.component.css'
 })
-export class BookingManagementComponent implements OnInit {
+export class MyBookingsComponent implements OnInit {
   bookings: any[] = [];
   private apiUrl = 'http://localhost:8066/api/bookings';
 

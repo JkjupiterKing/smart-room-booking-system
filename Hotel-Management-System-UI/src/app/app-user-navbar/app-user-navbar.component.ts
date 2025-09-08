@@ -42,7 +42,7 @@ export class AppUserNavbarComponent implements OnInit {
   }
 
   navigateToBookingManagement(): void {
-    this.router.navigate(['/booking-management']);
+    this.router.navigate(['/my-bookings']);
     this.isDropdownOpen = false;
   }
 

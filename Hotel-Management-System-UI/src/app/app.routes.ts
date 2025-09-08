@@ -12,13 +12,14 @@ import { SearchResultsComponent } from './search-results/search-results.componen
 import { HotelDetailsComponent } from './hotel-details/hotel-details.component';
 import { AdminLayoutComponent } from './admin-layout/admin-layout.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
+import { MyBookingsComponent } from './my-bookings/my-bookings.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'landing-page', pathMatch: 'full' },
   { path: 'search-results', component: SearchResultsComponent },
   { path: 'hotel-details/:id', component: HotelDetailsComponent },
   { path: 'landing-page', component: LandingPageComponent },
-  { path: 'booking-management', component: BookingManagementComponent },
+  { path: 'my-bookings', component: MyBookingsComponent },
   { path: 'roombooking', component: RoomBookingComponent },
   { path: 'payment', component: PaymentComponent },
   {
@@ -32,6 +33,6 @@ export const routes: Routes = [
       { path: 'booking-management', component: BookingManagementComponent },
       { path: 'hotel-management', component: HotelManagementComponent },
     ],
-  },
-  { path: 'admin/login', component: AdminLoginComponent },
+  }
+  // ,{ path: 'admin/login', component: AdminLoginComponent },
 ];

@@ -1,5 +1,6 @@
+<app-user-navbar></app-user-navbar>
 <div class="room-type-container">
-  <h2>Manage Room Bookings</h2>
+  <h2>My Room Bookings</h2>
 
   <div class="table-view">
     <div class="table-container">
@@ -12,8 +13,6 @@
             <th>Check-out Date</th>
             <th>Amenities</th>
             <th>Meals</th>
-            <th>Customer</th>
-            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -24,11 +23,6 @@
             <td>{{ booking.amenities }}</td>
             <td>{{ booking.meals }}</td>
             <td>{{ booking.user.username }}</td>
-            <td>
-              <button class="delete-button" (click)="deleteBooking(booking.id)">
-                Delete
-              </button>
-            </td>
           </tr>
         </tbody>
       </table>
