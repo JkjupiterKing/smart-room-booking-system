@@ -1,0 +1,31 @@
+<div class="room-type-container">
+  <h2>Manage Users</h2>
+
+  <div class="table-view">
+    <div class="table-container">
+      <h3>Existing Users</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Email</th>
+            <th>Username</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td>{{ user.id }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.username }}</td>
+            <td>
+              <button class="delete-button" (click)="deleteUser(user.id)">
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

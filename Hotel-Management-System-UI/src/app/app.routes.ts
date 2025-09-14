@@ -7,6 +7,7 @@ import { HotelManagementComponent } from './hotel-management/hotel-management.co
 import { RoomTypeManagementComponent } from './room-type-management/room-type-management.component';
 import { RoomManagementComponent } from './room-management/room-management.component';
 import { BookingManagementComponent } from './booking-management/booking-management.component';
+import { UserManagementComponent } from './user-management/user-management.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { SearchResultsComponent } from './search-results/search-results.component';
 import { HotelDetailsComponent } from './hotel-details/hotel-details.component';
@@ -30,6 +31,7 @@ export const routes: Routes = [
       { path: 'room-types', component: RoomTypeManagementComponent },
       { path: 'rooms', component: RoomManagementComponent },
       { path: 'booking-management', component: BookingManagementComponent },
+      { path: 'user-management', component: UserManagementComponent },
       { path: 'hotel-management', component: HotelManagementComponent },
     ],
   }
