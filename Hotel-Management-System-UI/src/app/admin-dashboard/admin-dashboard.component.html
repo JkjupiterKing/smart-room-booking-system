@@ -1,14 +1,14 @@
 <div class="main">
   <h2>Dashboard</h2>
 
-  <div class="dashboard-stats">
-    <div class="stat-card">
+  <div class="dashboard-stats" routerLink="/admin/user-management" style="cursor: pointer;">
+    <div class="stat-card" >
       <h3>Total Users</h3>
       <p class="count">{{ userCount }}</p>
       <i class="fas fa-users"></i>
     </div>
 
-    <div class="stat-card">
+    <div class="stat-card" routerLink="/admin/booking-management" style="cursor: pointer;">
       <h3>Total Bookings</h3>
       <p class="count">{{ bookingCount }}</p>
       <i class="fas fa-calendar-alt"></i>

@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import Chart from 'chart.js/auto';
 
 interface User {
@@ -26,7 +27,7 @@ interface Booking {
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, HttpClientModule],
+  imports: [CommonModule, HttpClientModule, RouterModule],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.css'
 })
@@ -34,6 +35,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
   @ViewChild('bookingChartCanvas') bookingChartCanvas!: ElementRef;
   userCount: number = 0;
   bookingCount: number = 0;
+  bookings: Booking[] = [];
   private apiUrl = 'http://localhost:8066/api';
 
   public chart: any;
@@ -45,7 +47,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.fetchUserCount();
-    this.fetchBookingCount();
+    // this.fetchBookingCount();
   }
 
   ngAfterViewInit(): void {
@@ -68,8 +70,9 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
 
   fetchBookingCount(): void {
     this.http.get<Booking[]>(`${this.apiUrl}/bookings/all`).subscribe({
-      next: (bookings) => {
-        this.bookingCount = bookings.length;
+      next: (data) => {
+        this.bookings = data;
+        this.bookingCount = data.length;
         console.log('Total bookings:', this.bookingCount);
       },
       error: (error) => {
@@ -77,18 +80,39 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
       }
     });
   }
-  
-  createBookingChart(): void {
-    const monthlyBookingsData = [12, 19, 3, 5, 2, 3, 15, 20, 10, 8, 14, 17];
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-    this.chart = new Chart(this.bookingChartCanvas.nativeElement, {
-      type: 'bar',
-      data: {
-        labels: months,
-        datasets: [{
-          label: 'Bookings per Month',
-          data: monthlyBookingsData,
+  createBookingChart(): void {
+  this.http.get<any[]>(`${this.apiUrl}/bookings/all`).subscribe({
+    next: (data) => {
+      this.bookingCount = data.length;
+        console.log('Total bookings:', this.bookingCount);
+      // Prepare months array
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+      // Initialize counts for all 12 months
+      const monthlyBookingsData = new Array(12).fill(0);
+
+      // Loop through bookings and increment counts by checkInDate month
+      data.forEach(oneBooking => {
+        if (oneBooking.checkInDate) {
+          const monthIndex = new Date(oneBooking.checkInDate).getMonth(); // 0 = Jan, 11 = Dec
+          monthlyBookingsData[monthIndex]++;
+        }
+      });
+
+      // Destroy old chart if exists (to avoid duplicates)
+      if (this.chart) {
+        this.chart.destroy();
+      }
+
+      // Create chart with real data
+      this.chart = new Chart(this.bookingChartCanvas.nativeElement, {
+        type: 'bar',
+        data: {
+          labels: months,
+          datasets: [{
+            data: monthlyBookingsData,
           backgroundColor: [
             'rgba(255, 99, 132, 0.6)',
             'rgba(54, 162, 235, 0.6)',
@@ -117,34 +141,112 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
             'rgba(153, 102, 255, 1)',
             'rgba(255, 159, 64, 1)'
           ],
-          borderWidth: 1
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Number of Bookings'
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Number of Bookings'
+              }
+            },
+            x: {
+              title: {
+                display: true,
+                text: 'Month'
+              }
             }
           },
-          x: {
+          plugins: {
             title: {
               display: true,
-              text: 'Month'
+              text: 'Bookings per Month'
+            },
+            legend: {
+            display: false   
             }
           }
-        },
-        plugins: {
-          title: {
-            display: true,
-            text: 'Monthly Booking Overview'
-          }
         }
-      }
-    });
-  }
+      });
+    },
+    error: (err) => {
+      console.error('Error loading bookings for chart:', err);
+    }
+  });
+}
+
+  // createBookingChart(): void {
+  //   const monthlyBookingsData = [12, 19, 3, 5, 2, 3, 15, 20, 10, 8, 14, 17];
+  //   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  //   this.chart = new Chart(this.bookingChartCanvas.nativeElement, {
+  //     type: 'bar',
+  //     data: {
+  //       labels: months,
+  //       datasets: [{
+  //         label: 'Bookings per Month',
+  //         data: monthlyBookingsData,
+  //         backgroundColor: [
+  //           'rgba(255, 99, 132, 0.6)',
+  //           'rgba(54, 162, 235, 0.6)',
+  //           'rgba(255, 206, 86, 0.6)',
+  //           'rgba(75, 192, 192, 0.6)',
+  //           'rgba(153, 102, 255, 0.6)',
+  //           'rgba(255, 159, 64, 0.6)',
+  //           'rgba(255, 99, 132, 0.6)',
+  //           'rgba(54, 162, 235, 0.6)',
+  //           'rgba(255, 206, 86, 0.6)',
+  //           'rgba(75, 192, 192, 0.6)',
+  //           'rgba(153, 102, 255, 0.6)',
+  //           'rgba(255, 159, 64, 0.6)'
+  //         ],
+  //         borderColor: [
+  //           'rgba(255, 99, 132, 1)',
+  //           'rgba(54, 162, 235, 1)',
+  //           'rgba(255, 206, 86, 1)',
+  //           'rgba(75, 192, 192, 1)',
+  //           'rgba(153, 102, 255, 1)',
+  //           'rgba(255, 159, 64, 1)',
+  //           'rgba(255, 99, 132, 1)',
+  //           'rgba(54, 162, 235, 1)',
+  //           'rgba(255, 206, 86, 1)',
+  //           'rgba(75, 192, 192, 1)',
+  //           'rgba(153, 102, 255, 1)',
+  //           'rgba(255, 159, 64, 1)'
+  //         ],
+  //         borderWidth: 1
+  //       }]
+  //     },
+  //     options: {
+  //       responsive: true,
+  //       maintainAspectRatio: false,
+  //       scales: {
+  //         y: {
+  //           beginAtZero: true,
+  //           title: {
+  //             display: true,
+  //             text: 'Number of Bookings'
+  //           }
+  //         },
+  //         x: {
+  //           title: {
+  //             display: true,
+  //             text: 'Month'
+  //           }
+  //         }
+  //       },
+  //       plugins: {
+  //         title: {
+  //           display: true,
+  //           text: 'Monthly Booking Overview'
+  //         }
+  //       }
+  //     }
+  //   });
+  // }
 }
