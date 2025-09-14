@@ -13,6 +13,7 @@ import { LeafletModule } from '@bluehalo/ngx-leaflet';
 import { latLng, tileLayer, marker, icon, Map } from 'leaflet';
 import { AppUserNavbarComponent } from '../app-user-navbar/app-user-navbar.component';
 import { RoomService } from '../room.service';
+import { Room } from '../room.model';
 
 @Component({
   selector: 'app-hotel-details',
@@ -42,15 +43,18 @@ export class HotelDetailsComponent implements OnInit {
 
   checkInDate: string = '';
   checkOutDate: string = '';
-  guests: number = 1;
+  adults: number = 1;
+  children: number = 0;
   availabilityChecked: boolean = false;
   isAvailable: boolean = false;
+  selectedRoomType: Room | null = null;
 
   user = {
     name: '',
     email: '',
     password: '',
   };
+  roomTypes: Room[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -69,6 +73,10 @@ export class HotelDetailsComponent implements OnInit {
   }
 
   checkAvailability(): void {
+    if (!this.selectedRoomType) {
+    alert("⚠️ Please select a room type before booking.");
+    return;
+  }
     if (!this.hotel) {
       alert('No hotel selected');
       return;
@@ -76,10 +84,12 @@ export class HotelDetailsComponent implements OnInit {
 
     const request = {
       hotelId: this.hotel.id,
-      roomId: 1, // Assuming a default room ID for now
+      // roomId: 1, // Assuming a default room ID for now
       checkInDate: this.checkInDate,
       checkOutDate: this.checkOutDate,
-      guests: this.guests
+      adults: this.adults,
+      children: this.children,
+      roomType: this.selectedRoomType
     };
 
     this.roomService.checkAvailability(request).subscribe(response => {
@@ -95,9 +105,18 @@ export class HotelDetailsComponent implements OnInit {
     }
 
     if (this.isLoggedIn) {
-      const city = this.hotel.location?.city || '';
-      const hotelId = this.hotel.id;
-      this.router.navigate(['/roombooking'], { queryParams: { location: city, hotelId } });
+            const city = this.hotel?.location?.city || '';
+            const hotelId = this.hotel?.id;
+            const checkIn = this.checkInDate;
+            const checkOut = this.checkOutDate; 
+            const adults = this.adults;
+            const children = this.children;
+            const roomType = this.selectedRoomType?.roomType;
+            console.log('selectedRoomType',this.selectedRoomType?.roomType);
+            
+            this.router.navigate(['/roombooking'], { queryParams: { hotelId, city, checkIn, checkOut, adults, children,roomType } });
+
+            // this.router.navigate(['/roombooking'], { queryParams: { city, hotelId } });
     } else {
       this.isBookingFlow = true;
       this.openLoginModal();
@@ -107,7 +126,15 @@ export class HotelDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.checkUserStatus();
     const hotelId = this.route.snapshot.paramMap.get('id');
+    this.checkInDate = this.route.snapshot.queryParamMap.get('checkIn') || '';
+    this.checkOutDate = this.route.snapshot.queryParamMap.get('checkOut') || '';
     if (hotelId) {
+
+      this.roomService.findRoomsByHotelId(Number(hotelId))
+  .subscribe((rooms: Room[]) => {
+    this.roomTypes = rooms;
+  });
+
       this.hotelService.getHotelById(+hotelId).subscribe(hotel => {
         this.hotel = hotel;
   // build images array from available base64 fields, detect MIME from signature
@@ -204,7 +231,14 @@ export class HotelDetailsComponent implements OnInit {
             this.isBookingFlow = false; // Reset the flag
             const city = this.hotel?.location?.city || '';
             const hotelId = this.hotel?.id;
-            this.router.navigate(['/roombooking'], { queryParams: { location: city, hotelId } });
+            const checkIn = this.checkInDate;
+            const checkOut = this.checkOutDate; 
+            const adults = this.adults;
+            const children = this.children;
+            const roomType = this.selectedRoomType?.roomType;
+            console.log('selectedRoomType onLoginSubmit',this.selectedRoomType?.roomType);
+            
+            this.router.navigate(['/roombooking'], { queryParams: { hotelId, city, checkIn, checkOut, adults, children, roomType } });
           } else {
             this.router
               .navigate(['/landing-page'])

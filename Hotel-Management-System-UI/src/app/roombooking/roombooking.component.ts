@@ -48,10 +48,18 @@ import { AppUserNavbarComponent } from '../app-user-navbar/app-user-navbar.compo
 })
 export class RoomBookingComponent implements OnInit {
   city: string | null = '';
+  checkInDate: string = '';
+  checkOutDate: string = ''
+  adults: number = 1;
+  children: number = 0
+  roomType: string = '';
+  hotelId: number | null = null;
 
   selectedRoom: Room | null = null;
   showModal: boolean = false;
-  bookingForm: FormGroup;
+  bookingForm!: FormGroup;
+
+
 
   amenitiesOptions: Amenity[] = [];
   mealOptions = ['Meals Included', 'No Meals'];
@@ -68,24 +76,22 @@ export class RoomBookingComponent implements OnInit {
     private fb: FormBuilder,
     private http: HttpClient
   ) {
-    this.bookingForm = this.fb.group({
-      checkInDate: ['', Validators.required],
-      checkOutDate: ['', Validators.required],
-      adults: [1, [Validators.required, Validators.min(1)]],
-      children: [0, [Validators.required, Validators.min(0)]],
-      amenities: ['', Validators.required],
-      meals: ['No Meals', Validators.required]
-    });
+ 
   }
 
   ngOnInit(): void {
     this.city = this.route.snapshot.queryParamMap.get('location');
-    const hotelIdParam = this.route.snapshot.queryParamMap.get('hotelId');
+    this.hotelId = Number(this.route.snapshot.queryParamMap.get('hotelId'));
+    this.checkInDate = this.route.snapshot.queryParamMap.get('checkIn') || '';
+    this.checkOutDate = this.route.snapshot.queryParamMap.get('checkOut') || '';
+    this.adults = Number(this.route.snapshot.queryParamMap.get('adults')) || 1;
+    this.children = Number(this.route.snapshot.queryParamMap.get('children')) || 0;
+    this.roomType = this.route.snapshot.queryParamMap.get('roomType') || '';
 
-    if (hotelIdParam) {
-      const hotelId = Number(hotelIdParam);
-      if (!isNaN(hotelId)) {
-        this.hotelService.getHotelById(hotelId).subscribe(hotel => {
+
+
+
+        this.hotelService.getHotelById(this.hotelId).subscribe(hotel => {
           // Map fetched hotel to Room shape (Room and Hotel have similar fields)
           this.selectedRoom = {
             id: hotel.id,
@@ -102,36 +108,20 @@ export class RoomBookingComponent implements OnInit {
         }, err => {
           console.error('Failed to fetch hotel by id', err);
         });
-      }
-    }
+      
+      this.bookingForm = this.fb.group({
+    checkInDate: [{ value: this.checkInDate, disabled: !!this.checkInDate }, Validators.required],
+    checkOutDate: [{ value: this.checkOutDate, disabled: !!this.checkOutDate }, Validators.required],
+    adults: [{ value: this.adults, disabled: !!this.adults }, [Validators.required, Validators.min(1)]],
+    children: [{ value: this.children, disabled: true }, [Validators.required, Validators.min(0)]],
+    roomType: [{ value: this.roomType, disabled: !!this.roomType }, Validators.required],
+    meals: ['No Meals', Validators.required],
+  });
 
     const today = new Date();
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
     this.minCheckInDate = this.formatDate(tomorrow);
-
-    if (this.city) {
-      this.fetchAmenities();
-    } else {
-      alert('Please select a city first');
-      this.router.navigate(['/dashboard']);
-    }
-  }
-
-  fetchAmenities(): void {
-    const url = `http://localhost:8066/api/roomtypes/all`;
-    this.http.get<Amenity[]>(url)
-      .pipe(
-        catchError(error => {
-          console.error('Error fetching amenities:', error);
-          this.amenitiesOptions = [];
-          return of([]);
-        })
-      )
-      .subscribe(data => {
-        this.amenitiesOptions = data;
-        this.bookingForm.get('amenities')?.setValue(this.amenitiesOptions[0]?.name);
-      });
   }
 
   openBookingModal(room: Room): void {
@@ -145,10 +135,12 @@ export class RoomBookingComponent implements OnInit {
     this.minCheckOutDate = ''; // reset checkout date
 
     this.bookingForm.reset({
-      adults: 1,
-      children: 0,
+      adults: this.adults,
+      children: this.children,
+      checkInDate: this.checkInDate,
+      checkOutDate: this.checkOutDate,
       meals: 'No Meals',
-      amenities: this.amenitiesOptions[0]?.name
+      roomType: this.roomType
     });
   }
 
@@ -175,19 +167,22 @@ export class RoomBookingComponent implements OnInit {
         this.router.navigate(['/login']);
         return;
       }
-      
-      const bookingData = {
-        user: { id: userId }, // Send the userId in a nested user object
-        roomTitle: this.selectedRoom.name,
-        checkInDate: this.bookingForm.value.checkInDate,
-        checkOutDate: this.bookingForm.value.checkOutDate,
-        adults: this.bookingForm.value.adults,
-        children: this.bookingForm.value.children,
-        amenities: this.bookingForm.value.amenities,
-        meals: this.bookingForm.value.meals,
-        price: this.selectedRoom.price,
-      };
+      console.log(this.bookingForm.value.checkInDate);
+      const rawFormValues = this.bookingForm.getRawValue();
 
+      const bookingData = {
+        user: { id: userId },
+        checkInDate: rawFormValues.checkInDate,
+        checkOutDate: rawFormValues.checkOutDate,
+        adults: rawFormValues.adults,
+        children: rawFormValues.children,
+        roomType: rawFormValues.roomType,
+        meals: rawFormValues.meals,
+        price: this.selectedRoom.price,
+        hotelId: this.selectedRoom.id,
+        hotelName: this.selectedRoom.name
+      };
+      console.log('Booking Data before navigation:', bookingData);
   this.router.navigate(['/payment'], { state: { booking: bookingData } });
     } else {
       alert('Please fill all required fields');

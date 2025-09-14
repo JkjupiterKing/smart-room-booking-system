@@ -46,15 +46,8 @@
           </div>
 
           <div class="form-group">
-            <label for="amenities">Amenities</label>
-            <select id="amenities" formControlName="amenities">
-              <option
-                *ngFor="let option of amenitiesOptions"
-                [value]="option.name"
-              >
-                {{ option.name }}
-              </option>
-            </select>
+            <label for="roomType">Room type</label>
+            <input id="roomType" type="text" formControlName="roomType" />
           </div>
 
           <div class="form-group">

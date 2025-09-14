@@ -65,6 +65,11 @@ public class RoomController {
         hotelRoomRepository.deleteById(id);
     }
 
+    @GetMapping("/findRoomsByHotelId")
+    public List<HotelRoom> findRoomsByHotelId(@RequestParam Long hotelId) {
+        return hotelRoomRepository.findRoomsByHotelId(hotelId);
+    }
+
     @PostMapping("/check-availability")
     public ResponseEntity<Map<String, Boolean>> checkAvailability(@RequestBody AvailabilityCheckRequest request) {
         // Fetch all rooms of the given hotel

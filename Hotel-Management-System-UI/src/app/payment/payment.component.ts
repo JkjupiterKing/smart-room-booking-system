@@ -45,6 +45,7 @@ export class PaymentComponent {
     if (navigation && navigation.extras.state) {
       this.bookingDetails = navigation.extras.state['booking'];
     }
+    console.log('Booking Details on Payment Page:', this.bookingDetails);
   }
 
   ngOnInit(): void {

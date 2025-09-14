@@ -42,6 +42,11 @@ export class SearchResultsComponent implements OnInit {
   successMessage: string = '';
   errorMessage: string = '';
 
+hotelIds: any;
+city: string = '';
+checkIn: string = '';
+checkOut: string = '';
+
   user = {
     name: '',
     email: '',
@@ -62,19 +67,19 @@ export class SearchResultsComponent implements OnInit {
   ngOnInit(): void {
     this.checkUserStatus();
     this.route.queryParams.subscribe((params) => {
-      const hotelIds = params['hotelIds'];
-      const city = params['city'];
-      const checkIn = params['checkIn'];
-      const checkOut = params['checkOut'];
+      this.hotelIds = params['hotelIds'];
+      this.city = params['city'];
+      this.checkIn = params['checkIn'];
+      this.checkOut = params['checkOut'];
 
-      if (hotelIds) {
-        this.searchResultsService.fetchHotelsByIds(hotelIds).subscribe((hotels) => {
+      if (this.hotelIds) {
+        this.searchResultsService.fetchHotelsByIds(this.hotelIds).subscribe((hotels) => {
           this.allHotels = hotels;
           this.filteredHotelsSubject.next(hotels);
         });
-      } else if (city) {
+      } else if (this.city) {
         this.searchResultsService
-          .fetchHotelsByCity(city, checkIn, checkOut)
+          .fetchHotelsByCity(this.city, this.checkIn, this.checkOut)
           .subscribe((hotels) => {
             this.allHotels = hotels;
             this.filteredHotelsSubject.next(hotels);
@@ -104,9 +109,16 @@ export class SearchResultsComponent implements OnInit {
   }
 
   navigateToHotel(hotelId: number): void {
-    this.router.navigate(['/hotel-details', hotelId]);
+    // this.router.navigate(['/hotel-details', hotelId]);
+    this.router.navigate(['/hotel-details', hotelId], {
+        queryParams: {
+          city: this.city,
+          checkIn: this.checkIn,
+          checkOut: this.checkOut,
+        },
+      });
   }
-
+ 
   // Modal controls
   openLoginModal() {
     this.isLoginModalOpen = true;
