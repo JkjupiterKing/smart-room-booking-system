@@ -20,7 +20,8 @@ export class RoomManagementComponent implements OnInit {
   hotels: Hotel[] = [];
   roomTypes: RoomType[] = [];
   selectedRoom: Room = {
-    hotel: null,
+    hotelId: 0,
+    hotelName: '',
     roomType: '',
     capacity: 0,
     pricePerNight: 0,
@@ -59,6 +60,7 @@ export class RoomManagementComponent implements OnInit {
   }
 
   saveRoom(): void {
+    this.selectedRoom.hotelName = this.getHotelNameById(this.selectedRoom.hotelId);
     if (this.selectedRoom.roomId) {
       this.roomService.updateRoom(this.selectedRoom).subscribe(() => {
         this.loadRooms();
@@ -79,7 +81,8 @@ export class RoomManagementComponent implements OnInit {
 
   showAddForm(): void {
     this.selectedRoom = {
-      hotel: null,
+      hotelId: 0,
+      hotelName: '',
       roomType: '',
       capacity: 0,
       pricePerNight: 0,
@@ -90,7 +93,8 @@ export class RoomManagementComponent implements OnInit {
 
   resetFormAndHide(): void {
     this.selectedRoom = {
-      hotel: null,
+      hotelId: 0,
+      hotelName: '',
       roomType: '',
       capacity: 0,
       pricePerNight: 0,
@@ -106,4 +110,13 @@ export class RoomManagementComponent implements OnInit {
       });
     }
   }
+
+  // Assume you already have hotels: Hotel[] loaded
+
+getHotelNameById(hotelId: number | undefined): string {
+  if (!hotelId) return '';
+  const hotel = this.hotels.find(h => h.id === hotelId);
+  return hotel ? hotel.name : '';
+}
+
 }

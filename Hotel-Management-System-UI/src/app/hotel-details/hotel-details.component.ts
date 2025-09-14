@@ -9,10 +9,10 @@ import { UserService } from '../user.service';
 import { AdminService } from '../admin.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PublicNavbarComponent } from '../public-navbar/public-navbar.component';
-import { RoomService } from './room.service';
 import { LeafletModule } from '@bluehalo/ngx-leaflet';
 import { latLng, tileLayer, marker, icon, Map } from 'leaflet';
 import { AppUserNavbarComponent } from '../app-user-navbar/app-user-navbar.component';
+import { RoomService } from '../room.service';
 
 @Component({
   selector: 'app-hotel-details',

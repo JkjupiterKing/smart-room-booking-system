@@ -15,11 +15,12 @@ public class EmailService {
     public void sendBookingConfirmation(String toEmail, Booking booking) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(toEmail);
-        message.setSubject("Room Booking Confirmation - " + booking.getRoomTitle());
+        message.setSubject("Room Booking Confirmation - " + booking.getHotelName());
 
         String text = "Dear Customer,\n\n" +
                 "Thank you for your booking. Here are your booking details:\n\n" +
-                "Room: " + booking.getRoomTitle() + "\n" +
+                "Hotel: " + booking.getHotelName() + "\n" +
+                "Room Type: " + booking.getRoomType() + "\n" +
                 "Check-in: " + booking.getCheckInDate() + "\n" +
                 "Check-out: " + booking.getCheckOutDate() + "\n" +
                 "Adults: " + booking.getAdults() + "\n" +

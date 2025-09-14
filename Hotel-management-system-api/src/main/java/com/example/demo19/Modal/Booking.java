@@ -9,8 +9,9 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String roomTitle;
+    private String roomType;
+    private String hotelName;
+    private int hotelId;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
     private int adults;
@@ -21,10 +22,6 @@ public class Booking {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "room_id")
-    private HotelRoom room;
 
     private String paymentMethod;
     private double totalAmount;
@@ -56,14 +53,6 @@ public class Booking {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getRoomTitle() {
-        return roomTitle;
-    }
-
-    public void setRoomTitle(String roomTitle) {
-        this.roomTitle = roomTitle;
     }
 
     public LocalDate getCheckInDate() {
@@ -122,11 +111,28 @@ public class Booking {
         this.user = user;
     }
 
-    public HotelRoom getRoom() {
-        return room;
+
+    public String getRoomType() {
+        return roomType;
     }
 
-    public void setRoom(HotelRoom room) {
-        this.room = room;
+    public void setRoomType(String roomType) {
+        this.roomType = roomType;
+    }
+
+    public String getHotelName() {
+        return hotelName;
+    }
+
+    public void setHotelName(String hotelName) {
+        this.hotelName = hotelName;
+    }
+
+    public int getHotelId() {
+        return hotelId;
+    }
+
+    public void setHotelId(int hotelId) {
+        this.hotelId = hotelId;
     }
 }

@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface HotelRoomRepository extends JpaRepository<HotelRoom, Long> {
-    @Query("SELECT hr FROM HotelRoom hr WHERE hr.hotel.id = :hotelId")
+    @Query("SELECT hr FROM HotelRoom hr WHERE hr.hotelId = :hotelId")
     List<HotelRoom> findRoomsByHotelId(@Param("hotelId") Long hotelId);
 }

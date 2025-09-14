@@ -11,8 +11,11 @@ export class RoomService {
 
   constructor(private http: HttpClient) { }
 
+  checkAvailability(request: any): Observable<{ available: boolean }> {
+    return this.http.post<{ available: boolean }>(`${this.apiUrl}/check-availability`, request);
+  }
   getRooms(): Observable<Room[]> {
-    return this.http.get<Room[]>(this.apiUrl);
+    return this.http.get<Room[]>(`${this.apiUrl}/all`);
   }
 
   getRoom(id: number): Observable<Room> {

@@ -11,9 +11,15 @@ public class HotelRoom {
     @Column(name = "room_id")
     private Long roomId;
 
-    @ManyToOne
-    @JoinColumn(name = "hotel_id", nullable = false)
-    private Hotel hotel;
+//    @ManyToOne
+//    @JoinColumn(name = "hotel_id", nullable = false)
+//    private Hotel hotel;
+
+    @Column
+    private Long hotelId;
+
+    @Column
+    private String hotelName;
 
     @Column(name = "room_type", nullable = false)
     private String roomType;
@@ -31,12 +37,20 @@ public class HotelRoom {
     public HotelRoom() {
     }
 
-    public HotelRoom(Hotel hotel, String roomType, int capacity, double pricePerNight, int totalRooms) {
-        this.hotel = hotel;
+    public HotelRoom(Long hoteId, String roomType, int capacity, double pricePerNight, int totalRooms) {
+        this.hotelId = hoteId;
         this.roomType = roomType;
         this.capacity = capacity;
         this.pricePerNight = pricePerNight;
         this.totalRooms = totalRooms;
+    }
+
+    public Long getHotelId() {
+        return hotelId;
+    }
+
+    public void setHotelId(Long hotelId) {
+        this.hotelId = hotelId;
     }
 
     // Getters and Setters
@@ -48,13 +62,13 @@ public class HotelRoom {
         this.roomId = roomId;
     }
 
-    public Hotel getHotel() {
-        return hotel;
-    }
-
-    public void setHotel(Hotel hotel) {
-        this.hotel = hotel;
-    }
+//    public Hotel getHotel() {
+//        return hotel;
+//    }
+//
+//    public void setHotel(Hotel hotel) {
+//        this.hotel = hotel;
+//    }
 
     public String getRoomType() {
         return roomType;
@@ -86,5 +100,13 @@ public class HotelRoom {
 
     public void setTotalRooms(int totalRooms) {
         this.totalRooms = totalRooms;
+    }
+
+    public String getHotelName() {
+        return hotelName;
+    }
+
+    public void setHotelName(String hotelName) {
+        this.hotelName = hotelName;
     }
 }

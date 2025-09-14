@@ -21,7 +21,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let room of rooms">
-            <td>{{ room.hotel?.name }}</td>
+            <td>{{ room.hotelName }}</td>
             <td>{{ room.roomType }}</td>
             <td>{{ room.capacity }}</td>
             <td>{{ room.pricePerNight }}</td>
@@ -42,8 +42,8 @@
       <form (ngSubmit)="saveRoom()">
         <div class="form-group">
           <label for="hotel">Hotel:</label>
-          <select id="hotel" [(ngModel)]="selectedRoom.hotel" name="hotel" required>
-            <option *ngFor="let hotel of hotels" [ngValue]="hotel">{{ hotel.name }}</option>
+          <select id="hotel" [(ngModel)]="selectedRoom.hotelId" name="hotel" required>
+            <option *ngFor="let hotel of hotels" [ngValue]="hotel.id">{{ hotel.name }}</option>
           </select>
         </div>
         <div class="form-group">
