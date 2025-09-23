@@ -98,7 +98,6 @@ export class HotelDetailsComponent implements OnInit {
         if (matchingRoom) {
           if (matchingRoom.numberOfBookings < matchingRoom.totalRooms) {
             this.isAvailable = true;
-            this.bookNow();
           } else {
             this.availabilityMessage =
               'No rooms available for the selected room type, Try searching for different dates or room types.';
