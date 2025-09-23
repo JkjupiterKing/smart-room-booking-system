@@ -14,6 +14,17 @@ export class RoomService {
   checkAvailability(request: any): Observable<{ available: boolean }> {
     return this.http.post<{ available: boolean }>(`${this.apiUrl}/check-availability`, request);
   }
+
+  checkAvailabilityV2(startDate: string, endDate: string): Observable<any[]> {
+    const options = {
+      headers: { 'Content-Type': 'application/json' },
+      body: {
+        startDate,
+        endDate
+      }
+    };
+    return this.http.request<any[]>('GET', `${this.apiUrl}/check-availability`, options);
+  }
   getRooms(): Observable<Room[]> {
     return this.http.get<Room[]>(`${this.apiUrl}/all`);
   }
