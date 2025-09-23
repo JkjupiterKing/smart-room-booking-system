@@ -48,6 +48,7 @@ export class HotelDetailsComponent implements OnInit {
   availabilityChecked: boolean = false;
   isAvailable: boolean = false;
   selectedRoomType: Room | null = null;
+  availabilityMessage: string = '';
 
   user = {
     name: '',
@@ -74,28 +75,44 @@ export class HotelDetailsComponent implements OnInit {
 
   checkAvailability(): void {
     if (!this.selectedRoomType) {
-    alert("⚠️ Please select a room type before booking.");
-    return;
-  }
+      alert("⚠️ Please select a room type before booking.");
+      return;
+    }
     if (!this.hotel) {
       alert('No hotel selected');
       return;
     }
 
-    const request = {
-      hotelId: this.hotel.id,
-      // roomId: 1, // Assuming a default room ID for now
-      checkInDate: this.checkInDate,
-      checkOutDate: this.checkOutDate,
-      adults: this.adults,
-      children: this.children,
-      roomType: this.selectedRoomType
-    };
+    this.availabilityChecked = true;
+    this.isAvailable = false;
+    this.availabilityMessage = '';
 
-    this.roomService.checkAvailability(request).subscribe(response => {
-      this.isAvailable = response.available;
-      this.availabilityChecked = true;
-    });
+    this.roomService.checkAvailabilityV2(this.checkInDate, this.checkOutDate).subscribe(
+      (response: any[]) => {
+        const matchingRoom = response.find(
+          (room) =>
+            room.hotelId === this.hotel!.id &&
+            room.roomType === this.selectedRoomType!.roomType
+        );
+
+        if (matchingRoom) {
+          if (matchingRoom.numberOfBookings < matchingRoom.totalRooms) {
+            this.isAvailable = true;
+            this.bookNow();
+          } else {
+            this.availabilityMessage =
+              'No rooms available for the selected room type, Try searching for different dates or room types.';
+          }
+        } else {
+          this.availabilityMessage =
+            'No rooms available for the selected room type, Try searching for different dates or room types.';
+        }
+      },
+      (error) => {
+        this.availabilityMessage = 'Error checking availability.';
+        console.error('Error checking availability:', error);
+      }
+    );
   }
 
   bookNow(): void {

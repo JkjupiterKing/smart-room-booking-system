@@ -87,13 +87,13 @@
     <button type="button" (click)="checkAvailability()">Check Availability</button>
   </div>
 
-      <!-- Availability Result -->
+    <!-- Availability Result -->
     <div *ngIf="availabilityChecked">
       <div *ngIf="isAvailable; else notAvailable">
-        <button class="book-now-btn" (click)="bookNow()">Book Now</button>
+        <!-- The button is removed from here as navigation happens in the component now -->
       </div>
       <ng-template #notAvailable>
-        <p class="not-available-message">No rooms available for the selected dates.</p>
+        <p class="not-available-message">{{ availabilityMessage }}</p>
       </ng-template>
     </div>
 
