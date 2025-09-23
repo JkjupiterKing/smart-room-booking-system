@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,8 +66,13 @@ public class RoomController {
         return hotelRoomRepository.findRoomsByHotelId(hotelId);
     }
 
-    @GetMapping("/check-availability")
+    @PostMapping("/check-availability")
     public List<com.example.demo19.dto.AvailabilityCheckResponse> checkAvailability(@RequestBody AvailabilityCheckRequest request) {
-           return bookingRepository.findAvailability(request.getCheckInDate(), request.getCheckOutDate());
+        LocalDate adjustedStart = request.getCheckInDate().plusDays(1);
+        LocalDate adjustedEnd = request.getCheckOutDate().minusDays(1);
+        System.out.println(request.getCheckInDate()+","+request.getCheckOutDate()+","+adjustedStart+","+adjustedEnd);
+        return bookingRepository.findAvailability(request.getCheckInDate(), request.getCheckOutDate(), adjustedStart, adjustedEnd);
+
+//           return bookingRepository.findAvailability(request.getCheckInDate().plusDays(1), request.getCheckOutDate().minusDays(1));
     }
 }
