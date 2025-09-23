@@ -261,7 +261,7 @@ public class HotelController {
             return Mono.just(ResponseEntity.status(500).body(Collections.<Long>emptyList()));
         }
 
-        String prompt = "Based on the following hotel data, return only a list of hotel IDs that match the user's request. Do not include any other text in the response. text should have data in format [1,2,3] or if no matching found then send empty list like []. Hotel data: " + hotelsJson + ". User request: " + userQuery;
+        String prompt = "Based on the following hotel data, return only a list of hotel IDs that match the user's request. Do not include any other text in the response. text should have data in format [1,2,3] or if no matching found then send empty list like []. Perform strict filtering for hotel ratings/stars. Example, If 4 star hotels are requested, return only 4 star hotels, do not included any hotels with other ratings like 3 star. Hotel data: " + hotelsJson + ". User request: " + userQuery;
 
         WebClient webClient = webClientBuilder.baseUrl("https://generativelanguage.googleapis.com").build();
 
