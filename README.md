@@ -17,3 +17,6 @@ ng serve --open
 
 Api folder open in Intellij Editor and open application file click on run button
 
+For Diagrams generation:
+https://plantuml.com/
+
