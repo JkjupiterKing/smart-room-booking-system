@@ -25,19 +25,19 @@ public class HotelRoom {
     private String roomType;
 
     @Column(name = "capacity", nullable = false)
-    private int capacity;
+    private Long capacity;
 
     @Column(name = "price_per_night", nullable = false)
     private double pricePerNight;
 
     @Column(name = "total_rooms", nullable = false)
-    private int totalRooms;
+    private Long totalRooms;
 
     // Constructors
     public HotelRoom() {
     }
 
-    public HotelRoom(Long hoteId, String roomType, int capacity, double pricePerNight, int totalRooms) {
+    public HotelRoom(Long hoteId, String roomType, Long capacity, double pricePerNight, Long totalRooms) {
         this.hotelId = hoteId;
         this.roomType = roomType;
         this.capacity = capacity;
@@ -78,11 +78,11 @@ public class HotelRoom {
         this.roomType = roomType;
     }
 
-    public int getCapacity() {
+    public Long getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(int capacity) {
+    public void setCapacity(Long capacity) {
         this.capacity = capacity;
     }
 
@@ -94,11 +94,11 @@ public class HotelRoom {
         this.pricePerNight = pricePerNight;
     }
 
-    public int getTotalRooms() {
+    public Long getTotalRooms() {
         return totalRooms;
     }
 
-    public void setTotalRooms(int totalRooms) {
+    public void setTotalRooms(Long totalRooms) {
         this.totalRooms = totalRooms;
     }
 

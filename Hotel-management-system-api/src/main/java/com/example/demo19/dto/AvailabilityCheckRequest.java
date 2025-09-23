@@ -8,7 +8,6 @@ public class AvailabilityCheckRequest {
     private Long roomId;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
-    private int guests;
 
     // Getters and setters
     public Long getHotelId() {
@@ -43,11 +42,4 @@ public class AvailabilityCheckRequest {
         this.checkOutDate = checkOutDate;
     }
 
-    public int getGuests() {
-        return guests;
-    }
-
-    public void setGuests(int guests) {
-        this.guests = guests;
-    }
 }

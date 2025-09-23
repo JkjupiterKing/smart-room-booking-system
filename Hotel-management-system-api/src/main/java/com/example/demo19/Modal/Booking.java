@@ -11,7 +11,7 @@ public class Booking {
     private Long id;
     private String roomType;
     private String hotelName;
-    private int hotelId;
+    private Long hotelId;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
     private int adults;
@@ -128,11 +128,11 @@ public class Booking {
         this.hotelName = hotelName;
     }
 
-    public int getHotelId() {
+    public Long getHotelId() {
         return hotelId;
     }
 
-    public void setHotelId(int hotelId) {
+    public void setHotelId(Long hotelId) {
         this.hotelId = hotelId;
     }
 }
