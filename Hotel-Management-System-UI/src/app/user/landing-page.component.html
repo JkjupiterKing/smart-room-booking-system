@@ -151,6 +151,12 @@
       <button type="submit" [disabled]="loginForm.invalid">Login</button>
     </form>
 
+    <div class="modal-switch-link">
+      <a href="javascript:void(0)" (click)="openRegisterModal(); closeLoginModal()">
+        Don’t have an account? Register here
+      </a>
+    </div>
+
     <br />
     <button (click)="closeLoginModal()">Close</button>
   </div>
@@ -227,6 +233,12 @@
       <br />
       <button type="submit" [disabled]="registerForm.invalid">Register</button>
     </form>
+
+    <div class="modal-switch-link">
+      <a href="javascript:void(0)" (click)="openLoginModal(); closeRegisterModal()">
+        Already have an account? Login
+      </a>
+    </div>
 
     <br />
     <button (click)="closeRegisterModal()">Close</button>
