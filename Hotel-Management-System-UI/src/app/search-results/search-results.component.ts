@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  ActivatedRoute,
-  Router
-} from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 import { SearchResultsService, Hotel } from '../search-results.service';
 import { FormsModule, NgForm } from '@angular/forms';
 import { UserService } from '../user.service';
@@ -13,6 +10,10 @@ import { AdminNavbarComponent } from '../admin-navbar/admin-navbar.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PublicNavbarComponent } from '../public-navbar/public-navbar.component';
 import { AppUserNavbarComponent } from '../app-user-navbar/app-user-navbar.component';
+import { RoomService } from '../room.service';
+import { Room } from '../room.model';
+import { RoomType } from '../room-type.model';
+import { RoomTypeService } from '../room-type.service';
 
 @Component({
   selector: 'app-search-results',
@@ -32,6 +33,7 @@ export class SearchResultsComponent implements OnInit {
   private filteredHotelsSubject = new BehaviorSubject<Hotel[]>([]);
   filteredHotels$ = this.filteredHotelsSubject.asObservable();
   allHotels: Hotel[] = [];
+  allRoomTypes: RoomType[] = [];
   isLoading$: Observable<boolean>;
 
   isLoggedIn: boolean = false;
@@ -42,10 +44,10 @@ export class SearchResultsComponent implements OnInit {
   successMessage: string = '';
   errorMessage: string = '';
 
-hotelIds: any;
-city: string = '';
-checkIn: string = '';
-checkOut: string = '';
+  hotelIds: any;
+  city: string = '';
+  checkIn: string = '';
+  checkOut: string = '';
 
   user = {
     name: '',
@@ -58,7 +60,9 @@ checkOut: string = '';
     private router: Router,
     private route: ActivatedRoute,
     private userService: UserService,
-    private adminService: AdminService
+    private adminService: AdminService,
+    private roomService: RoomService,
+    private roomTypeService: RoomTypeService
   ) {
     this.hotels$ = this.searchResultsService.hotels$;
     this.isLoading$ = this.searchResultsService.isLoading$;
@@ -72,25 +76,52 @@ checkOut: string = '';
       this.checkIn = params['checkIn'];
       this.checkOut = params['checkOut'];
 
-      if (this.hotelIds) {
-        this.searchResultsService.fetchHotelsByIds(this.hotelIds).subscribe((hotels) => {
-          this.allHotels = hotels;
-          this.filteredHotelsSubject.next(hotels);
-        });
-      } else if (this.city) {
-        this.searchResultsService
-          .fetchHotelsByCity(this.city, this.checkIn, this.checkOut)
-          .subscribe((hotels) => {
-            this.allHotels = hotels;
-            this.filteredHotelsSubject.next(hotels);
-          });
+      const hotelsObservable = this.hotelIds
+        ? this.searchResultsService.fetchHotelsByIds(this.hotelIds)
+        : this.searchResultsService.fetchHotelsByCity(
+            this.city,
+            this.checkIn,
+            this.checkOut
+          );
+
+      forkJoin({
+        hotels: hotelsObservable,
+        rooms: this.roomService.getRooms(),
+        roomTypes: this.roomTypeService.getRoomTypes(),
+      }).subscribe(({ hotels, rooms, roomTypes }) => {
+        this.allRoomTypes = roomTypes;
+        this.allHotels = this.associateRoomsWithHotels(hotels, rooms, roomTypes);
+        this.filteredHotelsSubject.next(this.allHotels);
+      });
+    });
+  }
+
+  associateRoomsWithHotels(
+    hotels: Hotel[],
+    rooms: Room[],
+    roomTypes: RoomType[]
+  ): Hotel[] {
+    const roomTypeMap = new Map<number, string>();
+    roomTypes.forEach((rt) => roomTypeMap.set(rt.id, rt.name));
+
+    const hotelMap = new Map<number, Hotel>();
+    hotels.forEach((hotel) => {
+      hotel.rooms = [];
+      hotelMap.set(hotel.id, hotel);
+    });
+
+    rooms.forEach((room) => {
+      const hotel = hotelMap.get(room.hotelId);
+      if (hotel) {
+        const roomTypeName = roomTypeMap.get(room.roomTypeId);
+        if (roomTypeName) {
+          room.roomType = roomTypeName;
+        }
+        hotel.rooms?.push(room);
       }
     });
 
-    this.hotels$.subscribe(hotels => {
-      this.allHotels = hotels;
-      this.filteredHotelsSubject.next(hotels);
-    });
+    return Array.from(hotelMap.values());
   }
 
   checkUserStatus(): void {
@@ -233,25 +264,29 @@ checkOut: string = '';
   }
 
   // Filter properties
-  popularFilters = {
-    singleBed: false,
-    doubleBed: false,
-    luxuryRoom: false,
-    familySuite: false,
+  roomTypeFilters: { [key: string]: boolean } = {};
+  ratingFilters: { [key: number]: boolean } = {
+    5: false,
+    4: false,
+    3: false,
   };
-
   priceFilters = {
     '0-500': false,
     '500-1000': false,
     '1000-2000': false,
     '2000-3000': false,
   };
-
   sortBy: string = 'priceLowToHigh';
 
-  onPopularFilterChange(filter: keyof typeof this.popularFilters, event: Event) {
+  onRoomTypeFilterChange(roomTypeName: string, event: Event) {
     const isChecked = (event.target as HTMLInputElement).checked;
-    this.popularFilters[filter] = isChecked;
+    this.roomTypeFilters[roomTypeName] = isChecked;
+    this.applyFilters();
+  }
+
+  onRatingFilterChange(rating: number, event: Event) {
+    const isChecked = (event.target as HTMLInputElement).checked;
+    this.ratingFilters[rating] = isChecked;
     this.applyFilters();
   }
 
@@ -269,21 +304,26 @@ checkOut: string = '';
   applyFilters() {
     let filtered = [...this.allHotels];
 
-    // Popular filters
-    const selectedPopularFilters = Object.entries(this.popularFilters)
+    // Room type filtering
+    const selectedRoomTypes = Object.entries(this.roomTypeFilters)
       .filter(([, value]) => value)
       .map(([key]) => key);
 
-    if (selectedPopularFilters.length > 0) {
-      filtered = filtered.filter(hotel => {
-        return selectedPopularFilters.every(filter => {
-          if (filter === 'singleBed') return hotel.name.toLowerCase().includes('single bed');
-          if (filter === 'doubleBed') return hotel.name.toLowerCase().includes('double bed');
-          if (filter === 'luxuryRoom') return hotel.name.toLowerCase().includes('luxury room');
-          if (filter === 'familySuite') return hotel.name.toLowerCase().includes('family suite');
-          return true;
-        });
-      });
+    if (selectedRoomTypes.length > 0) {
+      filtered = filtered.filter((hotel) =>
+        hotel.rooms?.some((room) => selectedRoomTypes.includes(room.roomType))
+      );
+    }
+
+    // Rating filtering
+    const selectedRatings = Object.entries(this.ratingFilters)
+      .filter(([, value]) => value)
+      .map(([key]) => Number(key));
+
+    if (selectedRatings.length > 0) {
+      filtered = filtered.filter((hotel) =>
+        selectedRatings.includes(hotel.rating)
+      );
     }
 
     // Price filtering
@@ -292,8 +332,8 @@ checkOut: string = '';
       .map(([key]) => key);
 
     if (selectedPriceRanges.length > 0) {
-      filtered = filtered.filter(hotel => {
-        return selectedPriceRanges.some(range => {
+      filtered = filtered.filter((hotel) => {
+        return selectedPriceRanges.some((range) => {
           const [min, max] = range.split('-').map(Number);
           return hotel.price >= min && hotel.price <= max;
         });
@@ -318,8 +358,11 @@ checkOut: string = '';
   }
 
   clearFilters() {
-    for (const key in this.popularFilters) {
-      this.popularFilters[key as keyof typeof this.popularFilters] = false;
+    for (const key in this.roomTypeFilters) {
+      this.roomTypeFilters[key] = false;
+    }
+    for (const key in this.ratingFilters) {
+      this.ratingFilters[key as unknown as number] = false;
     }
     for (const key in this.priceFilters) {
       this.priceFilters[key as keyof typeof this.priceFilters] = false;

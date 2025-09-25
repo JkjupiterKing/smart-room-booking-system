@@ -87,42 +87,31 @@
         </div>
 
         <div class="filter-group">
-          <h4>Popular Filters</h4>
-          <div class="filter-option">
+          <h4>Room Type</h4>
+          <div
+            class="filter-option"
+            *ngFor="let roomType of allRoomTypes"
+          >
             <input
               type="checkbox"
-              id="single-bed"
-              [checked]="popularFilters.singleBed"
-              (change)="onPopularFilterChange('singleBed', $event)"
+              [id]="'room-type-' + roomType.id"
+              [checked]="roomTypeFilters[roomType.name]"
+              (change)="onRoomTypeFilterChange(roomType.name, $event)"
             />
-            <label for="single-bed">Single Bed</label>
+            <label [for]="'room-type-' + roomType.id">{{ roomType.name }}</label>
           </div>
-          <div class="filter-option">
+        </div>
+
+        <div class="filter-group">
+          <h4>Rating</h4>
+          <div class="filter-option" *ngFor="let rating of [5, 4, 3]">
             <input
               type="checkbox"
-              id="double-bed"
-              [checked]="popularFilters.doubleBed"
-              (change)="onPopularFilterChange('doubleBed', $event)"
+              [id]="'rating-' + rating"
+              [checked]="ratingFilters[rating]"
+              (change)="onRatingFilterChange(rating, $event)"
             />
-            <label for="double-bed">Double Bed</label>
-          </div>
-          <div class="filter-option">
-            <input
-              type="checkbox"
-              id="luxury-room"
-              [checked]="popularFilters.luxuryRoom"
-              (change)="onPopularFilterChange('luxuryRoom', $event)"
-            />
-            <label for="luxury-room">Luxury Room</label>
-          </div>
-          <div class="filter-option">
-            <input
-              type="checkbox"
-              id="family-suite"
-              [checked]="popularFilters.familySuite"
-              (change)="onPopularFilterChange('familySuite', $event)"
-            />
-            <label for="family-suite">Family Suite</label>
+            <label [for]="'rating-' + rating">{{ rating }} Star</label>
           </div>
         </div>
 

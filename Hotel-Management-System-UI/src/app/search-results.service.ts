@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { Room } from './room.model';
 
 export interface Location {
   id: number;
@@ -24,6 +25,7 @@ export interface Hotel {
   location: Location;
   latitude?: number;
   longitude?: number;
+  rooms?: Room[];
 }
 
 @Injectable({
