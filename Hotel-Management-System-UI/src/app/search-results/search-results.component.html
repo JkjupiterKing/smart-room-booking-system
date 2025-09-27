@@ -88,20 +88,19 @@
 
         <div class="filter-group">
           <h4>Room Type</h4>
-          <div
-            *ngFor="let roomType of allRoomTypes"
-            class="filter-option"
-          >
-            <input
-              type="checkbox"
-              [id]="'room-type-' + roomType.id"
-              [checked]="roomFilters[roomType.id]"
-              (change)="onRoomFilterChange(roomType.id, $event)"
-            />
-            <label [for]="'room-type-' + roomType.id">{{
-              roomType.name
-            }}</label>
-          </div>
+          <ng-container *ngFor="let roomType of allRoomTypes">
+            <div *ngIf="roomType.id" class="filter-option">
+              <input
+                type="checkbox"
+                [id]="'room-type-' + roomType.id"
+                [checked]="roomFilters[roomType.id]"
+                (change)="onRoomFilterChange(roomType.id, $event)"
+              />
+              <label [for]="'room-type-' + roomType.id">{{
+                roomType.name
+              }}</label>
+            </div>
+          </ng-container>
         </div>
 
         <div class="filter-group">
