@@ -87,42 +87,66 @@
         </div>
 
         <div class="filter-group">
-          <h4>Popular Filters</h4>
+          <h4>Room Type</h4>
+          <div
+            *ngFor="let roomType of allRoomTypes"
+            class="filter-option"
+          >
+            <input
+              type="checkbox"
+              [id]="'room-type-' + roomType.id"
+              [checked]="roomFilters[roomType.id]"
+              (change)="onRoomFilterChange(roomType.id, $event)"
+            />
+            <label [for]="'room-type-' + roomType.id">{{
+              roomType.name
+            }}</label>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h4>Star Rating</h4>
           <div class="filter-option">
             <input
               type="checkbox"
-              id="single-bed"
-              [checked]="popularFilters.singleBed"
-              (change)="onPopularFilterChange('singleBed', $event)"
+              id="rating-5"
+              [checked]="ratingFilters[5]"
+              (change)="onRatingFilterChange(5, $event)"
             />
-            <label for="single-bed">Single Bed</label>
+            <label for="rating-5"
+              ><span class="star">&#9733;</span
+              ><span class="star">&#9733;</span
+              ><span class="star">&#9733;</span
+              ><span class="star">&#9733;</span
+              ><span class="star">&#9733;</span></label
+            >
           </div>
           <div class="filter-option">
             <input
               type="checkbox"
-              id="double-bed"
-              [checked]="popularFilters.doubleBed"
-              (change)="onPopularFilterChange('doubleBed', $event)"
+              id="rating-4"
+              [checked]="ratingFilters[4]"
+              (change)="onRatingFilterChange(4, $event)"
             />
-            <label for="double-bed">Double Bed</label>
+            <label for="rating-4"
+              ><span class="star">&#9733;</span
+              ><span class="star">&#9733;</span
+              ><span class="star">&#9733;</span
+              ><span class="star">&#9733;</span></label
+            >
           </div>
           <div class="filter-option">
             <input
               type="checkbox"
-              id="luxury-room"
-              [checked]="popularFilters.luxuryRoom"
-              (change)="onPopularFilterChange('luxuryRoom', $event)"
+              id="rating-3"
+              [checked]="ratingFilters[3]"
+              (change)="onRatingFilterChange(3, $event)"
             />
-            <label for="luxury-room">Luxury Room</label>
-          </div>
-          <div class="filter-option">
-            <input
-              type="checkbox"
-              id="family-suite"
-              [checked]="popularFilters.familySuite"
-              (change)="onPopularFilterChange('familySuite', $event)"
-            />
-            <label for="family-suite">Family Suite</label>
+            <label for="rating-3"
+              ><span class="star">&#9733;</span
+              ><span class="star">&#9733;</span
+              ><span class="star">&#9733;</span></label
+            >
           </div>
         </div>
 
