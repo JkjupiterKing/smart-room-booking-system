@@ -14,6 +14,8 @@ import { ChangePasswordModalComponent } from '../change-password-modal/change-pa
 export class AppUserNavbarComponent implements OnInit {
   isUserLoggedIn: boolean = false;
   userInitial: string | null = null;
+  username: string | null = null;
+  email: string | null = null;
   isDropdownOpen: boolean = false;
   isPasswordModalOpen: boolean = false;
   userId: number | null = null;
@@ -32,6 +34,8 @@ export class AppUserNavbarComponent implements OnInit {
       if (user && user.id && role === 'user') {
         this.isUserLoggedIn = true;
         this.userInitial = user.username.charAt(0).toUpperCase();
+        this.username = user.username;
+        this.email = user.email;
         this.userId = user.id;
       }
     }

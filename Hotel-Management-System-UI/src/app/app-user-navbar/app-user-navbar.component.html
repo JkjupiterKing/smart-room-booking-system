@@ -8,6 +8,10 @@
         <span>{{ userInitial }}</span>
       </div>
       <div class="dropdown-menu" [class.show]="isDropdownOpen">
+        <div class="user-info">
+          <div>{{ username }}</div>
+          <div>{{ email }}</div>
+        </div>
         <a (click)="navigateToBookingManagement()">My Bookigs</a>
         <a (click)="openPasswordModal()">Manage Account</a>
         <a (click)="logout()">Logout</a>
