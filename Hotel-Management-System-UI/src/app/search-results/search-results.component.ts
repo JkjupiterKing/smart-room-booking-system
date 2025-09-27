@@ -94,16 +94,18 @@ export class SearchResultsComponent implements OnInit {
 
     forkJoin({
       roomTypes: this.roomTypeService.getRoomTypes(),
-      rooms: this.roomService.getAllRooms(),
+      rooms: this.roomService.getRooms(),
     }).subscribe(({ roomTypes, rooms }) => {
-      this.allRoomTypes = roomTypes;
+      this.allRoomTypes = roomTypes.filter(rt => rt.id !== undefined);
       this.hotelRooms = rooms;
       this.initializeFilters();
     });
   }
   initializeFilters(): void {
     this.allRoomTypes.forEach((rt) => {
-      this.roomFilters[rt.id] = false;
+        if (rt.id) {
+            this.roomFilters[rt.id] = false;
+        }
     });
   }
   checkUserStatus(): void {
@@ -268,7 +270,7 @@ export class SearchResultsComponent implements OnInit {
     if (selectedRoomTypes.length > 0) {
       const roomTypeNames = new Set<string>();
       this.allRoomTypes.forEach((rt) => {
-        if (selectedRoomTypes.includes(rt.id)) {
+        if (rt.id && selectedRoomTypes.includes(rt.id)) {
           roomTypeNames.add(rt.name);
         }
       });
